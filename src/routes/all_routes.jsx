@@ -1,3 +1,4 @@
+
 export const all_routes = {
   newdashboard: "/index",
   dashboard: "/admin-dashboard",
@@ -243,6 +244,7 @@ export const all_routes = {
   reviews: "/reviews",
   superadmindashboard: "/dashboard",
   companies: "/companies",
+  users: "/users",
   subscription: "/subscription",
   packagelist: "/packages",
   domain: "/domain",

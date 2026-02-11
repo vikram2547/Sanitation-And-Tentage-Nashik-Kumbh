@@ -8,6 +8,7 @@ import registerSlice from "./registerSlice";
 import signinReducer from "./signinSlice";
 import verifyOtpReducer from "./verifyOtpSlice";
 import forgotPasswordReducer from "./forgotPasswordSlice";
+import usersReducer from "./usersSlice";
 
 const combinedReducer = combineReducers({
   sidebar: sidebarSlice,
@@ -18,6 +19,7 @@ const combinedReducer = combineReducers({
   signin: signinReducer,
   verifyOtp: verifyOtpReducer,
   forgotPassword: forgotPasswordReducer,
+  users: usersReducer,
 });
 
 const rootReducer = (state, action) => {

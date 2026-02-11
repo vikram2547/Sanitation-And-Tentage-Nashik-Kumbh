@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signupUser } from "../../../../core/redux/registerSlice";
+import { clearSignupState, signupUser } from "../../../../core/redux/registerSlice";
 import { all_routes } from "../../../../routes/all_routes";
 import {
   nashikKumbh,

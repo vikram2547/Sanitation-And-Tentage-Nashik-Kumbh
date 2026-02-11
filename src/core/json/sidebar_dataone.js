@@ -310,6 +310,7 @@ export const SidebarData1 = [
     ],
   },
 
+  
   {
     tittle: "Inventory",
     hasSubRoute: true,

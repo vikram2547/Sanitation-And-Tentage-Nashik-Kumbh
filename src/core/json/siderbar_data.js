@@ -37,6 +37,36 @@ export const SidebarData = [
         ],
       },
       {
+        label: "Users",
+        icon: "user-edit",
+        submenu: true,
+        showSubRoute: false,
+
+        submenuItems: [
+          { label: "User List", link: "/users" },
+        ],
+      },
+      {
+        label: "Vendors",
+        icon: "user-edit",
+        submenu: true,
+        showSubRoute: false,
+
+        submenuItems: [
+          { label: "Vendor List", link: "/dashboard" },
+        ],
+      },
+      {
+        label: "Sectors",
+        icon: "user-edit",
+        submenu: true,
+        showSubRoute: false,
+
+        submenuItems: [
+          { label: "Sector List", link: "/dashboard" },
+        ],
+      },
+      {
         label: "Application",
         icon: "brand-apple-arcade",
         submenu: true,
