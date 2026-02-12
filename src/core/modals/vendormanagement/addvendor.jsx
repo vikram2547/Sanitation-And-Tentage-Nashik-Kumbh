@@ -1,30 +1,24 @@
-
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessages, createUser } from "../../redux/usersSlice";
+import { addVendor, clearMessages } from "../../redux/vendorsSlice";
 
-const AddUsers = () => {
+const AddVendors = () => {
   const dispatch = useDispatch();
 
-  const { success, error, loading } = useSelector((state) => state.users);
-
-
-  const [showPassword, setShowPassword] = useState(false);
+  const { success, error, loading } = useSelector(
+    (state) => state.vendors
+  );
 
   const [formData, setFormData] = useState({
-    phone: "",
-    password: "",
-    full_name: "",
-    email: "",
-    user_type_id: 0,
-    vendor_id: null,
-    is_active: 1,
+    vendor_name: "",
+    vendor_code: "",
+    contact_person: "",
+    contact_email: "",
+    contact_phone: "",
+    address: "",
+    status: "ACTIVE",
+    user_id: 0,
   });
-
-
-  const handleTogglePassword = () => {
-    setShowPassword((prev) => !prev);
-  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -34,28 +28,27 @@ const AddUsers = () => {
     e.preventDefault();
 
     const payload = {
-      phone: formData.phone,
-      password: formData.password,
-      full_name: formData.full_name,
-      email: formData.email,
-      user_type_id: formData.user_type_id,
-      vendor_id: null,
-      is_active: 1,
+      vendor_name: formData.vendor_name,
+      vendor_code: formData.vendor_code,
+      contact_person: formData.contact_person,
+      contact_email: formData.contact_email,
+      contact_phone: formData.contact_phone,
+      address: formData.address,
+      status: formData.status,
+      user_id: 0,
     };
 
-    const resultAction = await dispatch(createUser(payload));
+    const resultAction = await dispatch(addVendor(payload));
 
-    if (createUser.fulfilled.match(resultAction)) {
-      // Close modal
+    if (addVendor.fulfilled.match(resultAction)) {
       const modal = window.bootstrap.Modal.getInstance(
-        document.getElementById("add-units")
+        document.getElementById("add-vendor")
       );
       modal?.hide();
     }
   };
 
-
-  // ✅ Show message for 5 sec
+  // ✅ Auto clear messages after 5 sec
   useEffect(() => {
     if (success || error) {
       const timer = setTimeout(() => {
@@ -70,33 +63,34 @@ const AddUsers = () => {
   useEffect(() => {
     if (success) {
       setFormData({
-        phone: "",
-        password: "",
-        full_name: "",
-        email: "",
-        user_type_id: 0,
-        vendor_id: null,
-        is_active: 1,
+        vendor_name: "",
+        vendor_code: "",
+        contact_person: "",
+        contact_email: "",
+        contact_phone: "",
+        address: "",
+        status: "ACTIVE",
+        user_id: 0,
       });
     }
   }, [success]);
 
   return (
     <div>
-      <div className="modal fade" id="add-units">
+      <div className="modal fade" id="add-vendor">
         <div className="modal-dialog modal-dialog-centered custom-modal-two">
           <div className="modal-content">
             <div className="page-wrapper-new p-0">
               <div className="content">
+
                 <div className="modal-header border-0 custom-modal-header">
                   <div className="page-title">
-                    <h4>Add User</h4>
+                    <h4>Add Vendor</h4>
                   </div>
                   <button
                     type="button"
                     className="close"
                     data-bs-dismiss="modal"
-                    aria-label="Close"
                   >
                     <span aria-hidden="true">×</span>
                   </button>
@@ -104,7 +98,7 @@ const AddUsers = () => {
 
                 <div className="modal-body custom-modal-body">
 
-                  {/* ✅ Message */}
+                  {/* ✅ Messages */}
                   {error && (
                     <div className="alert alert-danger">{error}</div>
                   )}
@@ -117,11 +111,11 @@ const AddUsers = () => {
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>User Name</label>
+                          <label>Vendor Name</label>
                           <input
                             type="text"
-                            name="full_name"
-                            value={formData.full_name}
+                            name="vendor_name"
+                            value={formData.vendor_name}
                             onChange={handleChange}
                             className="form-control"
                           />
@@ -130,11 +124,11 @@ const AddUsers = () => {
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>Phone</label>
+                          <label>Vendor Code</label>
                           <input
                             type="text"
-                            name="phone"
-                            value={formData.phone}
+                            name="vendor_code"
+                            value={formData.vendor_code}
                             onChange={handleChange}
                             className="form-control"
                           />
@@ -143,11 +137,24 @@ const AddUsers = () => {
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>Email</label>
+                          <label>Contact Person</label>
+                          <input
+                            type="text"
+                            name="contact_person"
+                            value={formData.contact_person}
+                            onChange={handleChange}
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        <div className="input-blocks">
+                          <label>Contact Email</label>
                           <input
                             type="email"
-                            name="email"
-                            value={formData.email}
+                            name="contact_email"
+                            value={formData.contact_email}
                             onChange={handleChange}
                             className="form-control"
                           />
@@ -156,21 +163,41 @@ const AddUsers = () => {
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>Password</label>
-                          <div className="pass-group">
-                            <input
-                              type={showPassword ? "text" : "password"}
-                              name="password"
-                              value={formData.password}
-                              onChange={handleChange}
-                              className="pass-input form-control"
-                            />
-                            <span
-                              className={`ti toggle-password ${showPassword ? "ti-eye" : "ti-eye-off"
-                                }`}
-                              onClick={handleTogglePassword}
-                            />
-                          </div>
+                          <label>Contact Phone</label>
+                          <input
+                            type="text"
+                            name="contact_phone"
+                            value={formData.contact_phone}
+                            onChange={handleChange}
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        <div className="input-blocks">
+                          <label>Status</label>
+                          <select
+                            name="status"
+                            value={formData.status}
+                            onChange={handleChange}
+                            className="form-control"
+                          >
+                            <option value="ACTIVE">ACTIVE</option>
+                            <option value="INACTIVE">INACTIVE</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-12">
+                        <div className="input-blocks">
+                          <label>Address</label>
+                          <textarea
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            className="form-control"
+                          />
                         </div>
                       </div>
 
@@ -196,6 +223,7 @@ const AddUsers = () => {
 
                   </form>
                 </div>
+
               </div>
             </div>
           </div>
@@ -205,4 +233,4 @@ const AddUsers = () => {
   );
 };
 
-export default AddUsers;
+export default AddVendors;

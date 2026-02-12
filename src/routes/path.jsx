@@ -35,6 +35,7 @@ import Leaflet from "../feature-module/uiinterface/map/leaflet";
 import DataTables from "../feature-module/uiinterface/table/data-tables";
 import TablesBasic from "../feature-module/uiinterface/table/tables-basic";
 import Pos from "../feature-module/pos/pos";
+import Vendors from "../feature-module/vendormanagement/vendors";
 
 
 
@@ -1166,6 +1167,13 @@ export const authRoutes = [
   path: routes.users,
   name: "users",
   element: <Users />,
+  route: Route
+},
+{
+  id: 255,
+  path: routes.vendors,
+  name: "vendors",
+  element: <Vendors />,
   route: Route
 },
 {

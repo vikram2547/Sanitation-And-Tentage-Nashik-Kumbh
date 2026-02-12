@@ -245,6 +245,7 @@ export const all_routes = {
   superadmindashboard: "/dashboard",
   companies: "/companies",
   users: "/users",
+  vendors: "/vendors",
   subscription: "/subscription",
   packagelist: "/packages",
   domain: "/domain",
