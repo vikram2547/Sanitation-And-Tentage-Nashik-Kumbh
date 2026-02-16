@@ -8,21 +8,22 @@ import EditUser from "../../core/modals/usermanagement/edituser";
 import ViewUser from "../../core/modals/usermanagement/viewuser";
 
 import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
-import RefreshIcon from "../../components/tooltip-content/refresh";
-import CollapesIcon from "../../components/tooltip-content/collapes";
+// import RefreshIcon from "../../components/tooltip-content/refresh";
+// import CollapesIcon from "../../components/tooltip-content/collapes";
 import PrimeDataTable from "../../components/data-table";
 import { clearMessages, deleteUser, getUsers } from "../../core/redux/usersSlice";
 
 
 
 const Users = () => {
+
   const dispatch = useDispatch();
 
   const { users, totalRecords, loading, error, success } = useSelector(
     (state) => state.users
   );
 
-  const [rows, setRows] = useState(10);
+  const [rows, setRows] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [deleteId, setDeleteId] = useState(null);
@@ -125,9 +126,7 @@ const Users = () => {
               to="#"
               data-bs-toggle="modal"
               data-bs-target="#edit-units"
-              // onClick={() => setEditUserData(rowData)}
               onClick={() => {
-                console.log("EDIT CLICK ROW:", rowData);
                 setEditUserData(rowData);
               }}
             >
@@ -165,8 +164,8 @@ const Users = () => {
 
             <ul className="table-top-head">
               <TooltipIcons />
-              <RefreshIcon />
-              <CollapesIcon />
+              {/* <RefreshIcon /> */}
+              {/* <CollapesIcon /> */}
             </ul>
 
             <div className="page-btn">

@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, createUser } from "../../redux/usersSlice";
+import { Modal } from "bootstrap";
+
 
 const AddUsers = () => {
   const dispatch = useDispatch();
@@ -53,6 +55,29 @@ const AddUsers = () => {
       modal?.hide();
     }
   };
+
+
+  useEffect(() => {
+  if (success) {
+    const modalEl = document.getElementById("add-units");
+
+    if (modalEl) {
+      const modalInstance =
+        Modal.getInstance(modalEl) || new Modal(modalEl);
+
+      modalInstance.hide();
+    }
+
+    // ✅ CLEAN UP BACKDROP & BODY STATE
+    setTimeout(() => {
+      document.body.classList.remove("modal-open");
+      document.body.style.paddingRight = "";
+
+      const backdrops = document.querySelectorAll(".modal-backdrop");
+      backdrops.forEach((bd) => bd.remove());
+    }, 500);
+  }
+}, [success]);
 
 
   // ✅ Show message for 5 sec

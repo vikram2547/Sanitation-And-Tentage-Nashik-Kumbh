@@ -30,73 +30,73 @@ api.interceptors.request.use((config) => {
   (error) => Promise.reject(error)
 );
 
-/* ================= GET VENDORS ================= */
-export const getVendors = createAsyncThunk(
-  "vendors/getVendors",
+/* ================= GET Sectors ================= */
+export const getSectors = createAsyncThunk(
+  "sectors/getSectors",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/vendors", {
-        params: { page, per_page, keywords: "", status: "", order_by_col: "vendor_id", order_by: "DESC", },
+      const response = await api.get("/api/sectors", {
+        params: { page, per_page, keywords: "", order_by_col: "sector_id", order_by: "DESC", },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch vendors"
+        error.response?.data?.message || "Failed to fetch sectors"
       );
     }
   }
 );
 
 /* ================= ADD VENDOR ================= */
-export const addVendor = createAsyncThunk(
-  "vendors/addVendor",
+export const addSector = createAsyncThunk(
+  "sectors/addSector",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/vendors/new", data);
+      const response = await api.post("/api/sectors/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to add vendor"
+        error.response?.data?.message || "Failed to add sector"
       );
     }
   }
 );
 
 /* ================= UPDATE VENDOR ================= */
-export const updateVendor = createAsyncThunk(
-  "vendors/updateVendor",
+export const updateSector = createAsyncThunk(
+  "sectors/updateSector",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/vendors/edit/${id}`, data);
+      const response = await api.post(`/api/sectors/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update vendor"
+        error.response?.data?.message || "Failed to update sector"
       );
     }
   }
 );
 
 /* ================= DELETE VENDOR ================= */
-export const deleteVendor = createAsyncThunk(
-  "vendors/deleteVendor",
+export const deleteSector = createAsyncThunk(
+  "sectors/deleteSector",
   async (id, { rejectWithValue }) => {
     try {
-      await api.delete(`/api/vendors/delete/${id}`);
+      await api.post(`/api/sectors/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete vendor"
+        error.response?.data?.message || "Failed to delete sector"
       );
     }
   }
 );
 
 /* ================= SLICE ================= */
-const vendorsSlice = createSlice({
-  name: "vendors",
+const sectorSlice = createSlice({
+  name: "sectors",
   initialState: {
-    vendors: [],
+    sectors: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -112,86 +112,86 @@ const vendorsSlice = createSlice({
     builder
 
       /* ===== GET ===== */
-      .addCase(getVendors.pending, (state) => {
+      .addCase(getSectors.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getVendors.fulfilled, (state, action) => {
+      .addCase(getSectors.fulfilled, (state, action) => {
         state.loading = false;
-        state.vendors = Array.isArray(action.payload?.data?.vendors)
-          ? action.payload.data.vendors
+        state.sectors = Array.isArray(action.payload?.data?.sectors)
+          ? action.payload.data.sectors
           : [];
 
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getVendors.rejected, (state, action) => {
+      .addCase(getSectors.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addVendor.pending, (state) => {
+      .addCase(addSector.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addVendor.fulfilled, (state, action) => {
+      .addCase(addSector.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = "Vendor created successfully";
+        state.success = "Sector created successfully";
         if (action.payload?.data) {
-          state.vendors.unshift(action.payload.data);
+          state.sectors.unshift(action.payload.data);
           state.totalRecords += 1;
         }
       })
-      .addCase(addVendor.rejected, (state, action) => {
+      .addCase(addSector.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateVendor.pending, (state) => {
+      .addCase(updateSector.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateVendor.fulfilled, (state, action) => {
+      .addCase(updateSector.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Vendor updated successfully";
-        const updatedVendor = action.payload?.data;
+        state.success = action.payload?.message || "Sector updated successfully";
+        const updatedSector = action.payload?.data;
 
-        if (updatedVendor) {
-          state.vendors = state.vendors.map((vendor) =>
-             Number(vendor.vendor_id) === Number(updatedVendor.vendor_id)
-              ? updatedVendor
-              : vendor
+        if (updatedSector) {
+          state.sectors = state.sectors.map((sector) =>
+             Number(sector.sector_id) === Number(updatedSector.sector_id)
+              ? updatedSector
+              : sector
           );
         }
       })
-      .addCase(updateVendor.rejected, (state, action) => {
+      .addCase(updateSector.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteVendor.pending, (state) => {
+      .addCase(deleteSector.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteVendor.fulfilled, (state, action) => {
+      .addCase(deleteSector.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Vendor deleted successfully";
+        state.success = action.payload?.message || "Sector deleted successfully";
          const deletedId = action.meta.arg;
 
-          state.vendors = state.vendors.filter(
-          (vendor) => Number(vendor.vendor_id) !== Number(deletedId)
+          state.sectors = state.sectors.filter(
+          (sector) => Number(sector.sector_id) !== Number(deletedId)
         );
 
         state.totalRecords -= 1;
       })
-      .addCase(deleteVendor.rejected, (state, action) => {
+      .addCase(deleteSector.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { clearMessages } = vendorsSlice.actions;
-export default vendorsSlice.reducer;
+export const { clearMessages } = sectorSlice.actions;
+export default sectorSlice.reducer;

@@ -246,6 +246,8 @@ export const all_routes = {
   companies: "/companies",
   users: "/users",
   vendors: "/vendors",
+  sectors: "/sectors",
+  circles: "/circles",
   subscription: "/subscription",
   packagelist: "/packages",
   domain: "/domain",

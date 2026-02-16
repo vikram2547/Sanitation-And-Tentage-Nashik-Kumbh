@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const saveToLocalStorage = (state) => {
   try {
     const serializedState = JSON.stringify(state);
@@ -6,7 +8,8 @@ export const saveToLocalStorage = (state) => {
   } catch (e) {
 
     //
-  }};
+  }
+};
 
 export const getPreloadedState = () => {
   try {
@@ -22,18 +25,15 @@ export const getPreloadedState = () => {
   }
 };
 
-const setCredentials = (token) => {
-  localStorage.setItem("token", JSON.stringify(token));
+export const setCredentials = (token) => {
+  if (!token) return;
+  localStorage.setItem("token", token);
 };
 
-const getCredentials = () => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  return token;
+export const getCredentials = () => {
+  return localStorage.getItem("token");
 };
 
-const clearCredentials = () => {
-  localStorage.clear();
-  sessionStorage.clear();
-  delete axios.defaults.headers.common["Authorization"];
+export const clearCredentials = () => {
+  localStorage.removeItem("token");
 };
-export { setCredentials, getCredentials, clearCredentials };

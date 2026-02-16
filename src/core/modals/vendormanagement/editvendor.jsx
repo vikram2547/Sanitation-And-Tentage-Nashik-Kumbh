@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, updateVendor } from "../../redux/vendorsSlice";
+import { Modal } from "bootstrap";
 
 const EditVendor = ({ selectedVendor }) => {
   const dispatch = useDispatch();
@@ -18,6 +19,28 @@ const EditVendor = ({ selectedVendor }) => {
     status: "ACTIVE",
     user_id: 0,
   });
+
+  useEffect(() => {
+  if (success) {
+    const modalEl = document.getElementById("edit-vendor");
+
+    if (modalEl) {
+      const modalInstance =
+        Modal.getInstance(modalEl) || new Modal(modalEl);
+
+      modalInstance.hide();
+    }
+
+    // ✅ CLEANUP BACKDROP & BODY STATE (IMPORTANT)
+    setTimeout(() => {
+      document.body.classList.remove("modal-open");
+      document.body.style.paddingRight = "";
+
+      const backdrops = document.querySelectorAll(".modal-backdrop");
+      backdrops.forEach((bd) => bd.remove());
+    }, 500);
+  }
+}, [success]);
 
   // ✅ Prefill when selectedVendor changes
   useEffect(() => {
@@ -42,10 +65,6 @@ const EditVendor = ({ selectedVendor }) => {
     });
   };
 
-  useEffect(() => {
-    console.log("MODAL RECEIVED:", selectedVendor);
-  }, [selectedVendor]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -62,16 +81,6 @@ const EditVendor = ({ selectedVendor }) => {
         data: formData,
       })
     );
-
-    console.log("Result Action:", resultAction);
-
-    // ✅ Close modal on success
-    if (updateVendor.fulfilled.match(resultAction)) {
-      const modal = window.bootstrap.Modal.getInstance(
-        document.getElementById("edit-vendor")
-      );
-      modal?.hide();
-    }
   };
 
   // ✅ Auto clear messages after 5 sec

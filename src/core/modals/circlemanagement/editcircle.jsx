@@ -1,59 +1,54 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessages, updateUser } from "../../redux/usersSlice";
 import { Modal } from "bootstrap";
 
 
-const EditUser = ({ selectedUser }) => {
+const EditCircle = ({ selectedCircle }) => {
   const dispatch = useDispatch();
-  const { success, error, loading } = useSelector((state) => state.users);
+  const { success, error, loading } = useSelector((state) => state.circles);
 
   const [formData, setFormData] = useState({
-    phone: "",
-    full_name: "",
-    email: "",
-    user_type_id: 0,
-    vendor_id: null,
-    is_active: 1,
+    circle_name: "",
+    circle_code: "",
+    // sector_id: sector_id,
+    boundary_coordinates: null,
   });
 
- // ✅ CLOSE MODAL + REMOVE BACKDROP PROPERLY
-useEffect(() => {
-  if (success) {
-    const modalEl = document.getElementById("edit-units");
-
-    if (modalEl) {
-      const modalInstance =
-        Modal.getInstance(modalEl) || new Modal(modalEl);
-
-      modalInstance.hide();
-    }
-
-    // ✅ CLEANUP BACKDROP & BODY STATE (IMPORTANT)
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-
-      const backdrops = document.querySelectorAll(".modal-backdrop");
-      backdrops.forEach((bd) => bd.remove());
-    }, 500);
-  }
-}, [success]);
-
-
-  // ✅ Prefill when selectedUser changes
+  // ✅ CLOSE MODAL + REMOVE BACKDROP PROPERLY
   useEffect(() => {
-    if (selectedUser) {
+    if (success) {
+      const modalEl = document.getElementById("edit-circle");
+
+      if (modalEl) {
+        const modalInstance =
+          Modal.getInstance(modalEl) || new Modal(modalEl);
+
+        modalInstance.hide();
+      }
+
+      // ✅ CLEANUP BACKDROP & BODY STATE (IMPORTANT)
+      setTimeout(() => {
+        document.body.classList.remove("modal-open");
+        document.body.style.paddingRight = "";
+
+        const backdrops = document.querySelectorAll(".modal-backdrop");
+        backdrops.forEach((bd) => bd.remove());
+      }, 500);
+    }
+  }, [success]);
+
+
+  // ✅ Prefill when selectedCircle changes
+  useEffect(() => {
+    if (selectedCircle) {
       setFormData({
-        phone: selectedUser.phone || "",
-        full_name: selectedUser.full_name || "",
-        email: selectedUser.email || "",
-        user_type_id: Number(selectedUser.user_type_id) || 0,
-        vendor_id: null,
-        is_active: Number(selectedUser.is_active) || 1,
+        circle_name: selectedCircle.circle_name || "",
+        circle_code: selectedCircle.circle_code || "",
+        // sector_id: sector_id,
+        boundary_coordinates: null,
       });
     }
-  }, [selectedUser]);
+  }, [selectedCircle]);
 
   const handleChange = (e) => {
     setFormData({
@@ -65,16 +60,16 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userId = selectedUser?.user_id || selectedUser?.id;
+    const circleId = selectedCircle?.circle_id || selectedCircle?.id;
 
-    if (!userId) {
+    if (!circleId) {
       console.log("No User ID found");
       return;
     }
 
     const resultAction = await dispatch(
       updateUser({
-        id: userId,
+        id: circleId,
         data: formData,
       })
     );
@@ -119,13 +114,26 @@ useEffect(() => {
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    <div className="col-lg-6">
+                    {/* <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>User Name</label>
+                        <label>Sector Id</label>
                         <input
                           type="text"
-                          name="full_name"
-                          value={formData.full_name}
+                          name="sector_id"
+                          value={formData.sector_id}
+                          onChange={handleChange}
+                          className="form-control"
+                        />
+                      </div>
+                    </div> */}
+
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>Circle Name</label>
+                        <input
+                          type="text"
+                          name="circle_name"
+                          value={formData.circle_name}
                           onChange={handleChange}
                           className="form-control"
                         />
@@ -134,24 +142,11 @@ useEffect(() => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Phone</label>
+                        <label>Circle Code</label>
                         <input
                           type="text"
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Email</label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
+                          name="circle_code"
+                          value={formData.circle_code}
                           onChange={handleChange}
                           className="form-control"
                         />
@@ -188,4 +183,4 @@ useEffect(() => {
   );
 };
 
-export default EditUser;
+export default EditCircle;

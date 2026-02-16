@@ -8,13 +8,27 @@ import { API_HOST } from "../baseUrl/http";
 const api = axios.create({
   baseURL: API_HOST,
   headers: {
+    "Content-Type": "application/json",
     "X-API-KEY":
       "fx4ni3n75wtxywa9wlu70fycp2e0ajxkh7o6adjshiifmvaukq57jyrs15e3d55u",
-    "X-ACCESS-TOKEN":
-      "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMSIsImV4cCI6MTc3MDkyNzkyOSwiaWF0IjoxNzcwODkxOTI5fQ.H0LBlalyNTcvSbqVZ54IE0suYjA6zr7xGgHaTFJubAM",
-    "Content-Type": "application/json",
   },
 });
+
+// ===============================
+// ALWAYS ATTACH LATEST TOKEN
+// ===============================
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token"); // ALWAYS fresh token
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    } else {
+      delete config.headers["X-ACCESS-TOKEN"];
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 // ========================
 // GET USERS
@@ -32,7 +46,6 @@ export const getUsers = createAsyncThunk(
           order_by: "DESC",
         },
       });
-
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -83,7 +96,7 @@ export const deleteUser = createAsyncThunk(
   "users/deleteUser",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.delete(`/api/users/delete/${id}`);
+      const response = await api.post(`/api/users/delete/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -114,7 +127,7 @@ const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      // ================= GET USERS =================
+      // ===== GET USERS =====
       .addCase(getUsers.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -122,37 +135,45 @@ const usersSlice = createSlice({
       .addCase(getUsers.fulfilled, (state, action) => {
         state.loading = false;
 
-        const response = action.payload;
-
-        state.users = Array.isArray(response?.data?.users)
-          ? response.data.users
+        state.users = Array.isArray(action.payload?.data?.users)
+          ? action.payload.data.users
           : [];
 
         state.totalRecords =
-          response?.data?.paging?.totalrecords || 0;
+          action.payload?.data?.paging?.totalrecords || 0;
       })
-
       .addCase(getUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // ================= CREATE =================
+      // ===== CREATE USER =====
+      .addCase(createUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(createUser.fulfilled, (state, action) => {
-        state.success = action.payload?.message || "User created successfully";
+        state.loading = false;
+        state.success =
+          action.payload?.message || "User created successfully";
 
         if (action.payload?.data) {
-          state.users.unshift(action.payload.data); // add on top
+          state.users.unshift(action.payload.data);
           state.totalRecords += 1;
         }
       })
       .addCase(createUser.rejected, (state, action) => {
-        state.error =
-          action.payload || "Something went wrong while creating user";
+        state.loading = false;
+        state.error = action.payload;
       })
 
-      // ================= UPDATE =================
+      // ===== UPDATE USER =====
+      .addCase(updateUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateUser.fulfilled, (state, action) => {
+        state.loading = false;
         state.success =
           action.payload?.message || "User updated successfully";
 
@@ -166,10 +187,18 @@ const usersSlice = createSlice({
           );
         }
       })
+      .addCase(updateUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
-
-      // ================= DELETE =================
+      // ===== DELETE USER =====
+      .addCase(deleteUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteUser.fulfilled, (state, action) => {
+        state.loading = false;
         state.success =
           action.payload?.message || "User deleted successfully";
 
@@ -179,9 +208,10 @@ const usersSlice = createSlice({
           (user) => Number(user.user_id) !== Number(deletedId)
         );
 
-        state.totalRecords = state.totalRecords - 1;
+        state.totalRecords -= 1;
       })
       .addCase(deleteUser.rejected, (state, action) => {
+        state.loading = false;
         state.error = action.payload;
       });
   },

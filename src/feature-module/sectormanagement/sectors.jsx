@@ -4,35 +4,32 @@ import { useDispatch, useSelector } from "react-redux";
 
 import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
+import { clearMessages, deleteSector, getSectors } from "../../core/redux/sectorSlice";
+import AddSector from "../../core/modals/sectormanagement/addsector";
+import EditSector from "../../core/modals/sectormanagement/editsector";
+import ViewSector from "../../core/modals/sectormanagement/viewsector";
 
-import {
-    clearMessages,
-    deleteVendor,
-    getVendors,
-} from "../../core/redux/vendorsSlice";
-import AddVendor from "../../core/modals/vendormanagement/addvendor";
-import EditVendor from "../../core/modals/vendormanagement/editvendor";
-import ViewVendor from "../../core/modals/vendormanagement/viewvendor";
 
-const Vendors = () => {
+
+const Sectors = () => {
     const dispatch = useDispatch();
 
-    const { vendors, totalRecords, loading, error, success } = useSelector(
-        (state) => state.vendors
+    const { sectors, totalRecords, loading, error, success } = useSelector(
+        (state) => state.sectors
     );
 
     const [rows, setRows] = useState(25);
     const [currentPage, setCurrentPage] = useState(1);
     const [deleteId, setDeleteId] = useState(null);
-    const [selectedVendor, setSelectedVendor] = useState(null);
-    const [viewVendorData, setViewVendorData] = useState(null);
-    const [editVendorData, setEditVendorData] = useState(null);
+    const [selectedSector, setSelectedSector] = useState(null);
+    const [viewSectorData, setViewSectorData] = useState(null);
+    const [editSectorData, setEditSectorData] = useState(null);
 
     // ============================
-    // FETCH VENDORS
+    // FETCH SECTORS
     // ============================
     useEffect(() => {
-        dispatch(getVendors({ page: currentPage, per_page: rows }));
+        dispatch(getSectors({ page: currentPage, per_page: rows }));
     }, [dispatch, currentPage, rows]);
 
     // ============================
@@ -54,7 +51,7 @@ const Vendors = () => {
     const handleDelete = async () => {
         if (!deleteId) return;
 
-        await dispatch(deleteVendor(deleteId));
+        await dispatch(deleteSector(deleteId));
         setDeleteId(null);
     };
 
@@ -63,48 +60,18 @@ const Vendors = () => {
     // ============================
     const columns = [
         {
-            header: "Vendor Name",
-            field: "vendor_name",
+            header: "Sector Name",
+            field: "sector_name",
             sortable: true,
         },
         {
-            header: "Vendor Code",
-            field: "vendor_code",
+            header: "Sector Code",
+            field: "sector_code",
             sortable: true,
         },
         {
-            header: "Contact Person",
-            field: "contact_person",
-            sortable: true,
-        },
-        {
-            header: "Email",
-            field: "contact_email",
-            sortable: true,
-        },
-        {
-            header: "Phone",
-            field: "contact_phone",
-            sortable: true,
-        },
-        {
-            header: "Status",
-            field: "status",
-            body: (rowData) => (
-                <div>
-                    {rowData.status === "ACTIVE" ? (
-                        <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-success fs-10">
-                            <i className="ti ti-point-filled me-1 fs-11"></i>
-                            Active
-                        </span>
-                    ) : (
-                        <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-danger fs-10">
-                            <i className="ti ti-point-filled me-1 fs-11"></i>
-                            Inactive
-                        </span>
-                    )}
-                </div>
-            ),
+            header: "Created At",
+            field: "created_at",
             sortable: true,
         },
         {
@@ -119,8 +86,8 @@ const Vendors = () => {
                             className="me-2 p-2"
                             to="#"
                             data-bs-toggle="modal"
-                            data-bs-target="#view-vendor-modal"
-                            onClick={() => setViewVendorData(rowData)}
+                            data-bs-target="#view-sector-modal"
+                            onClick={() => setViewSectorData(rowData)}
                         >
                             <i className="feather feather-eye action-eye"></i>
                         </Link>
@@ -130,9 +97,9 @@ const Vendors = () => {
                             className="me-2 p-2"
                             to="#"
                             data-bs-toggle="modal"
-                            data-bs-target="#edit-vendor"
+                            data-bs-target="#edit-sector"
                             onClick={() => {
-                                setEditVendorData(rowData);
+                                setEditSectorData(rowData);
                             }}
                         >
                             <i className="feather-edit"></i>
@@ -142,8 +109,8 @@ const Vendors = () => {
                             className="confirm-text p-2"
                             to="#"
                             data-bs-toggle="modal"
-                            data-bs-target="#delete-vendor-modal"
-                            onClick={() => setDeleteId(Number(rowData.vendor_id))}
+                            data-bs-target="#delete-sector-modal"
+                            onClick={() => setDeleteId(Number(rowData.sector_id))}
                         >
                             <i className="feather-trash-2"></i>
                         </Link>
@@ -162,8 +129,8 @@ const Vendors = () => {
                     <div className="page-header">
                         <div className="add-item d-flex">
                             <div className="page-title">
-                                <h4>Vendor List</h4>
-                                <h6>Manage Your Vendors</h6>
+                                <h4>Sectors List</h4>
+                                <h6>Manage Your Sectors</h6>
                             </div>
                         </div>
 
@@ -176,10 +143,10 @@ const Vendors = () => {
                                 to="#"
                                 className="btn btn-added"
                                 data-bs-toggle="modal"
-                                data-bs-target="#add-vendor"
+                                data-bs-target="#add-sector"
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
-                                Add New Vendor
+                                Add New Sector
                             </Link>
                         </div>
                     </div>
@@ -198,16 +165,16 @@ const Vendors = () => {
                             <div className="table-responsive">
                                 <PrimeDataTable
                                     column={columns}
-                                    data={Array.isArray(vendors) ? vendors : []}
+                                    data={Array.isArray(sectors) ? sectors : []}
                                     totalRecords={totalRecords}
                                     currentPage={currentPage}
                                     setCurrentPage={setCurrentPage}
                                     rows={rows}
                                     setRows={setRows}
                                     selectionMode="checkbox"
-                                    selection={selectedVendor}
-                                    onSelectionChange={(e) => setSelectedVendor(e.value)}
-                                    dataKey="vendor_id"
+                                    selection={selectedSector}
+                                    onSelectionChange={(e) => setSelectedSector(e.value)}
+                                    dataKey="sector_id"
                                 />
                             </div>
 
@@ -222,12 +189,12 @@ const Vendors = () => {
                 </div>
             </div>
 
-            <AddVendor />
-            <EditVendor selectedVendor={editVendorData} />
-            <ViewVendor selectedVendor={viewVendorData} />
+            <AddSector />
+            <EditSector selectedSector={editSectorData} />
+            <ViewSector selectedSector={viewSectorData} />
 
             {/* DELETE MODAL */}
-            <div className="modal fade" id="delete-vendor-modal">
+            <div className="modal fade" id="delete-sector-modal">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="page-wrapper-new p-0">
@@ -235,9 +202,9 @@ const Vendors = () => {
                                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                                     <i className="ti ti-trash fs-24 text-danger" />
                                 </span>
-                                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Vendor</h4>
+                                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Sector</h4>
                                 <p className="mb-0 fs-16">
-                                    Are you sure you want to delete vendor?
+                                    Are you sure you want to delete sector?
                                 </p>
                                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                                     <button
@@ -266,4 +233,4 @@ const Vendors = () => {
     );
 };
 
-export default Vendors;
+export default Sectors;

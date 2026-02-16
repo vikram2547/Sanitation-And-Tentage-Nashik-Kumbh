@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { circle } from "leaflet";
 
 /* ===============================
    AXIOS INSTANCE
@@ -30,73 +31,73 @@ api.interceptors.request.use((config) => {
   (error) => Promise.reject(error)
 );
 
-/* ================= GET VENDORS ================= */
-export const getVendors = createAsyncThunk(
-  "vendors/getVendors",
+/* ================= GET Circles ================= */
+export const getCircles = createAsyncThunk(
+  "circles/getCircles",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/vendors", {
-        params: { page, per_page, keywords: "", status: "", order_by_col: "vendor_id", order_by: "DESC", },
+      const response = await api.get("/api/circles", {
+        params: { page, per_page, keywords: "", status: "", order_by_col: "circle_id", order_by: "DESC", },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch vendors"
+        error.response?.data?.message || "Failed to fetch circles"
       );
     }
   }
 );
 
 /* ================= ADD VENDOR ================= */
-export const addVendor = createAsyncThunk(
-  "vendors/addVendor",
+export const addCircle = createAsyncThunk(
+  "circles/addCircle",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/vendors/new", data);
+      const response = await api.post("/api/circles/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to add vendor"
+        error.response?.data?.message || "Failed to add circle"
       );
     }
   }
 );
 
 /* ================= UPDATE VENDOR ================= */
-export const updateVendor = createAsyncThunk(
-  "vendors/updateVendor",
+export const updateCircle = createAsyncThunk(
+  "circles/updateCircle",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/vendors/edit/${id}`, data);
+      const response = await api.post(`/api/circles/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update vendor"
+        error.response?.data?.message || "Failed to update circle"
       );
     }
   }
 );
 
 /* ================= DELETE VENDOR ================= */
-export const deleteVendor = createAsyncThunk(
-  "vendors/deleteVendor",
+export const deleteCircle = createAsyncThunk(
+  "circles/deleteCircle",
   async (id, { rejectWithValue }) => {
     try {
-      await api.delete(`/api/vendors/delete/${id}`);
+      await api.post(`/api/circles/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete vendor"
+        error.response?.data?.message || "Failed to delete circle"
       );
     }
   }
 );
 
 /* ================= SLICE ================= */
-const vendorsSlice = createSlice({
-  name: "vendors",
+const circleSlice = createSlice({
+  name: "circles",
   initialState: {
-    vendors: [],
+    circles: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -112,86 +113,86 @@ const vendorsSlice = createSlice({
     builder
 
       /* ===== GET ===== */
-      .addCase(getVendors.pending, (state) => {
+      .addCase(getCircles.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getVendors.fulfilled, (state, action) => {
+      .addCase(getCircles.fulfilled, (state, action) => {
         state.loading = false;
-        state.vendors = Array.isArray(action.payload?.data?.vendors)
-          ? action.payload.data.vendors
+        state.circles = Array.isArray(action.payload?.data?.circles)
+          ? action.payload.data.circles
           : [];
 
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getVendors.rejected, (state, action) => {
+      .addCase(getCircles.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addVendor.pending, (state) => {
+      .addCase(addCircle.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addVendor.fulfilled, (state, action) => {
+      .addCase(addCircle.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = "Vendor created successfully";
+        state.success = "Circle created successfully";
         if (action.payload?.data) {
-          state.vendors.unshift(action.payload.data);
+          state.circles.unshift(action.payload.data);
           state.totalRecords += 1;
         }
       })
-      .addCase(addVendor.rejected, (state, action) => {
+      .addCase(addCircle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateVendor.pending, (state) => {
+      .addCase(updateCircle.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateVendor.fulfilled, (state, action) => {
+      .addCase(updateCircle.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Vendor updated successfully";
-        const updatedVendor = action.payload?.data;
+        state.success = action.payload?.message || "Circle updated successfully";
+        const updatedCircle = action.payload?.data;
 
-        if (updatedVendor) {
-          state.vendors = state.vendors.map((vendor) =>
-             Number(vendor.vendor_id) === Number(updatedVendor.vendor_id)
-              ? updatedVendor
-              : vendor
+        if (updatedCircle) {
+          state.circles = state.circles.map((vendor) =>
+             Number(vendor.circle_id) === Number(updatedCircle.circle_id)
+              ? updatedCircle
+              : circle
           );
         }
       })
-      .addCase(updateVendor.rejected, (state, action) => {
+      .addCase(updateCircle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteVendor.pending, (state) => {
+      .addCase(deleteCircle.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteVendor.fulfilled, (state, action) => {
+      .addCase(deleteCircle.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Vendor deleted successfully";
+        state.success = action.payload?.message || "Circle deleted successfully";
          const deletedId = action.meta.arg;
 
-          state.vendors = state.vendors.filter(
-          (vendor) => Number(vendor.vendor_id) !== Number(deletedId)
+          state.circles = state.circles.filter(
+          (circle) => Number(circle.circle_id) !== Number(deletedId)
         );
 
         state.totalRecords -= 1;
       })
-      .addCase(deleteVendor.rejected, (state, action) => {
+      .addCase(deleteCircle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { clearMessages } = vendorsSlice.actions;
-export default vendorsSlice.reducer;
+export const { clearMessages } = circleSlice.actions;
+export default circleSlice.reducer;

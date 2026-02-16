@@ -36,6 +36,8 @@ import DataTables from "../feature-module/uiinterface/table/data-tables";
 import TablesBasic from "../feature-module/uiinterface/table/tables-basic";
 import Pos from "../feature-module/pos/pos";
 import Vendors from "../feature-module/vendormanagement/vendors";
+import Sectors from "../feature-module/sectormanagement/sectors";
+import Circles from "../feature-module/sectormanagement/circles";
 
 
 
@@ -1174,6 +1176,20 @@ export const authRoutes = [
   path: routes.vendors,
   name: "vendors",
   element: <Vendors />,
+  route: Route
+},
+{
+  id: 256,
+  path: routes.sectors,
+  name: "sectors",
+  element: <Sectors />,
+  route: Route
+},
+{
+  id: 257,
+  path: routes.circles,
+  name: "circles",
+  element: <Circles />,
   route: Route
 },
 {

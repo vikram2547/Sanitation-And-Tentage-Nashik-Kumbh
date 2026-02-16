@@ -1,26 +1,23 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessages, updateUser } from "../../redux/usersSlice";
 import { Modal } from "bootstrap";
+import { updateSector } from "../../redux/sectorSlice";
 
 
-const EditUser = ({ selectedUser }) => {
+const EditSector = ({ selectedSector }) => {
   const dispatch = useDispatch();
-  const { success, error, loading } = useSelector((state) => state.users);
+  const { success, error, loading } = useSelector((state) => state.sectors);
 
   const [formData, setFormData] = useState({
-    phone: "",
-    full_name: "",
-    email: "",
-    user_type_id: 0,
-    vendor_id: null,
-    is_active: 1,
+    sector_name: "",
+    sector_code: "",
+    boundary_coordinates: null,
   });
 
  // ✅ CLOSE MODAL + REMOVE BACKDROP PROPERLY
 useEffect(() => {
   if (success) {
-    const modalEl = document.getElementById("edit-units");
+    const modalEl = document.getElementById("edit-sector");
 
     if (modalEl) {
       const modalInstance =
@@ -41,19 +38,15 @@ useEffect(() => {
 }, [success]);
 
 
-  // ✅ Prefill when selectedUser changes
+  // ✅ Prefill when selectedSector changes
   useEffect(() => {
-    if (selectedUser) {
+    if (selectedSector) {
       setFormData({
-        phone: selectedUser.phone || "",
-        full_name: selectedUser.full_name || "",
-        email: selectedUser.email || "",
-        user_type_id: Number(selectedUser.user_type_id) || 0,
-        vendor_id: null,
-        is_active: Number(selectedUser.is_active) || 1,
+        sector_name: selectedSector.sector_name || "",
+        sector_code: selectedSector.sector_code || "",
       });
     }
-  }, [selectedUser]);
+  }, [selectedSector]);
 
   const handleChange = (e) => {
     setFormData({
@@ -65,16 +58,16 @@ useEffect(() => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userId = selectedUser?.user_id || selectedUser?.id;
+    const sectorId = selectedSector?.sector_id || selectedSector?.id;
 
-    if (!userId) {
+    if (!sectorId) {
       console.log("No User ID found");
       return;
     }
 
     const resultAction = await dispatch(
-      updateUser({
-        id: userId,
+      updateSector({
+        id: sectorId,
         data: formData,
       })
     );
@@ -92,14 +85,14 @@ useEffect(() => {
   }, [success, error, dispatch]);
 
   return (
-    <div className="modal fade" id="edit-units">
+    <div className="modal fade" id="edit-sector">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit User</h4>
+                  <h4>Edit Sector</h4>
                 </div>
                 <button
                   type="button"
@@ -121,11 +114,11 @@ useEffect(() => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>User Name</label>
+                        <label>Sector Name</label>
                         <input
                           type="text"
-                          name="full_name"
-                          value={formData.full_name}
+                          name="sector_name"
+                          value={formData.sector_name}
                           onChange={handleChange}
                           className="form-control"
                         />
@@ -134,30 +127,16 @@ useEffect(() => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Phone</label>
+                        <label>Sector Code</label>
                         <input
                           type="text"
-                          name="phone"
-                          value={formData.phone}
+                          name="sector_code"
+                          value={formData.sector_code}
                           onChange={handleChange}
                           className="form-control"
                         />
                       </div>
                     </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Email</label>
-                        <input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
                   </div>
 
                   <div className="modal-footer-btn">
@@ -188,4 +167,4 @@ useEffect(() => {
   );
 };
 
-export default EditUser;
+export default EditSector;

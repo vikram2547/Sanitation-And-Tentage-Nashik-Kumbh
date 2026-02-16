@@ -1,14 +1,21 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Tooltip } from 'antd';
 import { Settings, User } from 'react-feather';
 import { all_routes } from '../../routes/all_routes';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../core/redux/signinSlice';
 
 const PosHeader = () => {
 
   const [isFullscreen] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-
+  const handleLogout = () => {
+    dispatch(logout());        // ✅ clears redux + localStorage
+    navigate(all_routes.signin); // ✅ redirect
+  };
 
   return (
     <>
@@ -43,7 +50,7 @@ const PosHeader = () => {
                 src="src/assets/img/icons/clock-icon.svg"
                 alt="img"
                 className="me-2" />
-              
+
               09:25:32
             </span>
           </li>
@@ -52,7 +59,7 @@ const PosHeader = () => {
             <Link
               to={all_routes.newdashboard}
               className="btn btn-purple btn-md d-inline-flex align-items-center">
-              
+
               <i className="ti ti-world me-1" />
               Dashboard
             </Link>
@@ -63,14 +70,14 @@ const PosHeader = () => {
               to="#"
               className="dropdown-toggle nav-link select-store"
               data-bs-toggle="dropdown">
-              
+
               <span className="user-info">
                 <span className="user-letter">
                   <img
                     src="src/assets/img/store/store-01.png"
                     alt="Store Logo"
                     className="img-fluid" />
-                  
+
                 </span>
                 <span className="user-detail">
                   <span className="user-name">Freshmart</span>
@@ -83,7 +90,7 @@ const PosHeader = () => {
                   src="src/assets/img/store/store-01.png"
                   alt="Store Logo"
                   className="img-fluid" />
-                
+
                 Freshmart
               </Link>
               <Link to="#" className="dropdown-item">
@@ -91,7 +98,7 @@ const PosHeader = () => {
                   src="src/assets/img/store/store-02.png"
                   alt="Store Logo"
                   className="img-fluid" />
-                
+
                 Grocery Apex
               </Link>
               <Link to="#" className="dropdown-item">
@@ -99,7 +106,7 @@ const PosHeader = () => {
                   src="src/assets/img/store/store-03.png"
                   alt="Store Logo"
                   className="img-fluid" />
-                
+
                 Grocery Bevy
               </Link>
               <Link to="#" className="dropdown-item">
@@ -107,7 +114,7 @@ const PosHeader = () => {
                   src="src/assets/img/store/store-04.png"
                   alt="Store Logo"
                   className="img-fluid" />
-                
+
                 Grocery Eden
               </Link>
             </div>
@@ -119,7 +126,7 @@ const PosHeader = () => {
               data-bs-toggle="modal"
               data-bs-target="#calculator"
               className="bg-orange border-orange text-white">
-              
+
               <i className="ti ti-calculator" />
             </Link>
           </li>
@@ -130,7 +137,7 @@ const PosHeader = () => {
                 id="btnFullscreen"
                 // onClick={() => toggleFullscreen()}
                 className={isFullscreen ? "Exit Fullscreen" : "Go Fullscreen"}>
-                
+
                 <i className="ti ti-maximize" />
               </Link>
             </Tooltip>
@@ -140,13 +147,13 @@ const PosHeader = () => {
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             data-bs-title="Cash Register">
-            
+
             <Tooltip title="Cash Register" placement="right">
               <Link
                 to="#"
                 data-bs-toggle="modal"
                 data-bs-target="#cash-register">
-                
+
                 <i className="ti ti-cash" />
               </Link>
             </Tooltip>
@@ -156,7 +163,7 @@ const PosHeader = () => {
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             data-bs-title="Print Last Reciept">
-            
+
             <Tooltip title="Print Last Reciept" placement="right">
               <Link to="#">
                 <i className="ti ti-printer" />
@@ -168,13 +175,13 @@ const PosHeader = () => {
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             data-bs-title="Today’s Sale">
-            
+
             <Tooltip title="Today's Sale" placement="right">
               <Link
                 to="#"
                 data-bs-toggle="modal"
                 data-bs-target="#today-sale">
-                
+
                 <i className="ti ti-progress" />
               </Link>
             </Tooltip>
@@ -184,13 +191,13 @@ const PosHeader = () => {
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             data-bs-title="Today’s Profit">
-            
+
             <Tooltip title="Today’s Profit" placement="right">
               <Link
                 to="#"
                 data-bs-toggle="modal"
                 data-bs-target="#today-profit">
-                
+
                 <i className="ti ti-chart-infographic" />
               </Link>
             </Tooltip>
@@ -200,7 +207,7 @@ const PosHeader = () => {
             data-bs-toggle="tooltip"
             data-bs-placement="top"
             data-bs-title="POS Settings">
-            
+
             <Tooltip title="POS Settings" placement="bottom">
               <Link to={all_routes.possettings}>
                 <i className="ti ti-settings" />
@@ -212,14 +219,14 @@ const PosHeader = () => {
               to="#"
               className="nav-link userset"
               data-bs-toggle="dropdown">
-              
+
               <span className="user-info p-0">
                 <span className="user-letter">
                   <img
                     src="src/assets/img/profiles/avator1.jpg"
                     alt="Img"
                     className="img-fluid" />
-                  
+
                 </span>
               </span>
             </Link>
@@ -243,7 +250,7 @@ const PosHeader = () => {
                 <Link
                   className="dropdown-item"
                   to={all_routes.generalsettings}>
-                  
+
                   <Settings className="me-2" />
                   Settings
                 </Link>
@@ -251,12 +258,12 @@ const PosHeader = () => {
                 <Link
                   className="dropdown-item logout pb-0"
                   to={all_routes.signin}>
-                  
+
                   <img
                     src="src/assets/img/icons/log-out.svg"
                     className="me-2"
                     alt="img" />
-                  
+
                   Logout
                 </Link>
               </div>
@@ -271,7 +278,7 @@ const PosHeader = () => {
             className="nav-link dropdown-toggle"
             data-bs-toggle="dropdown"
             aria-expanded="false">
-            
+
             <i className="fa fa-ellipsis-v" />
           </Link>
           <div className="dropdown-menu dropdown-menu-right">
@@ -281,7 +288,7 @@ const PosHeader = () => {
             <Link className="dropdown-item" to={all_routes.generalsettings}>
               Settings
             </Link>
-            <Link className="dropdown-item" to={all_routes.signin}>
+            <Link className="dropdown-item" onClick={handleLogout}>
               Logout
             </Link>
           </div>

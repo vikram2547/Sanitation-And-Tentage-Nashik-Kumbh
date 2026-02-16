@@ -10,6 +10,8 @@ import verifyOtpReducer from "./verifyOtpSlice";
 import forgotPasswordReducer from "./forgotPasswordSlice";
 import usersReducer from "./usersSlice";
 import vendorsReducer from "./vendorsSlice";
+import sectorReducer from "./sectorSlice";
+import circleReducer from "./circleSlice";
 
 const combinedReducer = combineReducers({
   sidebar: sidebarSlice,
@@ -22,6 +24,8 @@ const combinedReducer = combineReducers({
   forgotPassword: forgotPasswordReducer,
   users: usersReducer,
   vendors: vendorsReducer,
+  sectors: sectorReducer,
+  circles: circleReducer,
 });
 
 const rootReducer = (state, action) => {

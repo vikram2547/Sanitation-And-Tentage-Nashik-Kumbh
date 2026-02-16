@@ -1,24 +1,21 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addVendor, clearMessages } from "../../redux/vendorsSlice";
 import { Modal } from "bootstrap";
+import { addCircle, clearMessages } from "../../redux/circleSlice";
 
-const AddVendors = () => {
+const AddCircle = ({sectorId}) => {
   const dispatch = useDispatch();
+  console.log('aaaaaaaaaaaaaaaaaaaaaaaa',sectorId)
 
   const { success, error, loading } = useSelector(
-    (state) => state.vendors
+    (state) => state.circles
   );
 
   const [formData, setFormData] = useState({
-    vendor_name: "",
-    vendor_code: "",
-    contact_person: "",
-    contact_email: "",
-    contact_phone: "",
-    address: "",
-    status: "ACTIVE",
-    user_id: 0,
+    circle_name: "",
+    circle_code: "",
+    sector_id: sectorId,
+    boundary_coordinates: null,
   });
 
   const handleChange = (e) => {
@@ -29,12 +26,12 @@ const AddVendors = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await dispatch(addVendor(formData));
+    await dispatch(addCircle(formData));
 
-    if (createVendor.fulfilled.match(resultAction)) {
+    if (createCircle.fulfilled.match(resultAction)) {
       // Close modal
       const modal = window.bootstrap.Modal.getInstance(
-        document.getElementById("add-vendor")
+        document.getElementById("add-circle")
       );
       modal?.hide();
     }
@@ -44,7 +41,7 @@ const AddVendors = () => {
   useEffect(() => {
     if (success) {
 
-      const modalEl = document.getElementById("add-vendor");
+      const modalEl = document.getElementById("add-circle");
 
       if (modalEl) {
         const modalInstance =
@@ -76,22 +73,28 @@ const AddVendors = () => {
   }, [success, error, dispatch]);
 
   useEffect(() => {
+  if (sectorId) {
+    console.log('sectoriddddddddd',sectorId)
+    setFormData((prev) => ({
+      ...prev,
+      sector_id: sectorId,
+    }));
+  }
+}, [sectorId]);
+
+  useEffect(() => {
     if (success) {
       setFormData({
-        vendor_name: "",
-        vendor_code: "",
-        contact_person: "",
-        contact_email: "",
-        contact_phone: "",
-        address: "",
-        status: "ACTIVE",
-        user_id: 0,
+        circle_name: "",
+        circle_code: "",
+        sector_id: sectorId,
+        boundary_coordinates: null,
       });
     }
   }, [success]);
 
   return (
-    <div className="modal fade" id="add-vendor" tabIndex="-1">
+    <div className="modal fade" id="add-circle" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
@@ -99,7 +102,7 @@ const AddVendors = () => {
 
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Vendor</h4>
+                  <h4>Add Circle</h4>
                 </div>
                 <button
                   type="button"
@@ -118,20 +121,19 @@ const AddVendors = () => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Vendor created successfully
+                    Circle created successfully
                   </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
-
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor Name</label>
+                        <label>Circle Name</label>
                         <input
                           type="text"
-                          name="vendor_name"
-                          value={formData.vendor_name}
+                          name="circle_name"
+                          value={formData.circle_name}
                           onChange={handleChange}
                           className="form-control"
                         />
@@ -140,83 +142,16 @@ const AddVendors = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor Code</label>
+                        <label>Circle Code</label>
                         <input
                           type="text"
-                          name="vendor_code"
-                          value={formData.vendor_code}
+                          name="circle_code"
+                          value={formData.circle_code}
                           onChange={handleChange}
                           className="form-control"
                         />
                       </div>
                     </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Contact Person</label>
-                        <input
-                          type="text"
-                          name="contact_person"
-                          value={formData.contact_person}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Contact Email</label>
-                        <input
-                          type="email"
-                          name="contact_email"
-                          value={formData.contact_email}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Contact Phone</label>
-                        <input
-                          type="text"
-                          name="contact_phone"
-                          value={formData.contact_phone}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Status</label>
-                        <select
-                          name="status"
-                          value={formData.status}
-                          onChange={handleChange}
-                          className="form-control"
-                        >
-                          <option value="ACTIVE">ACTIVE</option>
-                          <option value="INACTIVE">INACTIVE</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="col-lg-12">
-                      <div className="input-blocks">
-                        <label>Address</label>
-                        <textarea
-                          name="address"
-                          value={formData.address}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
                   </div>
 
                   <div className="modal-footer-btn">
@@ -248,4 +183,4 @@ const AddVendors = () => {
   );
 };
 
-export default AddVendors;
+export default AddCircle;
