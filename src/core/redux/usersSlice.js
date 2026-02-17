@@ -96,8 +96,8 @@ export const deleteUser = createAsyncThunk(
   "users/deleteUser",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/users/delete/${id}`);
-      return response.data;
+      await api.post(`/api/users/delete/${id}`);
+      return id;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to delete user"

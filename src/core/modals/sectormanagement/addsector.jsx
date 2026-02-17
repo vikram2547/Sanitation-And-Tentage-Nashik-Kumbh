@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { addSector } from "../../redux/sectorSlice";
+import { addSector, clearMessages } from "../../redux/sectorSlice";
 
 const AddSector = () => {
     const dispatch = useDispatch();

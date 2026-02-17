@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addCircle, clearMessages } from "../../redux/circleSlice";
 
-const AddCircle = ({sectorId}) => {
+const AddCircle = () => {
   const dispatch = useDispatch();
-  console.log('aaaaaaaaaaaaaaaaaaaaaaaa',sectorId)
+
+  const { sectors } = useSelector(
+    (state) => state.sectors
+  );
 
   const { success, error, loading } = useSelector(
     (state) => state.circles
@@ -14,7 +17,7 @@ const AddCircle = ({sectorId}) => {
   const [formData, setFormData] = useState({
     circle_name: "",
     circle_code: "",
-    sector_id: sectorId,
+    sector_id: "",
     boundary_coordinates: null,
   });
 
@@ -26,16 +29,18 @@ const AddCircle = ({sectorId}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await dispatch(addCircle(formData));
+    const resultAction = await dispatch(addCircle(formData));
 
-    if (createCircle.fulfilled.match(resultAction)) {
-      // Close modal
-      const modal = window.bootstrap.Modal.getInstance(
-        document.getElementById("add-circle")
-      );
-      modal?.hide();
+    if (addCircle.fulfilled.match(resultAction)) {
+      const modalEl = document.getElementById("add-circle");
+      const modalInstance =
+        window.bootstrap.Modal.getInstance(modalEl) ||
+        new window.bootstrap.Modal(modalEl);
+
+      modalInstance.hide();
     }
   };
+
 
   /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
@@ -73,21 +78,11 @@ const AddCircle = ({sectorId}) => {
   }, [success, error, dispatch]);
 
   useEffect(() => {
-  if (sectorId) {
-    console.log('sectoriddddddddd',sectorId)
-    setFormData((prev) => ({
-      ...prev,
-      sector_id: sectorId,
-    }));
-  }
-}, [sectorId]);
-
-  useEffect(() => {
     if (success) {
       setFormData({
         circle_name: "",
         circle_code: "",
-        sector_id: sectorId,
+        sector_id: "",
         boundary_coordinates: null,
       });
     }
@@ -127,6 +122,31 @@ const AddCircle = ({sectorId}) => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
+                    <div className="col-lg-12">
+                      <div className="input-blocks">
+                        <label>Sector</label>
+                        <select
+                          name="sector_id"
+                          value={formData.sector_id}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        >
+                          <option value="">Select Sector</option>
+
+                          {Array.isArray(sectors) &&
+                            sectors.map((sector) => (
+                              <option
+                                key={sector.sector_id}
+                                value={sector.sector_id}
+                              >
+                                {sector.sector_name}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>Circle Name</label>

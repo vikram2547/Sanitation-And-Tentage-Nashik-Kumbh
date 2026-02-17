@@ -4,31 +4,40 @@ import { useDispatch, useSelector } from "react-redux";
 
 import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
-import AddShift from "../../core/modals/hrm/addshift";
-import EditShift from "../../core/modals/hrm/editshift";
-import { deleteShift, getShifts } from "../../core/redux/shiftSlice";
-import ViewShift from "../../core/modals/hrm/viewshift";
 
+import {
+  getSanitationAssets,
+  deleteSanitationAsset,
+  clearMessages,
+} from "../../core/redux/sanitationAssetSlice";
 
-const Shift = () => {
+import AddSanitationAsset from "../../core/modals/assettypemanagement/addSanitationAsset";
+import EditSanitationAsset from "../../core/modals/assettypemanagement/editSanitationAsset";
+import ViewSanitationAsset from "../../core/modals/assettypemanagement/viewSanitationAsset";
+
+const SanitationAsset = () => {
   const dispatch = useDispatch();
 
-  const { shifts, totalRecords, loading, error, success } = useSelector(
-    (state) => state.shifts
-  );
+  const {
+    sanitationAssets,
+    totalRecords,
+    loading,
+    error,
+    success,
+  } = useSelector((state) => state.sanitationAssets);
 
   const [rows, setRows] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedShift, setSelectedShift] = useState(null);
-  const [viewShiftData, setViewShiftData] = useState(null);
-  const [editShiftData, setEditShiftData] = useState(null);
+  const [selectedAssets, setSelectedAssets] = useState(null);
+  const [viewAssetData, setViewAssetData] = useState(null);
+  const [editAssetData, setEditAssetData] = useState(null);
 
   // ============================
-  // FETCH SHIFTS
+  // FETCH SANITATION ASSETS
   // ============================
   useEffect(() => {
-    dispatch(getShifts({ page: currentPage, per_page: rows }));
+    dispatch(getSanitationAssets({ page: currentPage, per_page: rows }));
   }, [dispatch, currentPage, rows]);
 
   // ============================
@@ -45,11 +54,17 @@ const Shift = () => {
   }, [success, error, dispatch]);
 
   // ============================
-  // DELETE SHIFT
+  // DELETE SANITATION ASSET
   // ============================
   const handleDelete = async () => {
     if (!deleteId) return;
-    await dispatch(deleteShift(deleteId));
+
+    const res = await dispatch(deleteSanitationAsset(deleteId));
+
+    if (res.meta.requestStatus === "fulfilled") {
+      dispatch(getSanitationAssets({ page: currentPage, per_page: rows }));
+    }
+
     setDeleteId(null);
   };
 
@@ -58,29 +73,28 @@ const Shift = () => {
   // ============================
   const columns = [
     {
-      header: "Shift Name",
-      field: "shift_name",
+      header: "QR Code",
+      field: "qr_code",
       sortable: true,
-      body: (rowData) => rowData?.shift_name || "-"
+      body: (rowData) => rowData?.qr_code || "-",
     },
     {
-      header: "Start Time",
-      field: "start_time",
+      header: "Asset Name",
+      field: "asset_name",
       sortable: true,
-      body: (rowData) => rowData?.start_time || "-"
+      body: (rowData) => rowData?.asset_name || "-",
     },
     {
-      header: "End Time",
-      field: "end_time",
+      header: "Gender",
+      field: "gender",
       sortable: true,
-      body: (rowData) => rowData?.end_time || "-"
+      body: (rowData) => rowData?.gender || "-",
     },
     {
       header: "Status",
-      field: "is_active",
+      field: "status",
       sortable: true,
-      body: (rowData) =>
-        rowData?.is_active === "1" ? "Active" : "Inactive"
+      body: (rowData) => rowData?.status || "-",
     },
     {
       header: "Actions",
@@ -95,8 +109,8 @@ const Shift = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#view-shift-modal"
-              onClick={() => setViewShiftData(rowData)}
+              data-bs-target="#view-sanitation-asset"
+              onClick={() => setViewAssetData(rowData)}
             >
               <i className="feather feather-eye action-eye"></i>
             </Link>
@@ -106,8 +120,8 @@ const Shift = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-shift"
-              onClick={() => setEditShiftData(rowData)}
+              data-bs-target="#edit-sanitation-asset"
+              onClick={() => setEditAssetData(rowData)}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -117,8 +131,10 @@ const Shift = () => {
               className="confirm-text p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#delete-shift-modal"
-              onClick={() => setDeleteId(Number(rowData.shift_id))}
+              data-bs-target="#delete-sanitation-asset-modal"
+              onClick={() =>
+                setDeleteId(Number(rowData.sanitation_asset_id))
+              }
             >
               <i className="feather-trash-2"></i>
             </Link>
@@ -133,11 +149,13 @@ const Shift = () => {
     <div>
       <div className="page-wrapper">
         <div className="content">
+
+          {/* ================= HEADER ================= */}
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Shifts List</h4>
-                <h6>Manage Your Shifts</h6>
+                <h4>Sanitation Assets</h4>
+                <h6>Manage Sanitation Assets</h6>
               </div>
             </div>
 
@@ -150,33 +168,40 @@ const Shift = () => {
                 to="#"
                 className="btn btn-added"
                 data-bs-toggle="modal"
-                data-bs-target="#add-shift"
+                data-bs-target="#add-sanitation-asset"
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add New Shift
+                Add Sanitation Asset
               </Link>
             </div>
           </div>
 
+          {/* ================= TABLE ================= */}
           <div className="card table-list-card">
             <div className="card-body">
 
-              {success && <div className="alert alert-success">{success}</div>}
-              {error && <div className="alert alert-danger">{error}</div>}
+              {success && (
+                <div className="alert alert-success">{success}</div>
+              )}
+              {error && (
+                <div className="alert alert-danger">{error}</div>
+              )}
 
               <div className="table-responsive">
                 <PrimeDataTable
                   column={columns}
-                  data={Array.isArray(shifts) ? shifts : []}
+                  data={Array.isArray(sanitationAssets) ? sanitationAssets : []}
                   totalRecords={totalRecords}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   rows={rows}
                   setRows={setRows}
                   selectionMode="checkbox"
-                  selection={selectedShift}
-                  onSelectionChange={(e) => setSelectedShift(e.value)}
-                  dataKey="shift_id"
+                  selection={selectedAssets}
+                  onSelectionChange={(e) =>
+                    setSelectedAssets(e.value)
+                  }
+                  dataKey="sanitation_asset_id"
                 />
               </div>
 
@@ -191,12 +216,13 @@ const Shift = () => {
         </div>
       </div>
 
-      <AddShift />
-      <EditShift selectedShift={editShiftData} />
-      <ViewShift selectedShift={viewShiftData} />
+      {/* ================= MODALS ================= */}
+      <AddSanitationAsset />
+      <EditSanitationAsset selectedAsset={editAssetData} />
+      <ViewSanitationAsset selectedAsset={viewAssetData} />
 
-      {/* DELETE MODAL */}
-      <div className="modal fade" id="delete-shift-modal">
+      {/* ================= DELETE MODAL ================= */}
+      <div className="modal fade" id="delete-sanitation-asset-modal">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="page-wrapper-new p-0">
@@ -204,9 +230,11 @@ const Shift = () => {
                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
-                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Shift</h4>
+                <h4 className="fs-20 fw-bold mb-2 mt-1">
+                  Delete Sanitation Asset
+                </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete shift?
+                  Are you sure you want to delete this sanitation asset?
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -235,4 +263,4 @@ const Shift = () => {
   );
 };
 
-export default Shift;
+export default SanitationAsset;

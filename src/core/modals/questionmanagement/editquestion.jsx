@@ -1,33 +1,37 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { updateShift, clearMessages } from "../../redux/shiftSlice";
+import { updateQuestion, clearMessages } from "../../redux/questionSlice";
 
-const EditShift = ({ selectedShift }) => {
+const EditQuestion = ({ selectedQuestion }) => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.shifts
+    (state) => state.questions
   );
 
   const [formData, setFormData] = useState({
-    shift_name: "",
-    start_time: "",
-    end_time: "",
+    question_text: "",
+    question_type: "",
+    expected_answer: "",
+    severity: "",
+    sequence: 1,
     is_active: 1,
   });
 
   /* ================= PREFILL DATA ================= */
   useEffect(() => {
-    if (!selectedShift) return;
+    if (!selectedQuestion) return;
 
     setFormData({
-      shift_name: selectedShift.shift_name || "",
-      start_time: selectedShift.start_time || "",
-      end_time: selectedShift.end_time || "",
-      is_active: selectedShift.is_active ?? 1,
+      question_text: selectedQuestion.question_text || "",
+      question_type: selectedQuestion.question_type || "",
+      expected_answer: selectedQuestion.expected_answer || "",
+      severity: selectedQuestion.severity || "",
+      sequence: selectedQuestion.sequence ?? 1,
+      is_active: selectedQuestion.is_active ?? 1,
     });
-  }, [selectedShift]);
+  }, [selectedQuestion]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
@@ -38,20 +42,20 @@ const EditShift = ({ selectedShift }) => {
   };
 
   /* ================= SUBMIT ================= */
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const shiftId =
-      selectedShift?.shift_id || selectedShift?.id;
+    const questionId =
+      selectedQuestion?.question_id || selectedQuestion?.id;
 
-    if (!shiftId) {
-      console.error("No Shift ID found");
+    if (!questionId) {
+      console.error("No Question ID found");
       return;
     }
 
     dispatch(
-      updateShift({
-        id: shiftId,
+      updateQuestion({
+        id: questionId,
         data: formData,
       })
     );
@@ -61,7 +65,7 @@ const EditShift = ({ selectedShift }) => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-shift");
+    const modalEl = document.getElementById("edit-question");
     if (!modalEl) return;
 
     const modalInstance =
@@ -82,7 +86,7 @@ const EditShift = ({ selectedShift }) => {
   }, [success, dispatch]);
 
   return (
-    <div className="modal fade" id="edit-shift" tabIndex="-1">
+    <div className="modal fade" id="edit-question" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
@@ -90,7 +94,7 @@ const EditShift = ({ selectedShift }) => {
 
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Shift</h4>
+                  <h4>Edit Question</h4>
                 </div>
                 <button
                   type="button"
@@ -109,21 +113,20 @@ const EditShift = ({ selectedShift }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Shift updated successfully
+                    Question updated successfully
                   </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    {/* ===== Shift Name ===== */}
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Shift Name</label>
+                        <label>Question</label>
                         <input
                           type="text"
-                          name="shift_name"
-                          value={formData.shift_name}
+                          name="question_text"
+                          value={formData.question_text}
                           onChange={handleChange}
                           className="form-control"
                           required
@@ -131,32 +134,41 @@ const EditShift = ({ selectedShift }) => {
                       </div>
                     </div>
 
-                    {/* ===== Start Time ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Start Time</label>
+                        <label>Question Type</label>
                         <input
-                          type="time"
-                          name="start_time"
-                          value={formData.start_time}
+                          type="text"
+                          name="question_type"
+                          value={formData.question_type}
                           onChange={handleChange}
                           className="form-control"
-                          required
                         />
                       </div>
                     </div>
 
-                    {/* ===== End Time ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>End Time</label>
+                        <label>Severity</label>
                         <input
-                          type="time"
-                          name="end_time"
-                          value={formData.end_time}
+                          type="text"
+                          name="severity"
+                          value={formData.severity}
                           onChange={handleChange}
                           className="form-control"
-                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>Expected Answer</label>
+                        <input
+                          type="text"
+                          name="expected_answer"
+                          value={formData.expected_answer}
+                          onChange={handleChange}
+                          className="form-control"
                         />
                       </div>
                     </div>
@@ -191,4 +203,4 @@ const EditShift = ({ selectedShift }) => {
   );
 };
 
-export default EditShift;
+export default EditQuestion;

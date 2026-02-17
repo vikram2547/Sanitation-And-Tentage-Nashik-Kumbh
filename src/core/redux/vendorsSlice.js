@@ -82,7 +82,7 @@ export const deleteVendor = createAsyncThunk(
   "vendors/deleteVendor",
   async (id, { rejectWithValue }) => {
     try {
-      await api.delete(`/api/vendors/delete/${id}`);
+      await api.post(`/api/vendors/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(

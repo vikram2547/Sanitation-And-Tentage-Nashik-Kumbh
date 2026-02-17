@@ -1,55 +1,39 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-
+import { updateCircle, clearMessages } from "../../redux/circleSlice";
 
 const EditCircle = ({ selectedCircle }) => {
   const dispatch = useDispatch();
-  const { success, error, loading } = useSelector((state) => state.circles);
+
+  const { success, error, loading } = useSelector(
+    (state) => state.circles
+  );
+
+  const { sectors } = useSelector(
+    (state) => state.sectors
+  );
 
   const [formData, setFormData] = useState({
     circle_name: "",
     circle_code: "",
-    // sector_id: sector_id,
+    sector_id: "",
     boundary_coordinates: null,
   });
 
-  // ✅ CLOSE MODAL + REMOVE BACKDROP PROPERLY
-  useEffect(() => {
-    if (success) {
-      const modalEl = document.getElementById("edit-circle");
-
-      if (modalEl) {
-        const modalInstance =
-          Modal.getInstance(modalEl) || new Modal(modalEl);
-
-        modalInstance.hide();
-      }
-
-      // ✅ CLEANUP BACKDROP & BODY STATE (IMPORTANT)
-      setTimeout(() => {
-        document.body.classList.remove("modal-open");
-        document.body.style.paddingRight = "";
-
-        const backdrops = document.querySelectorAll(".modal-backdrop");
-        backdrops.forEach((bd) => bd.remove());
-      }, 500);
-    }
-  }, [success]);
-
-
-  // ✅ Prefill when selectedCircle changes
+  /* ================= PREFILL DATA ================= */
   useEffect(() => {
     if (selectedCircle) {
       setFormData({
         circle_name: selectedCircle.circle_name || "",
         circle_code: selectedCircle.circle_code || "",
-        // sector_id: sector_id,
+        sector_id: selectedCircle.sector_id || "",
         boundary_coordinates: null,
       });
     }
   }, [selectedCircle]);
 
+  /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -57,44 +41,61 @@ const EditCircle = ({ selectedCircle }) => {
     });
   };
 
+  /* ================= SUBMIT ================= */
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const circleId = selectedCircle?.circle_id || selectedCircle?.id;
+    const circleId =
+      selectedCircle?.circle_id || selectedCircle?.id;
 
     if (!circleId) {
-      console.log("No User ID found");
+      console.log("No Circle ID found");
       return;
     }
 
     const resultAction = await dispatch(
-      updateUser({
+      updateCircle({
         id: circleId,
         data: formData,
       })
     );
   };
 
-  // ✅ Auto clear message
+  /* ================= CLOSE MODAL ON SUCCESS ================= */
   useEffect(() => {
-    if (success || error) {
-      const timer = setTimeout(() => {
-        dispatch(clearMessages());
-      }, 5000);
+    if (!success) return;
 
-      return () => clearTimeout(timer);
-    }
-  }, [success, error, dispatch]);
+    const modalEl = document.getElementById("edit-circle");
+    if (!modalEl) return;
+
+    const modalInstance = Modal.getInstance(modalEl);
+
+    modalInstance?.hide();
+
+    // 🔥 THIS IS THE FIX
+    modalInstance?.dispose();
+
+    setTimeout(() => {
+      document.body.classList.remove("modal-open");
+      document.body.style.paddingRight = "";
+
+      document
+        .querySelectorAll(".modal-backdrop")
+        .forEach((bd) => bd.remove());
+
+      dispatch(clearMessages());
+    }, 200);
+  }, [success, dispatch]);
 
   return (
-    <div className="modal fade" id="edit-units">
+    <div className="modal fade" id="edit-circle">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit User</h4>
+                  <h4>Edit Circle</h4>
                 </div>
                 <button
                   type="button"
@@ -106,7 +107,11 @@ const EditCircle = ({ selectedCircle }) => {
               </div>
 
               <div className="modal-body custom-modal-body">
-                {error && <div className="alert alert-danger">{error}</div>}
+
+                {error && (
+                  <div className="alert alert-danger">{error}</div>
+                )}
+
                 {success && (
                   <div className="alert alert-success">{success}</div>
                 )}
@@ -114,19 +119,33 @@ const EditCircle = ({ selectedCircle }) => {
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    {/* <div className="col-lg-6">
+                    {/* ===== Sector Dropdown ===== */}
+                    <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Sector Id</label>
-                        <input
-                          type="text"
+                        <label>Sector</label>
+                        <select
                           name="sector_id"
                           value={formData.sector_id}
                           onChange={handleChange}
                           className="form-control"
-                        />
-                      </div>
-                    </div> */}
+                          required
+                        >
+                          <option value="">Select Sector</option>
 
+                          {Array.isArray(sectors) &&
+                            sectors.map((sector) => (
+                              <option
+                                key={sector.sector_id}
+                                value={sector.sector_id}
+                              >
+                                {sector.sector_name}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* ===== Circle Name ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>Circle Name</label>
@@ -136,10 +155,12 @@ const EditCircle = ({ selectedCircle }) => {
                           value={formData.circle_name}
                           onChange={handleChange}
                           className="form-control"
+                          required
                         />
                       </div>
                     </div>
 
+                    {/* ===== Circle Code ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>Circle Code</label>
@@ -149,6 +170,7 @@ const EditCircle = ({ selectedCircle }) => {
                           value={formData.circle_code}
                           onChange={handleChange}
                           className="form-control"
+                          required
                         />
                       </div>
                     </div>

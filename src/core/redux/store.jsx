@@ -12,6 +12,11 @@ import usersReducer from "./usersSlice";
 import vendorsReducer from "./vendorsSlice";
 import sectorReducer from "./sectorSlice";
 import circleReducer from "./circleSlice";
+import questionReducer from "./questionSlice";
+import shiftReducer from "./shiftSlice";
+import assetTypeReducer from "./assettypeSlice";
+import sanitationAssetReducer from "./sanitationAssetSlice";
+import vehicleReducer from "./vehicleSlice";
 
 const combinedReducer = combineReducers({
   sidebar: sidebarSlice,
@@ -26,6 +31,11 @@ const combinedReducer = combineReducers({
   vendors: vendorsReducer,
   sectors: sectorReducer,
   circles: circleReducer,
+  questions: questionReducer,
+  shifts: shiftReducer,
+  assetTypes: assetTypeReducer,
+  sanitationAssets: sanitationAssetReducer,
+  vehicles: vehicleReducer,
 });
 
 const rootReducer = (state, action) => {

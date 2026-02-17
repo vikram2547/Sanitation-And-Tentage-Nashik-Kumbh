@@ -520,6 +520,68 @@ export const SidebarData = [
     ],
   },
   {
+    label: "Asset Type Management",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "assettype",
+
+    submenuItems: [
+      {
+        label: "Asset Type",
+        link: route.assettypes,
+        icon: "users-group",
+        showSubRoute: false,
+        submenu: false,
+      },  
+      {
+        label: "Sanitation Asset",
+        link: route.sanitationasset,
+        icon: "users-group",
+        showSubRoute: false,
+        submenu: false,
+      },  
+      {
+        label: "Tentage Asset",
+        link: route.circles,
+        icon: "users-group",
+        showSubRoute: false,
+        submenu: false,
+      },  
+    ],
+  },
+  {
+    label: "Question Management",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "question",
+
+    submenuItems: [
+      {
+        label: "Questions",
+        link: route.questions,
+        icon: "users-group",
+        showSubRoute: false,
+        submenu: false,
+      },  
+    ],
+  },
+  {
+    label: "Vehicle Management",
+    submenuOpen: true,
+    showSubRoute: false,
+    submenuHdr: "vehicle",
+
+    submenuItems: [
+      {
+        label: "Vehicles",
+        link: route.vehicles,
+        icon: "users-group",
+        showSubRoute: false,
+        submenu: false,
+      },  
+    ],
+  },
+  {
     label: "HRM",
     submenuOpen: true,
     showSubRoute: false,

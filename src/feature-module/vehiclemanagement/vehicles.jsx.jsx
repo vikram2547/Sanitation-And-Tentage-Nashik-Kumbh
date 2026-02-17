@@ -1,34 +1,34 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
-import AddShift from "../../core/modals/hrm/addshift";
-import EditShift from "../../core/modals/hrm/editshift";
-import { deleteShift, getShifts } from "../../core/redux/shiftSlice";
-import ViewShift from "../../core/modals/hrm/viewshift";
 
+import { useDispatch, useSelector } from "react-redux";
+import { clearMessages, deleteVehicle, getVehicles } from "../../core/redux/vehicleSlice";
+import AddVehicle from "../../core/modals/vehiclemanagement/addvehicle";
+import EditVehicle from "../../core/modals/vehiclemanagement/editvehicle";
+import ViewVehicle from "../../core/modals/vehiclemanagement/viewvehicle";
 
-const Shift = () => {
+const Vehicles = () => {
   const dispatch = useDispatch();
 
-  const { shifts, totalRecords, loading, error, success } = useSelector(
-    (state) => state.shifts
+  const { vehicles, loading, success, error } = useSelector(
+    (state) => state.vehicles
   );
 
   const [rows, setRows] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedShift, setSelectedShift] = useState(null);
-  const [viewShiftData, setViewShiftData] = useState(null);
-  const [editShiftData, setEditShiftData] = useState(null);
+  const [selectedVehicle, setSelectedVehicle] = useState(null);
+  const [viewVehicleData, setViewVehicleData] = useState(null);
+  const [editVehicleData, setEditVehicleData] = useState(null);
 
   // ============================
-  // FETCH SHIFTS
+  // FETCH VEHICLES
   // ============================
   useEffect(() => {
-    dispatch(getShifts({ page: currentPage, per_page: rows }));
+    dispatch(getVehicles({ page: currentPage, per_page: rows }));
   }, [dispatch, currentPage, rows]);
 
   // ============================
@@ -45,11 +45,17 @@ const Shift = () => {
   }, [success, error, dispatch]);
 
   // ============================
-  // DELETE SHIFT
+  // DELETE VEHICLE
   // ============================
   const handleDelete = async () => {
     if (!deleteId) return;
-    await dispatch(deleteShift(deleteId));
+
+    const res = await dispatch(deleteVehicle(deleteId));
+
+    if (res.meta.requestStatus === "fulfilled") {
+      dispatch(getVehicles({ page: currentPage, per_page: rows }));
+    }
+
     setDeleteId(null);
   };
 
@@ -58,29 +64,35 @@ const Shift = () => {
   // ============================
   const columns = [
     {
-      header: "Shift Name",
-      field: "shift_name",
+      header: "Name",
+      field: "vehicle_name",
       sortable: true,
-      body: (rowData) => rowData?.shift_name || "-"
+      body: (rowData) => rowData?.vehicle_name || "-",
     },
     {
-      header: "Start Time",
-      field: "start_time",
+      header: "Type",
+      field: "vehicle_type",
       sortable: true,
-      body: (rowData) => rowData?.start_time || "-"
+      body: (rowData) => rowData?.vehicle_type || "-",
     },
     {
-      header: "End Time",
-      field: "end_time",
+      header: "Number",
+      field: "vehicle_number",
       sortable: true,
-      body: (rowData) => rowData?.end_time || "-"
+      body: (rowData) => rowData?.vehicle_number || "-",
+    },
+    {
+      header: "Vendor",
+      field: "vendor_id",
+      sortable: true,
+      body: (rowData) => rowData?.vendor_id || "-",
     },
     {
       header: "Status",
-      field: "is_active",
+      field: "status",
       sortable: true,
       body: (rowData) =>
-        rowData?.is_active === "1" ? "Active" : "Inactive"
+        rowData?.status === "Active" ? "Active" : "Inactive",
     },
     {
       header: "Actions",
@@ -95,8 +107,8 @@ const Shift = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#view-shift-modal"
-              onClick={() => setViewShiftData(rowData)}
+              data-bs-target="#view-vehicle"
+              onClick={() => setViewVehicleData(rowData)}
             >
               <i className="feather feather-eye action-eye"></i>
             </Link>
@@ -106,8 +118,8 @@ const Shift = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-shift"
-              onClick={() => setEditShiftData(rowData)}
+              data-bs-target="#edit-vehicle"
+              onClick={() => setEditVehicleData(rowData)}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -117,8 +129,8 @@ const Shift = () => {
               className="confirm-text p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#delete-shift-modal"
-              onClick={() => setDeleteId(Number(rowData.shift_id))}
+              data-bs-target="#delete-vehicle-modal"
+              onClick={() => setDeleteId(rowData.vehicle_id)}
             >
               <i className="feather-trash-2"></i>
             </Link>
@@ -133,11 +145,12 @@ const Shift = () => {
     <div>
       <div className="page-wrapper">
         <div className="content">
+
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Shifts List</h4>
-                <h6>Manage Your Shifts</h6>
+                <h4>Vehicles</h4>
+                <h6>Manage Vehicles</h6>
               </div>
             </div>
 
@@ -150,10 +163,10 @@ const Shift = () => {
                 to="#"
                 className="btn btn-added"
                 data-bs-toggle="modal"
-                data-bs-target="#add-shift"
+                data-bs-target="#add-vehicle"
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add New Shift
+                Add Vehicle
               </Link>
             </div>
           </div>
@@ -167,16 +180,16 @@ const Shift = () => {
               <div className="table-responsive">
                 <PrimeDataTable
                   column={columns}
-                  data={Array.isArray(shifts) ? shifts : []}
-                  totalRecords={totalRecords}
+                  data={Array.isArray(vehicles) ? vehicles : []}
+                  totalRecords={vehicles?.length || 0}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   rows={rows}
                   setRows={setRows}
                   selectionMode="checkbox"
-                  selection={selectedShift}
-                  onSelectionChange={(e) => setSelectedShift(e.value)}
-                  dataKey="shift_id"
+                  selection={selectedVehicle}
+                  onSelectionChange={(e) => setSelectedVehicle(e.value)}
+                  dataKey="vehicle_id"
                 />
               </div>
 
@@ -191,12 +204,13 @@ const Shift = () => {
         </div>
       </div>
 
-      <AddShift />
-      <EditShift selectedShift={editShiftData} />
-      <ViewShift selectedShift={viewShiftData} />
+      {/* MODALS */}
+      <AddVehicle />
+      <EditVehicle selectedVehicle={editVehicleData} />
+      <ViewVehicle selectedVehicle={viewVehicleData} />
 
       {/* DELETE MODAL */}
-      <div className="modal fade" id="delete-shift-modal">
+      <div className="modal fade" id="delete-vehicle-modal">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="page-wrapper-new p-0">
@@ -204,9 +218,11 @@ const Shift = () => {
                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
-                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Shift</h4>
+                <h4 className="fs-20 fw-bold mb-2 mt-1">
+                  Delete Vehicle
+                </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete shift?
+                  Are you sure you want to delete this vehicle?
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -235,4 +251,4 @@ const Shift = () => {
   );
 };
 
-export default Shift;
+export default Vehicles;

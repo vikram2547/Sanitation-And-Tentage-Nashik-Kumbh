@@ -18,27 +18,30 @@ const EditUser = ({ selectedUser }) => {
   });
 
  // ✅ CLOSE MODAL + REMOVE BACKDROP PROPERLY
-useEffect(() => {
-  if (success) {
+ useEffect(() => {
+    if (!success) return;
+
     const modalEl = document.getElementById("edit-units");
+    if (!modalEl) return;
 
-    if (modalEl) {
-      const modalInstance =
-        Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modalInstance = Modal.getInstance(modalEl);
 
-      modalInstance.hide();
-    }
+    modalInstance?.hide();
 
-    // ✅ CLEANUP BACKDROP & BODY STATE (IMPORTANT)
+    // 🔥 THIS IS THE FIX
+    modalInstance?.dispose();
+
     setTimeout(() => {
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
 
-      const backdrops = document.querySelectorAll(".modal-backdrop");
-      backdrops.forEach((bd) => bd.remove());
-    }, 500);
-  }
-}, [success]);
+      document
+        .querySelectorAll(".modal-backdrop")
+        .forEach((bd) => bd.remove());
+
+      dispatch(clearMessages());
+    }, 200);
+  }, [success, dispatch]);
 
 
   // ✅ Prefill when selectedUser changes
@@ -79,17 +82,6 @@ useEffect(() => {
       })
     );
   };
-
-  // ✅ Auto clear message
-  useEffect(() => {
-    if (success || error) {
-      const timer = setTimeout(() => {
-        dispatch(clearMessages());
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [success, error, dispatch]);
 
   return (
     <div className="modal fade" id="edit-units">

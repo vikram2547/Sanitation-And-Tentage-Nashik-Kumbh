@@ -1,58 +1,66 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { updateShift, clearMessages } from "../../redux/shiftSlice";
+import { updateAssetType, clearMessages } from "../../redux/assettypeSlice";
 
-const EditShift = ({ selectedShift }) => {
+const EditAssetType = ({ selectedAssetType }) => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.shifts
+    (state) => state.assetTypes
   );
 
   const [formData, setFormData] = useState({
-    shift_name: "",
-    start_time: "",
-    end_time: "",
-    is_active: 1,
+    type: "",
+    name: "",
+    description: "",
+    questions: [],
+    status: 1,
   });
 
   /* ================= PREFILL DATA ================= */
   useEffect(() => {
-    if (!selectedShift) return;
+    if (!selectedAssetType) return;
 
     setFormData({
-      shift_name: selectedShift.shift_name || "",
-      start_time: selectedShift.start_time || "",
-      end_time: selectedShift.end_time || "",
-      is_active: selectedShift.is_active ?? 1,
+      type: selectedAssetType.type || "",
+      name: selectedAssetType.name || "",
+      description: selectedAssetType.description || "",
+      questions: Array.isArray(selectedAssetType.questions)
+        ? selectedAssetType.questions
+        : selectedAssetType.questions
+        ? selectedAssetType.questions.split(",")
+        : [],
+      status: selectedAssetType.status ?? 1,
     });
-  }, [selectedShift]);
+  }, [selectedAssetType]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const shiftId =
-      selectedShift?.shift_id || selectedShift?.id;
+    const assetTypeId =
+      selectedAssetType?.asset_type_id || selectedAssetType?.id;
 
-    if (!shiftId) {
-      console.error("No Shift ID found");
+    if (!assetTypeId) {
+      console.error("No Asset Type ID found");
       return;
     }
 
     dispatch(
-      updateShift({
-        id: shiftId,
-        data: formData,
+      updateAssetType({
+        id: assetTypeId,
+        data: {
+          ...formData,
+          questions: formData.questions.join(","),
+          status: 1,
+        },
       })
     );
   };
@@ -61,7 +69,7 @@ const EditShift = ({ selectedShift }) => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-shift");
+    const modalEl = document.getElementById("edit-assettype");
     if (!modalEl) return;
 
     const modalInstance =
@@ -81,16 +89,19 @@ const EditShift = ({ selectedShift }) => {
     }, 300);
   }, [success, dispatch]);
 
+  if (!selectedAssetType) return null;
+
   return (
-    <div className="modal fade" id="edit-shift" tabIndex="-1">
+    <div className="modal fade" id="edit-assettype" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
 
+              {/* ===== Header ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Shift</h4>
+                  <h4>Edit Asset Type</h4>
                 </div>
                 <button
                   type="button"
@@ -101,6 +112,7 @@ const EditShift = ({ selectedShift }) => {
                 </button>
               </div>
 
+              {/* ===== Body ===== */}
               <div className="modal-body custom-modal-body">
 
                 {error && (
@@ -109,21 +121,33 @@ const EditShift = ({ selectedShift }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Shift updated successfully
+                    Asset Type updated successfully
                   </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    {/* ===== Shift Name ===== */}
-                    <div className="col-lg-12">
+                    <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Shift Name</label>
+                        <label>Type</label>
                         <input
                           type="text"
-                          name="shift_name"
-                          value={formData.shift_name}
+                          name="type"
+                          value={formData.type}
+                          onChange={handleChange}
+                          className="form-control"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>Name</label>
+                        <input
+                          type="text"
+                          name="name"
+                          value={formData.name}
                           onChange={handleChange}
                           className="form-control"
                           required
@@ -131,38 +155,25 @@ const EditShift = ({ selectedShift }) => {
                       </div>
                     </div>
 
-                    {/* ===== Start Time ===== */}
-                    <div className="col-lg-6">
+                    <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Start Time</label>
-                        <input
-                          type="time"
-                          name="start_time"
-                          value={formData.start_time}
+                        <label>Description</label>
+                        <textarea
+                          name="description"
+                          value={formData.description}
                           onChange={handleChange}
                           className="form-control"
-                          required
                         />
                       </div>
                     </div>
 
-                    {/* ===== End Time ===== */}
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>End Time</label>
-                        <input
-                          type="time"
-                          name="end_time"
-                          value={formData.end_time}
-                          onChange={handleChange}
-                          className="form-control"
-                          required
-                        />
-                      </div>
-                    </div>
+                    {/* QUESTIONS FIELD
+                       (Assumes multi-select handled elsewhere and stored in formData.questions)
+                    */}
 
                   </div>
 
+                  {/* ===== Footer ===== */}
                   <div className="modal-footer-btn">
                     <button
                       type="button"
@@ -191,4 +202,4 @@ const EditShift = ({ selectedShift }) => {
   );
 };
 
-export default EditShift;
+export default EditAssetType;

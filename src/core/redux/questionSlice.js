@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
-import { circle } from "leaflet";
 
 /* ===============================
    AXIOS INSTANCE
@@ -31,73 +30,73 @@ api.interceptors.request.use((config) => {
   (error) => Promise.reject(error)
 );
 
-/* ================= GET Circles ================= */
-export const getCircles = createAsyncThunk(
-  "circles/getCircles",
+/* ================= GET questions ================= */
+export const getQuestions = createAsyncThunk(
+  "questions/getQuestions",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/circles", {
-        params: { page, per_page, keywords: "", status: "", order_by_col: "circle_id", order_by: "DESC", },
+      const response = await api.get("/api/questions", {
+        params: { page, per_page, order_by_col: "question_id", order_by: "DESC", },
       });
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to fetch circles"
+        error.response?.data?.message || "Failed to fetch questions"
       );
     }
   }
 );
 
-/* ================= ADD CIRCLE ================= */
-export const addCircle = createAsyncThunk(
-  "circles/addCircle",
+/* ================= ADD questions ================= */
+export const addQuestion = createAsyncThunk(
+  "questions/addQuestion",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/circles/new", data);
+      const response = await api.post("/api/questions/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to add circle"
+        error.response?.data?.message || "Failed to add question"
       );
     }
   }
 );
 
-/* ================= UPDATE CIRCLE ================= */
-export const updateCircle = createAsyncThunk(
-  "circles/updateCircle",
+/* ================= UPDATE questions ================= */
+export const updateQuestion = createAsyncThunk(
+  "questions/updateQuestion",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/circles/edit/${id}`, data);
+      const response = await api.post(`/api/questions/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update circle"
+        error.response?.data?.message || "Failed to update question"
       );
     }
   }
 );
 
-/* ================= DELETE CIRCLE ================= */
-export const deleteCircle = createAsyncThunk(
-  "circles/deleteCircle",
+/* ================= DELETE questions ================= */
+export const deleteQuestion = createAsyncThunk(
+  "questions/deleteQuestion",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/circles/delete/${id}`);
+      await api.post(`/api/questions/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete circle"
+        error.response?.data?.message || "Failed to delete question"
       );
     }
   }
 );
 
 /* ================= SLICE ================= */
-const circleSlice = createSlice({
-  name: "circles",
+const questionSlice = createSlice({
+  name: "questions",
   initialState: {
-    circles: [],
+    questions: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -113,86 +112,86 @@ const circleSlice = createSlice({
     builder
 
       /* ===== GET ===== */
-      .addCase(getCircles.pending, (state) => {
+      .addCase(getQuestions.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getCircles.fulfilled, (state, action) => {
+      .addCase(getQuestions.fulfilled, (state, action) => {
         state.loading = false;
-        state.circles = Array.isArray(action.payload?.data?.circles)
-          ? action.payload.data.circles
+        state.questions = Array.isArray(action.payload?.data?.questions)
+          ? action.payload.data.questions
           : [];
 
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getCircles.rejected, (state, action) => {
+      .addCase(getQuestions.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addCircle.pending, (state) => {
+      .addCase(addQuestion.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addCircle.fulfilled, (state, action) => {
+      .addCase(addQuestion.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = "Circle created successfully";
+        state.success = "Question created successfully";
         if (action.payload?.data) {
-          state.circles.unshift(action.payload.data);
+          state.questions.unshift(action.payload.data);
           state.totalRecords += 1;
         }
       })
-      .addCase(addCircle.rejected, (state, action) => {
+      .addCase(addQuestion.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateCircle.pending, (state) => {
+      .addCase(updateQuestion.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateCircle.fulfilled, (state, action) => {
+      .addCase(updateQuestion.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Circle updated successfully";
-        const updatedCircle = action.payload?.data;
+        state.success = action.payload?.message || "Question updated successfully";
+        const updatedQuestion = action.payload?.data;
 
-        if (updatedCircle) {
-          state.circles = state.circles.map((circle) =>
-             Number(circle.circle_id) === Number(updatedCircle.circle_id)
-              ? updatedCircle
-              : circle
+        if (updatedQuestion) {
+          state.questions = state.questions.map((question) =>
+             Number(question.question_id) === Number(updatedQuestion.question_id)
+              ? updatedQuestion
+              : question
           );
         }
       })
-      .addCase(updateCircle.rejected, (state, action) => {
+      .addCase(updateQuestion.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteCircle.pending, (state) => {
+      .addCase(deleteQuestion.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(deleteCircle.fulfilled, (state, action) => {
+      .addCase(deleteQuestion.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Circle deleted successfully";
+        state.success = action.payload?.message || "Questions deleted successfully";
          const deletedId = action.meta.arg;
 
-          state.circles = state.circles.filter(
-          (circle) => Number(circle.circle_id) !== Number(deletedId)
+          state.questions = state.questions.filter(
+          (question) => Number(question.question_id) !== Number(deletedId)
         );
 
         state.totalRecords -= 1;
       })
-      .addCase(deleteCircle.rejected, (state, action) => {
+      .addCase(deleteQuestion.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { clearMessages } = circleSlice.actions;
-export default circleSlice.reducer;
+export const { clearMessages } = questionSlice.actions;
+export default questionSlice.reducer;

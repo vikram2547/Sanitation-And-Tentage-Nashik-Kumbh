@@ -38,6 +38,10 @@ import Pos from "../feature-module/pos/pos";
 import Vendors from "../feature-module/vendormanagement/vendors";
 import Sectors from "../feature-module/sectormanagement/sectors";
 import Circles from "../feature-module/sectormanagement/circles";
+import Questions from "../feature-module/questionmanagement/questions";
+import AssetType from "../feature-module/assettypemanagement/assettype";
+import SanitationAsset from "../feature-module/assettypemanagement/sanitationAsset";
+import Vehicles from "../feature-module/vehiclemanagement/vehicles.jsx";
 
 
 
@@ -1190,6 +1194,34 @@ export const authRoutes = [
   path: routes.circles,
   name: "circles",
   element: <Circles />,
+  route: Route
+},
+{
+  id: 258,
+  path: routes.questions,
+  name: "questions",
+  element: <Questions />,
+  route: Route
+},
+{
+  id: 259,
+  path: routes.assettypes,
+  name: "assettypes",
+  element: <AssetType />,
+  route: Route
+},
+{
+  id: 260,
+  path: routes.sanitationasset,
+  name: "sanitationasset",
+  element: <SanitationAsset />,
+  route: Route
+},
+{
+  id: 260,
+  path: routes.vehicles,
+  name: "vehicles",
+  element: <Vehicles />,
   route: Route
 },
 {

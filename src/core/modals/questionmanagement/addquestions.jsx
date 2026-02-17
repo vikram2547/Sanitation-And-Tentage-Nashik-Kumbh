@@ -1,19 +1,26 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { addShift, clearMessages } from "../../redux/shiftSlice";
+import { addQuestion, clearMessages } from "../../redux/questionSlice";
 
-const AddShift = () => {
+const AddQuestion = () => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.shifts
+    (state) => state.questions
   );
 
   const [formData, setFormData] = useState({
-    shift_name: "",
-    start_time: "",
-    end_time: "",
+    question_text: "",
+    question_type: "YES_NO",
+    options: null,
+    expected_answer: "YES",
+    condition_type: null,
+    condition_value: null,
+    severity: "",
+    is_mandatory: 1,
+    is_photo_mandatory: 0,
+    sequence: 1,
     is_active: 1,
   });
 
@@ -30,14 +37,14 @@ const AddShift = () => {
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addShift(formData));
+    dispatch(addQuestion(formData));
   };
 
   /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("add-shift");
+    const modalEl = document.getElementById("add-question");
 
     if (modalEl) {
       const modalInstance =
@@ -53,9 +60,16 @@ const AddShift = () => {
 
     // reset form
     setFormData({
-      shift_name: "",
-      start_time: "",
-      end_time: "",
+      question_text: "",
+      question_type: "YES_NO",
+      options: null,
+      expected_answer: "YES",
+      condition_type: null,
+      condition_value: null,
+      severity: "",
+      is_mandatory: 1,
+      is_photo_mandatory: 0,
+      sequence: 1,
       is_active: 1,
     });
   }, [success]);
@@ -72,7 +86,7 @@ const AddShift = () => {
   }, [success, error, dispatch]);
 
   return (
-    <div className="modal fade" id="add-shift" tabIndex="-1">
+    <div className="modal fade" id="add-question" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
@@ -80,7 +94,7 @@ const AddShift = () => {
 
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Shift</h4>
+                  <h4>Add Question</h4>
                 </div>
                 <button type="button" className="close" data-bs-dismiss="modal">
                   <span>×</span>
@@ -92,55 +106,91 @@ const AddShift = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Shift created successfully
+                    Question created successfully
                   </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    {/* ===== Shift Name ===== */}
+                    {/* ===== Question Text ===== */}
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Shift Name</label>
+                        <label>Question</label>
                         <input
                           type="text"
-                          name="shift_name"
-                          value={formData.shift_name}
+                          name="question_text"
+                          value={formData.question_text}
                           onChange={handleChange}
                           className="form-control"
-                          placeholder="Enter shift name"
+                          placeholder="Enter question"
                           required
                         />
                       </div>
                     </div>
 
-                    {/* ===== Start Time ===== */}
+                    {/* ===== Question Type ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Start Time</label>
-                        <input
-                          type="time"
-                          name="start_time"
-                          value={formData.start_time}
+                        <label>Question Type</label>
+                        <select
+                          name="question_type"
+                          value={formData.question_type}
                           onChange={handleChange}
                           className="form-control"
                           required
-                        />
+                        >
+                          <option value="YES_NO">Yes / No</option>
+                        </select>
                       </div>
                     </div>
 
-                    {/* ===== End Time ===== */}
+                    {/* ===== Expected Answer ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>End Time</label>
-                        <input
-                          type="time"
-                          name="end_time"
-                          value={formData.end_time}
+                        <label>Expected Answer</label>
+                        <select
+                          name="expected_answer"
+                          value={formData.expected_answer}
                           onChange={handleChange}
                           className="form-control"
                           required
+                        >
+                          <option value="YES">Yes</option>
+                          <option value="NO">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* ===== Severity ===== */}
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>Severity</label>
+                        <select
+                          name="severity"
+                          value={formData.severity}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        >
+                          <option value="">Select Severity</option>
+                          <option value="LOW">Low</option>
+                          <option value="MEDIUM">Medium</option>
+                          <option value="HIGH">High</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {/* ===== Sequence ===== */}
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>Sequence</label>
+                        <input
+                          type="number"
+                          name="sequence"
+                          value={formData.sequence}
+                          onChange={handleChange}
+                          className="form-control"
                         />
                       </div>
                     </div>
@@ -175,4 +225,4 @@ const AddShift = () => {
   );
 };
 
-export default AddShift;
+export default AddQuestion;
