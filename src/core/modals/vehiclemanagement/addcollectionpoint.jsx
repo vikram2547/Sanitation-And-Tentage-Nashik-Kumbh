@@ -1,34 +1,29 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { updateVehicle, clearMessages } from "../../redux/vehicleSlice";
+import { addVehicleCollectionPoint, clearMessages } from "../../redux/vehicleCollectionPointSlice";
 
-const EditVehicle = ({ selectedVehicle }) => {
+
+const AddCollectionPoint = () => {
   const dispatch = useDispatch();
-  const { success, error, loading } = useSelector((state) => state.vehicles);
+
+  const { success, error, loading } = useSelector(
+    (state) => state.collectionPoints
+  );
 
   const [formData, setFormData] = useState({
-    vehicle_name: "",
-    vehicle_type: "",
-    vehicle_number: "",
-    rc_number: "",
-    vendor_id: "",
-    status: "Active",
+    point_code: "",
+    point_name: "",
+    latitude: "",
+    longitude: "",
+    address: "",
+    ward_number: "",
+    zone: "",
+    point_type: "PRIMARY",
+    expected_collection_time: "",
+    collection_frequency: "DAILY",
+    status: "ACTIVE",
   });
-
-  /* ================= PREFILL DATA ================= */
-  useEffect(() => {
-    if (!selectedVehicle) return;
-
-    setFormData({
-      vehicle_name: selectedVehicle.vehicle_name || "",
-      vehicle_type: selectedVehicle.vehicle_type || "",
-      vehicle_number: selectedVehicle.vehicle_number || "",
-      rc_number: selectedVehicle.rc_number || "",
-      vendor_id: selectedVehicle.vendor_id || "",
-      status: selectedVehicle.status || "Active",
-    });
-  }, [selectedVehicle]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
@@ -39,27 +34,19 @@ const EditVehicle = ({ selectedVehicle }) => {
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (!selectedVehicle?.vehicle_id) return;
-
-    dispatch(
-      updateVehicle({
-        vehicle_id: selectedVehicle.vehicle_id,
-        data: formData,
-      })
-    );
+    dispatch(addVehicleCollectionPoint(formData));
   };
 
-  /* ================= CLOSE MODAL ON SUCCESS ================= */
+  /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-vehicle");
-    if (!modalEl) return;
-
-    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl);
-    modalInstance.hide();
-    modalInstance.dispose();
+    const modalEl = document.getElementById("add-collection-point");
+    if (modalEl) {
+      const modalInstance =
+        Modal.getInstance(modalEl) || new Modal(modalEl);
+      modalInstance.hide();
+    }
 
     setTimeout(() => {
       document.body.classList.remove("modal-open");
@@ -67,16 +54,37 @@ const EditVehicle = ({ selectedVehicle }) => {
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
-
-      dispatch(clearMessages());
     }, 300);
-  }, [success, dispatch]);
 
-  if (!selectedVehicle) return null;
+    setFormData({
+      point_code: "",
+      point_name: "",
+      latitude: "",
+      longitude: "",
+      address: "",
+      ward_number: "",
+      zone: "",
+      point_type: "PRIMARY",
+      expected_collection_time: "",
+      collection_frequency: "DAILY",
+      status: "ACTIVE",
+    });
+  }, [success]);
+
+  /* ================= AUTO CLEAR MESSAGE ================= */
+  useEffect(() => {
+    if (!success && !error) return;
+
+    const timer = setTimeout(() => {
+      dispatch(clearMessages());
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [success, error, dispatch]);
 
   return (
-    <div className="modal fade" id="edit-vehicle">
-      <div className="modal-dialog modal-lg modal-dialog-centered">
+    <div className="modal fade" id="add-collection-point" tabIndex="-1">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -84,13 +92,15 @@ const EditVehicle = ({ selectedVehicle }) => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Vehicle</h4>
+                  <h4>Add Collection Point</h4>
                 </div>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="close"
                   data-bs-dismiss="modal"
-                />
+                >
+                  <span>×</span>
+                </button>
               </div>
 
               {/* ===== BODY ===== */}
@@ -99,7 +109,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Vehicle updated successfully
+                    Collection Point created successfully
                   </div>
                 )}
 
@@ -108,11 +118,11 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Name</label>
+                        <label>Point Code</label>
                         <input
                           type="text"
-                          name="vehicle_name"
-                          value={formData.vehicle_name}
+                          name="point_code"
+                          value={formData.point_code}
                           onChange={handleChange}
                           className="form-control"
                           required
@@ -122,11 +132,11 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Type</label>
+                        <label>Point Name</label>
                         <input
                           type="text"
-                          name="vehicle_type"
-                          value={formData.vehicle_type}
+                          name="point_name"
+                          value={formData.point_name}
                           onChange={handleChange}
                           className="form-control"
                           required
@@ -136,40 +146,73 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Number</label>
+                        <label>Latitude</label>
                         <input
                           type="text"
-                          name="vehicle_number"
-                          value={formData.vehicle_number}
+                          name="latitude"
+                          value={formData.latitude}
                           onChange={handleChange}
                           className="form-control"
+                          required
                         />
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>RC Number</label>
+                        <label>Longitude</label>
                         <input
                           type="text"
-                          name="rc_number"
-                          value={formData.rc_number}
+                          name="longitude"
+                          value={formData.longitude}
                           onChange={handleChange}
                           className="form-control"
+                          required
                         />
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor ID</label>
+                        <label>Expected Collection Time</label>
                         <input
-                          type="text"
-                          name="vendor_id"
-                          value={formData.vendor_id}
+                          type="time"
+                          name="expected_collection_time"
+                          value={formData.expected_collection_time}
                           onChange={handleChange}
                           className="form-control"
+                          required
                         />
+                      </div>
+                    </div>
+
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>Collection Frequency</label>
+                        <select
+                          name="collection_frequency"
+                          value={formData.collection_frequency}
+                          onChange={handleChange}
+                          className="form-control"
+                        >
+                          <option value="DAILY">Daily</option>
+                          <option value="WEEKLY">Weekly</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>Point Type</label>
+                        <select
+                          name="point_type"
+                          value={formData.point_type}
+                          onChange={handleChange}
+                          className="form-control"
+                        >
+                          <option value="PRIMARY">Primary</option>
+                          <option value="SECONDARY">Secondary</option>
+                        </select>
                       </div>
                     </div>
 
@@ -177,13 +220,13 @@ const EditVehicle = ({ selectedVehicle }) => {
                       <div className="input-blocks">
                         <label>Status</label>
                         <select
-                          className="form-control"
                           name="status"
                           value={formData.status}
                           onChange={handleChange}
+                          className="form-control"
                         >
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
+                          <option value="ACTIVE">Active</option>
+                          <option value="INACTIVE">Inactive</option>
                         </select>
                       </div>
                     </div>
@@ -191,7 +234,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                   </div>
 
                   {/* ===== FOOTER ===== */}
-                  <div className="modal-footer-btn mt-3">
+                  <div className="modal-footer-btn">
                     <button
                       type="button"
                       className="btn btn-cancel me-2"
@@ -199,16 +242,17 @@ const EditVehicle = ({ selectedVehicle }) => {
                     >
                       Cancel
                     </button>
+
                     <button
                       type="submit"
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? "Adding..." : "Submit"}
                     </button>
                   </div>
-
                 </form>
+
               </div>
             </div>
           </div>
@@ -218,4 +262,4 @@ const EditVehicle = ({ selectedVehicle }) => {
   );
 };
 
-export default EditVehicle;
+export default AddCollectionPoint;

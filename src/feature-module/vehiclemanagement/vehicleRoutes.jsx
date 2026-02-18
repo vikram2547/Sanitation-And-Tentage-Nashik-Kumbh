@@ -5,95 +5,91 @@ import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
 
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessages, deleteVehicle, getVehicles } from "../../core/redux/vehicleSlice";
-import AddVehicle from "../../core/modals/vehiclemanagement/addvehicle";
-import EditVehicle from "../../core/modals/vehiclemanagement/editvehicle";
-import ViewVehicle from "../../core/modals/vehiclemanagement/viewvehicle";
+import { clearMessages, deleteVehicleRoute, getVehicleRoutes } from "../../core/redux/vehicleRouteSlice";
+import AddRoute from "../../core/modals/vehiclemanagement/addroute";
+import EditRoute from "../../core/modals/vehiclemanagement/editroute";
+import ViewRoute from "../../core/modals/vehiclemanagement/viewroute";
 
 
-const Vehicles = () => {
+
+const VehicleRoutes = () => {
   const dispatch = useDispatch();
 
-  const { vehicles, loading, success, error } = useSelector(
-    (state) => state.vehicles
-  );
+  const { vehicleRoutes, loading, success, error, totalRecords } =
+    useSelector((state) => state.vehicleRoutes);
+
 
   const [rows, setRows] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [viewVehicleData, setViewVehicleData] = useState(null);
-  const [editVehicleData, setEditVehicleData] = useState(null);
+  const [selectedRoute, setSelectedRoute] = useState(null);
+  const [viewRouteData, setViewRouteData] = useState(null);
+  const [editRouteData, setEditRouteData] = useState(null);
 
-  // ============================
-  // FETCH VEHICLES
-  // ============================
+
+  /* ================= FETCH ================= */
   useEffect(() => {
-    dispatch(getVehicles({ page: currentPage, per_page: rows }));
+    dispatch(getVehicleRoutes({ page: currentPage, per_page: rows }));
   }, [dispatch, currentPage, rows]);
 
-  // ============================
-  // AUTO CLEAR SUCCESS / ERROR
-  // ============================
+  /* ================= AUTO CLEAR ================= */
   useEffect(() => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
       }, 5000);
-
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
 
-  // ============================
-  // DELETE VEHICLE
-  // ============================
+  /* ================= DELETE ================= */
   const handleDelete = async () => {
     if (!deleteId) return;
 
-    const res = await dispatch(deleteVehicle(deleteId));
-
+    const res = await dispatch(deleteVehicleRoute(deleteId));
     if (res.meta.requestStatus === "fulfilled") {
-      dispatch(getVehicles({ page: currentPage, per_page: rows }));
+      dispatch(getVehicleRoutes({ page: currentPage, per_page: rows }));
     }
-
     setDeleteId(null);
   };
 
-  // ============================
-  // TABLE COLUMNS
-  // ============================
+  /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Name",
-      field: "vehicle_name",
+      header: "Route ID",
+      field: "route_id",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_name || "-",
+      body: (rowData) => rowData?.route_id || "-",
     },
     {
-      header: "Type",
-      field: "vehicle_type",
+      header: "Route Code",
+      field: "route_code",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_type || "-",
+      body: (rowData) => rowData?.route_code || "-",
     },
     {
-      header: "Number",
-      field: "vehicle_number",
+      header: "Route Name",
+      field: "route_name",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_number || "-",
+      body: (rowData) => rowData?.route_name || "-",
     },
     {
-      header: "Vendor",
-      field: "vendor_id",
+      header: "Zone",
+      field: "zone",
       sortable: true,
-      body: (rowData) => rowData?.vendor_id || "-",
+      body: (rowData) => rowData?.zone || "-",
     },
     {
       header: "Status",
       field: "status",
       sortable: true,
-      body: (rowData) =>
-        rowData?.status === "Active" ? "Active" : "Inactive",
+      body: (rowData) => rowData?.status || "-",
+    },
+    {
+      header: "Created At",
+      field: "created_at",
+      sortable: true,
+      body: (rowData) => rowData?.created_at || "-",
     },
     {
       header: "Actions",
@@ -108,8 +104,8 @@ const Vehicles = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#view-vehicle-modal"
-              onClick={() => setViewVehicleData(rowData)}
+              data-bs-target="#view-route-modal"
+              onClick={() => setViewRouteData(rowData)}
             >
               <i className="feather feather-eye action-eye"></i>
             </Link>
@@ -119,8 +115,8 @@ const Vehicles = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-vehicle"
-              onClick={() => setEditVehicleData(rowData)}
+              data-bs-target="#edit-route-modal"
+              onClick={() => setEditRouteData(rowData)}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -130,8 +126,8 @@ const Vehicles = () => {
               className="confirm-text p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#delete-vehicle-modal"
-              onClick={() => setDeleteId(rowData.vehicle_id)}
+              data-bs-target="#delete-route-modal"
+              onClick={() => setDeleteId(rowData.route_id)}
             >
               <i className="feather-trash-2"></i>
             </Link>
@@ -150,24 +146,23 @@ const Vehicles = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicles</h4>
-                <h6>Manage Vehicles</h6>
+                <h4>Routes</h4>
+                <h6>Manage Routes</h6>
               </div>
             </div>
 
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
-
             <div className="page-btn">
               <Link
                 to="#"
                 className="btn btn-added"
                 data-bs-toggle="modal"
-                data-bs-target="#add-vehicle"
+                data-bs-target="#add-route-modal"
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Vehicle
+                Add Vehicle Route
               </Link>
             </div>
           </div>
@@ -181,16 +176,16 @@ const Vehicles = () => {
               <div className="table-responsive">
                 <PrimeDataTable
                   column={columns}
-                  data={Array.isArray(vehicles) ? vehicles : []}
-                  totalRecords={vehicles?.length || 0}
+                  data={Array.isArray(vehicleRoutes) ? vehicleRoutes : []}
+                  totalRecords={vehicleRoutes?.length || 0}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   rows={rows}
                   setRows={setRows}
                   selectionMode="checkbox"
-                  selection={selectedVehicle}
-                  onSelectionChange={(e) => setSelectedVehicle(e.value)}
-                  dataKey="vehicle_id"
+                  selection={selectedRoute}
+                  onSelectionChange={(e) => setSelectedRoute(e.value)}
+                  dataKey="route_id"
                 />
               </div>
 
@@ -205,13 +200,12 @@ const Vehicles = () => {
         </div>
       </div>
 
-      {/* MODALS */}
-      <AddVehicle />
-      <EditVehicle selectedVehicle={editVehicleData} />
-      <ViewVehicle selectedVehicle={viewVehicleData} />
+      <AddRoute />
+      <EditRoute selectedRoute={editRouteData} />
+      <ViewRoute selectedRoute={viewRouteData} />
 
       {/* DELETE MODAL */}
-      <div className="modal fade" id="delete-vehicle-modal">
+      <div className="modal fade" id="delete-route-modal">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="page-wrapper-new p-0">
@@ -220,10 +214,10 @@ const Vehicles = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Vehicle
+                  Delete Route
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this vehicle?
+                  Are you sure you want to delete this route?
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -252,4 +246,4 @@ const Vehicles = () => {
   );
 };
 
-export default Vehicles;
+export default VehicleRoutes;

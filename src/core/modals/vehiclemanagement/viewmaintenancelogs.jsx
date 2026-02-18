@@ -1,19 +1,16 @@
 import React from "react";
 
-const ViewVehicle = ({ selectedVehicle }) => {
-  if (!selectedVehicle) return null;
+const ViewMaintenanceLogs = ({ selectedLog }) => {
+  if (!selectedLog) return null;
 
   return (
-    <div
-      className="modal fade"
-      id="view-vehicle-modal"
-    >
+    <div className="modal fade" id="view-maintenance-modal">
       <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
 
-          {/* ===== Modal Header ===== */}
+          {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Vehicle Details</h5>
+            <h5 className="modal-title">Maintenance Log Details</h5>
             <button
               type="button"
               className="btn-close"
@@ -21,54 +18,54 @@ const ViewVehicle = ({ selectedVehicle }) => {
             ></button>
           </div>
 
-          {/* ===== Modal Body ===== */}
+          {/* BODY */}
           <div className="modal-body">
             <div className="row">
 
               <div className="col-md-6 mb-3">
+                <strong>Maintenance ID:</strong>
+                <div>{selectedLog.maintenance_id}</div>
+              </div>
+
+              <div className="col-md-6 mb-3">
                 <strong>Vehicle ID:</strong>
-                <div>{selectedVehicle.vehicle_id}</div>
+                <div>{selectedLog.vehicle_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Name:</strong>
-                <div>{selectedVehicle.vehicle_name || "-"}</div>
+                <strong>Maintenance Date:</strong>
+                <div>{selectedLog.maintenance_date}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Type:</strong>
-                <div>{selectedVehicle.vehicle_type || "-"}</div>
+                <strong>Maintenance Type:</strong>
+                <div>{selectedLog.maintenance_type}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Number:</strong>
-                <div>{selectedVehicle.vehicle_number || "-"}</div>
+                <strong>Description:</strong>
+                <div>{selectedLog.description || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>RC Number:</strong>
-                <div>{selectedVehicle.rc_number || "-"}</div>
+                <strong>Cost:</strong>
+                <div>{selectedLog.cost}</div>
+              </div>
+
+              <div className="col-md-6 mb-3">
+                <strong>Next Maintenance Date:</strong>
+                <div>{selectedLog.next_maintenance_date}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Vendor ID:</strong>
-                <div>{selectedVehicle.vendor_id || "-"}</div>
-              </div>
-
-              <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
-                <div>
-                  {selectedVehicle.status === "Active" ||
-                  selectedVehicle.status === "1"
-                    ? "Active"
-                    : "Inactive"}
-                </div>
+                <div>{selectedLog.vendor_id}</div>
               </div>
 
             </div>
           </div>
 
-          {/* ===== Modal Footer ===== */}
+          {/* FOOTER */}
           <div className="modal-footer">
             <button
               type="button"
@@ -85,4 +82,4 @@ const ViewVehicle = ({ selectedVehicle }) => {
   );
 };
 
-export default ViewVehicle;
+export default ViewMaintenanceLogs;

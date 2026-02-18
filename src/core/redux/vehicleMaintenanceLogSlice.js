@@ -19,11 +19,11 @@ api.interceptors.request.use((config) => {
 });
 
 /* ================= GET ================= */
-export const getVehicles = createAsyncThunk(
-  "vehicles/getVehicles",
+export const getVehicleMaintenanceLogs = createAsyncThunk(
+  "vehicleMaintenanceLogs/getVehicleMaintenanceLogs",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicles", {
+      const res = await api.get("/api/vehicle-maintenance-logs", {
         params: { page, per_page },
       });
       return res.data;
@@ -34,11 +34,14 @@ export const getVehicles = createAsyncThunk(
 );
 
 /* ================= ADD ================= */
-export const addVehicle = createAsyncThunk(
-  "vehicles/addVehicle",
+export const addVehicleMaintenanceLog = createAsyncThunk(
+  "vehicleMaintenanceLogs/addVehicleMaintenanceLog",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/vehicles/new", data);
+      const res = await api.post(
+        "/api/vehicle-maintenance-logs/new",
+        data
+      );
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -47,11 +50,14 @@ export const addVehicle = createAsyncThunk(
 );
 
 /* ================= UPDATE ================= */
-export const updateVehicle = createAsyncThunk(
-  "vehicles/updateVehicle",
-  async ({ vehicle_id, data }, { rejectWithValue }) => {
+export const updateVehicleMaintenanceLog = createAsyncThunk(
+  "vehicleMaintenanceLogs/updateVehicleMaintenanceLog",
+  async ({ maintenance_log_id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/api/vehicles/edit/${vehicle_id}`, data);
+      const res = await api.post(
+        `/api/vehicle-maintenance-logs/edit/${maintenance_log_id}`,
+        data
+      );
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -60,12 +66,14 @@ export const updateVehicle = createAsyncThunk(
 );
 
 /* ================= DELETE ================= */
-export const deleteVehicle = createAsyncThunk(
-  "vehicles/deleteVehicle",
-  async (vehicle_id, { rejectWithValue }) => {
+export const deleteVehicleMaintenanceLog = createAsyncThunk(
+  "vehicleMaintenanceLogs/deleteVehicleMaintenanceLog",
+  async (maintenance_log_id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/vehicles/delete/${vehicle_id}`);
-      return vehicle_id;
+      await api.post(
+        `/api/vehicle-maintenance-logs/delete/${maintenance_log_id}`
+      );
+      return maintenance_log_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
     }
@@ -73,8 +81,8 @@ export const deleteVehicle = createAsyncThunk(
 );
 
 /* ================= SLICE ================= */
-const vehicleSlice = createSlice({
-  name: "vehicles",
+const vehicleMaintenanceLogSlice = createSlice({
+  name: "vehicleMaintenanceLogs",
   initialState: {
     vehicles: [],
     totalRecords: 0,
@@ -91,46 +99,51 @@ const vehicleSlice = createSlice({
   extraReducers: (builder) => {
     builder
       /* ===== GET ===== */
-      .addCase(getVehicles.pending, (state) => {
+      .addCase(getVehicleMaintenanceLogs.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getVehicles.fulfilled, (state, action) => {
+      .addCase(getVehicleMaintenanceLogs.fulfilled, (state, action) => {
         state.loading = false;
         state.vehicles = action.payload?.data?.vehicles || [];
-        state.totalRecords = action.payload?.data?.paging?.totalrecords || 0;
+        state.totalRecords =
+          action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getVehicles.rejected, (state, action) => {
+      .addCase(getVehicleMaintenanceLogs.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle created successfully";
+      .addCase(addVehicleMaintenanceLog.fulfilled, (state, action) => {
+        state.success = "Vehicle maintenance log created successfully";
         state.vehicles.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle updated successfully";
+      .addCase(updateVehicleMaintenanceLog.fulfilled, (state, action) => {
+        state.success = "Vehicle maintenance log updated successfully";
         const updated = action.payload?.data;
         state.vehicles = state.vehicles.map((v) =>
-          v.vehicle_id === updated.vehicle_id ? updated : v
+          v.maintenance_log_id === updated.maintenance_log_id
+            ? updated
+            : v
         );
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle deleted successfully";
+      .addCase(deleteVehicleMaintenanceLog.fulfilled, (state, action) => {
+        state.success = "Vehicle maintenance log deleted successfully";
         const deletedId = action.meta.arg;
         state.vehicles = state.vehicles.filter(
-          (v) => Number(v.vehicle_id) !== Number(deletedId)
+          (v) =>
+            Number(v.maintenance_log_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       });
   },
 });
 
-export const { clearMessages } = vehicleSlice.actions;
-export default vehicleSlice.reducer;
+export const { clearMessages } =
+  vehicleMaintenanceLogSlice.actions;
+export default vehicleMaintenanceLogSlice.reducer;

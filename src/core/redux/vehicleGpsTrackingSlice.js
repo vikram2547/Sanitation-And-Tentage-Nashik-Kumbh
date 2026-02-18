@@ -19,11 +19,11 @@ api.interceptors.request.use((config) => {
 });
 
 /* ================= GET ================= */
-export const getVehicles = createAsyncThunk(
-  "vehicles/getVehicles",
+export const getVehicleGpsTracking = createAsyncThunk(
+  "vehicleGpsTracking/getVehicleGpsTracking",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicles", {
+      const res = await api.get("/api/vehicle-gps-tracking", {
         params: { page, per_page },
       });
       return res.data;
@@ -34,11 +34,14 @@ export const getVehicles = createAsyncThunk(
 );
 
 /* ================= ADD ================= */
-export const addVehicle = createAsyncThunk(
-  "vehicles/addVehicle",
+export const addVehicleGpsTracking = createAsyncThunk(
+  "vehicleGpsTracking/addVehicleGpsTracking",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/vehicles/new", data);
+      const res = await api.post(
+        "/api/vehicle-gps-tracking/new",
+        data
+      );
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -47,11 +50,14 @@ export const addVehicle = createAsyncThunk(
 );
 
 /* ================= UPDATE ================= */
-export const updateVehicle = createAsyncThunk(
-  "vehicles/updateVehicle",
-  async ({ vehicle_id, data }, { rejectWithValue }) => {
+export const updateVehicleGpsTracking = createAsyncThunk(
+  "vehicleGpsTracking/updateVehicleGpsTracking",
+  async ({ gps_tracking_id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/api/vehicles/edit/${vehicle_id}`, data);
+      const res = await api.post(
+        `/api/vehicle-gps-tracking/edit/${gps_tracking_id}`,
+        data
+      );
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -60,12 +66,14 @@ export const updateVehicle = createAsyncThunk(
 );
 
 /* ================= DELETE ================= */
-export const deleteVehicle = createAsyncThunk(
-  "vehicles/deleteVehicle",
-  async (vehicle_id, { rejectWithValue }) => {
+export const deleteVehicleGpsTracking = createAsyncThunk(
+  "vehicleGpsTracking/deleteVehicleGpsTracking",
+  async (gps_tracking_id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/vehicles/delete/${vehicle_id}`);
-      return vehicle_id;
+      await api.post(
+        `/api/vehicle-gps-tracking/delete/${gps_tracking_id}`
+      );
+      return gps_tracking_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
     }
@@ -73,8 +81,8 @@ export const deleteVehicle = createAsyncThunk(
 );
 
 /* ================= SLICE ================= */
-const vehicleSlice = createSlice({
-  name: "vehicles",
+const vehicleGpsTrackingSlice = createSlice({
+  name: "vehicleGpsTracking",
   initialState: {
     vehicles: [],
     totalRecords: 0,
@@ -91,46 +99,50 @@ const vehicleSlice = createSlice({
   extraReducers: (builder) => {
     builder
       /* ===== GET ===== */
-      .addCase(getVehicles.pending, (state) => {
+      .addCase(getVehicleGpsTracking.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getVehicles.fulfilled, (state, action) => {
+      .addCase(getVehicleGpsTracking.fulfilled, (state, action) => {
         state.loading = false;
         state.vehicles = action.payload?.data?.vehicles || [];
-        state.totalRecords = action.payload?.data?.paging?.totalrecords || 0;
+        state.totalRecords =
+          action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getVehicles.rejected, (state, action) => {
+      .addCase(getVehicleGpsTracking.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle created successfully";
+      .addCase(addVehicleGpsTracking.fulfilled, (state, action) => {
+        state.success = "Vehicle GPS tracking created successfully";
         state.vehicles.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle updated successfully";
+      .addCase(updateVehicleGpsTracking.fulfilled, (state, action) => {
+        state.success = "Vehicle GPS tracking updated successfully";
         const updated = action.payload?.data;
         state.vehicles = state.vehicles.map((v) =>
-          v.vehicle_id === updated.vehicle_id ? updated : v
+          v.gps_tracking_id === updated.gps_tracking_id
+            ? updated
+            : v
         );
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle deleted successfully";
+      .addCase(deleteVehicleGpsTracking.fulfilled, (state, action) => {
+        state.success = "Vehicle GPS tracking deleted successfully";
         const deletedId = action.meta.arg;
         state.vehicles = state.vehicles.filter(
-          (v) => Number(v.vehicle_id) !== Number(deletedId)
+          (v) =>
+            Number(v.gps_tracking_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       });
   },
 });
 
-export const { clearMessages } = vehicleSlice.actions;
-export default vehicleSlice.reducer;
+export const { clearMessages } = vehicleGpsTrackingSlice.actions;
+export default vehicleGpsTrackingSlice.reducer;

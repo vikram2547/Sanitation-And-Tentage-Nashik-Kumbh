@@ -19,11 +19,11 @@ api.interceptors.request.use((config) => {
 });
 
 /* ================= GET ================= */
-export const getVehicles = createAsyncThunk(
-  "vehicles/getVehicles",
+export const getVehicleRoutes = createAsyncThunk(
+  "vehicleRoutes/getVehicleRoutes",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicles", {
+      const res = await api.get("/api/vehicle-routes", {
         params: { page, per_page },
       });
       return res.data;
@@ -34,11 +34,11 @@ export const getVehicles = createAsyncThunk(
 );
 
 /* ================= ADD ================= */
-export const addVehicle = createAsyncThunk(
-  "vehicles/addVehicle",
+export const addVehicleRoute = createAsyncThunk(
+  "vehicleRoutes/addVehicleRoute",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/vehicles/new", data);
+      const res = await api.post("/api/vehicle-routes/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -47,11 +47,11 @@ export const addVehicle = createAsyncThunk(
 );
 
 /* ================= UPDATE ================= */
-export const updateVehicle = createAsyncThunk(
-  "vehicles/updateVehicle",
-  async ({ vehicle_id, data }, { rejectWithValue }) => {
+export const updateVehicleRoute = createAsyncThunk(
+  "vehicleRoutes/updateVehicleRoute",
+  async ({ route_id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/api/vehicles/edit/${vehicle_id}`, data);
+      const res = await api.post(`/api/vehicle-routes/edit/${route_id}`, data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -60,12 +60,12 @@ export const updateVehicle = createAsyncThunk(
 );
 
 /* ================= DELETE ================= */
-export const deleteVehicle = createAsyncThunk(
-  "vehicles/deleteVehicle",
-  async (vehicle_id, { rejectWithValue }) => {
+export const deleteVehicleRoute = createAsyncThunk(
+  "vehicleRoutes/deleteVehicleRoute",
+  async (route_id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/vehicles/delete/${vehicle_id}`);
-      return vehicle_id;
+      await api.post(`/api/vehicle-routes/delete/${route_id}`);
+      return route_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
     }
@@ -73,10 +73,10 @@ export const deleteVehicle = createAsyncThunk(
 );
 
 /* ================= SLICE ================= */
-const vehicleSlice = createSlice({
-  name: "vehicles",
+const vehicleRouteSlice = createSlice({
+  name: "vehicleRoutes",
   initialState: {
-    vehicles: [],
+    vehicleRoutes: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -91,46 +91,46 @@ const vehicleSlice = createSlice({
   extraReducers: (builder) => {
     builder
       /* ===== GET ===== */
-      .addCase(getVehicles.pending, (state) => {
+      .addCase(getVehicleRoutes.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getVehicles.fulfilled, (state, action) => {
+      .addCase(getVehicleRoutes.fulfilled, (state, action) => {
         state.loading = false;
-        state.vehicles = action.payload?.data?.vehicles || [];
+        state.vehicleRoutes = action.payload?.data?.routes || [];
         state.totalRecords = action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getVehicles.rejected, (state, action) => {
+      .addCase(getVehicleRoutes.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle created successfully";
-        state.vehicles.unshift(action.payload?.data);
+      .addCase(addVehicleRoute.fulfilled, (state, action) => {
+        state.success = "Vehicle route created successfully";
+        state.vehicleRoutes.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle updated successfully";
+      .addCase(updateVehicleRoute.fulfilled, (state, action) => {
+        state.success = "Vehicle route updated successfully";
         const updated = action.payload?.data;
-        state.vehicles = state.vehicles.map((v) =>
-          v.vehicle_id === updated.vehicle_id ? updated : v
+        state.vehicleRoutes = state.vehicleRoutes.map((v) =>
+          v.route_id === updated.route_id ? updated : v
         );
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle deleted successfully";
+      .addCase(deleteVehicleRoute.fulfilled, (state, action) => {
+        state.success = "Vehicle route deleted successfully";
         const deletedId = action.meta.arg;
-        state.vehicles = state.vehicles.filter(
-          (v) => Number(v.vehicle_id) !== Number(deletedId)
+        state.vehicleRoutes = state.vehicleRoutes.filter(
+          (v) => Number(v.route_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       });
   },
 });
 
-export const { clearMessages } = vehicleSlice.actions;
-export default vehicleSlice.reducer;
+export const { clearMessages } = vehicleRouteSlice.actions;
+export default vehicleRouteSlice.reducer;

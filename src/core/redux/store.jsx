@@ -17,6 +17,15 @@ import shiftReducer from "./shiftSlice";
 import assetTypeReducer from "./assettypeSlice";
 import sanitationAssetReducer from "./sanitationAssetSlice";
 import vehicleReducer from "./vehicleSlice";
+import vehicleRouteReducer from "./vehicleRouteSlice";
+import vehicleGeofenceReducer from "./vehicleGeofenceSlice";
+import vehicleCollectionPointReducer from "./vehicleCollectionPointSlice";
+import vehicleDailyTripSummaryReducer from "./vehicleDailyTripSummarySlice";
+import vehicleGpsTrackingReducer from "./vehicleGpsTrackingSlice";
+import vehicleMaintenanceLogReducer from "./vehicleMaintenanceLogSlice";
+import vehiclePerformanceMetricReducer from "./vehiclePerformanceMetricSlice";
+import vehicleRouteAssignmentReducer from "./vehicleRouteAssignmentSlice";
+import vehicleRoutePointsReducer from "./vehicleRoutePointsSlice";
 
 const combinedReducer = combineReducers({
   sidebar: sidebarSlice,
@@ -36,6 +45,15 @@ const combinedReducer = combineReducers({
   assetTypes: assetTypeReducer,
   sanitationAssets: sanitationAssetReducer,
   vehicles: vehicleReducer,
+  vehicleRoutes: vehicleRouteReducer,
+  vehicleGeofences: vehicleGeofenceReducer,
+  vehicleCollectionPoints: vehicleCollectionPointReducer,
+  vehicleDailyTripSummaries: vehicleDailyTripSummaryReducer,
+  vehicleGpsTracking: vehicleGpsTrackingReducer,
+  vehicleMaintenanceLogs: vehicleMaintenanceLogReducer,
+  vehiclePerformanceMetrics: vehiclePerformanceMetricReducer,
+  vehicleRouteAssignments: vehicleRouteAssignmentReducer,
+  vehicleRoutePoints: vehicleRoutePointsReducer,
 });
 
 const rootReducer = (state, action) => {

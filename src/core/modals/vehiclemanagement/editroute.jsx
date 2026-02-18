@@ -1,34 +1,31 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { updateVehicle, clearMessages } from "../../redux/vehicleSlice";
+import { clearMessages, updateVehicleRoute } from "../../redux/vehicleRouteSlice";
 
-const EditVehicle = ({ selectedVehicle }) => {
+const EditRoute = ({ selectedRoute }) => {
   const dispatch = useDispatch();
-  const { success, error, loading } = useSelector((state) => state.vehicles);
+
+  const { success, error, loading } = useSelector(
+    (state) => state.vehicleRoutes
+  );
 
   const [formData, setFormData] = useState({
-    vehicle_name: "",
-    vehicle_type: "",
-    vehicle_number: "",
-    rc_number: "",
-    vendor_id: "",
-    status: "Active",
+    route_code: "",
+    route_name: "",
+    status: "ACTIVE",
   });
 
-  /* ================= PREFILL DATA ================= */
+  /* ================= PREFILL ================= */
   useEffect(() => {
-    if (!selectedVehicle) return;
+    if (!selectedRoute) return;
 
     setFormData({
-      vehicle_name: selectedVehicle.vehicle_name || "",
-      vehicle_type: selectedVehicle.vehicle_type || "",
-      vehicle_number: selectedVehicle.vehicle_number || "",
-      rc_number: selectedVehicle.rc_number || "",
-      vendor_id: selectedVehicle.vendor_id || "",
-      status: selectedVehicle.status || "Active",
+      route_code: selectedRoute.route_code || "",
+      route_name: selectedRoute.route_name || "",
+      status: selectedRoute.status || "ACTIVE",
     });
-  }, [selectedVehicle]);
+  }, [selectedRoute]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
@@ -40,24 +37,26 @@ const EditVehicle = ({ selectedVehicle }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedVehicle?.vehicle_id) return;
+    if (!selectedRoute?.route_id) return;
 
     dispatch(
-      updateVehicle({
-        vehicle_id: selectedVehicle.vehicle_id,
+      updateVehicleRoute({
+        route_id: selectedRoute.route_id, // ✅ FIXED KEY
         data: formData,
       })
     );
   };
 
-  /* ================= CLOSE MODAL ON SUCCESS ================= */
+  /* ================= CLOSE ON SUCCESS ================= */
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-vehicle");
+    const modalEl = document.getElementById("edit-route-modal");
     if (!modalEl) return;
 
-    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modalInstance =
+      Modal.getInstance(modalEl) || new Modal(modalEl);
+
     modalInstance.hide();
     modalInstance.dispose();
 
@@ -72,19 +71,18 @@ const EditVehicle = ({ selectedVehicle }) => {
     }, 300);
   }, [success, dispatch]);
 
-  if (!selectedVehicle) return null;
-
+  // if (!selectedRoute) return null;
   return (
-    <div className="modal fade" id="edit-vehicle">
+    <div className="modal fade" id="edit-route-modal">
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
 
-              {/* ===== HEADER ===== */}
+              {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Vehicle</h4>
+                  <h4>Edit Route</h4>
                 </div>
                 <button
                   type="button"
@@ -93,13 +91,13 @@ const EditVehicle = ({ selectedVehicle }) => {
                 />
               </div>
 
-              {/* ===== BODY ===== */}
+              {/* BODY */}
               <div className="modal-body custom-modal-body">
 
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Vehicle updated successfully
+                    Route updated successfully
                   </div>
                 )}
 
@@ -108,11 +106,11 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Name</label>
+                        <label>Route Code</label>
                         <input
                           type="text"
-                          name="vehicle_name"
-                          value={formData.vehicle_name}
+                          name="route_code"
+                          value={formData.route_code}
                           onChange={handleChange}
                           className="form-control"
                           required
@@ -122,53 +120,14 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Type</label>
+                        <label>Route Name</label>
                         <input
                           type="text"
-                          name="vehicle_type"
-                          value={formData.vehicle_type}
+                          name="route_name"
+                          value={formData.route_name}
                           onChange={handleChange}
                           className="form-control"
                           required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Vehicle Number</label>
-                        <input
-                          type="text"
-                          name="vehicle_number"
-                          value={formData.vehicle_number}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>RC Number</label>
-                        <input
-                          type="text"
-                          name="rc_number"
-                          value={formData.rc_number}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Vendor ID</label>
-                        <input
-                          type="text"
-                          name="vendor_id"
-                          value={formData.vendor_id}
-                          onChange={handleChange}
-                          className="form-control"
                         />
                       </div>
                     </div>
@@ -182,15 +141,14 @@ const EditVehicle = ({ selectedVehicle }) => {
                           value={formData.status}
                           onChange={handleChange}
                         >
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
+                          <option value="ACTIVE">ACTIVE</option>
+                          <option value="INACTIVE">INACTIVE</option>
                         </select>
                       </div>
                     </div>
 
                   </div>
 
-                  {/* ===== FOOTER ===== */}
                   <div className="modal-footer-btn mt-3">
                     <button
                       type="button"
@@ -218,4 +176,4 @@ const EditVehicle = ({ selectedVehicle }) => {
   );
 };
 
-export default EditVehicle;
+export default EditRoute;

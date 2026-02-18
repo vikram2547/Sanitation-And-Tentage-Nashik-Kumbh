@@ -1,34 +1,30 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { updateVehicle, clearMessages } from "../../redux/vehicleSlice";
+import { clearMessages, updateVehicleGeofence } from "../../redux/vehicleGeofenceSlice";
 
-const EditVehicle = ({ selectedVehicle }) => {
+const EditGeofences = ({ selectedGeofence }) => {
   const dispatch = useDispatch();
-  const { success, error, loading } = useSelector((state) => state.vehicles);
+  const { success, error, loading } = useSelector(
+    (state) => state.geofences
+  );
 
   const [formData, setFormData] = useState({
-    vehicle_name: "",
-    vehicle_type: "",
-    vehicle_number: "",
-    rc_number: "",
-    vendor_id: "",
-    status: "Active",
+    point_id: "",
+    radius_meters: "",
+    is_active: 1,
   });
 
-  /* ================= PREFILL DATA ================= */
+  /* ================= PREFILL ================= */
   useEffect(() => {
-    if (!selectedVehicle) return;
+    if (!selectedGeofence) return;
 
     setFormData({
-      vehicle_name: selectedVehicle.vehicle_name || "",
-      vehicle_type: selectedVehicle.vehicle_type || "",
-      vehicle_number: selectedVehicle.vehicle_number || "",
-      rc_number: selectedVehicle.rc_number || "",
-      vendor_id: selectedVehicle.vendor_id || "",
-      status: selectedVehicle.status || "Active",
+      point_id: selectedGeofence.point_id || "",
+      radius_meters: selectedGeofence.radius_meters || "",
+      is_active: selectedGeofence.is_active ?? 1,
     });
-  }, [selectedVehicle]);
+  }, [selectedGeofence]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
@@ -40,24 +36,25 @@ const EditVehicle = ({ selectedVehicle }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedVehicle?.vehicle_id) return;
+    if (!selectedGeofence?.id) return;
 
     dispatch(
-      updateVehicle({
-        vehicle_id: selectedVehicle.vehicle_id,
+      updateVehicleGeofence({
+        id: selectedGeofence.id,
         data: formData,
       })
     );
   };
 
-  /* ================= CLOSE MODAL ON SUCCESS ================= */
+  /* ================= CLOSE ON SUCCESS ================= */
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-vehicle");
+    const modalEl = document.getElementById("edit-geofences");
     if (!modalEl) return;
 
-    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modalInstance =
+      Modal.getInstance(modalEl) || new Modal(modalEl);
     modalInstance.hide();
     modalInstance.dispose();
 
@@ -72,10 +69,10 @@ const EditVehicle = ({ selectedVehicle }) => {
     }, 300);
   }, [success, dispatch]);
 
-  if (!selectedVehicle) return null;
+  if (!selectedGeofence) return null;
 
   return (
-    <div className="modal fade" id="edit-vehicle">
+    <div className="modal fade" id="edit-geofences">
       <div className="modal-dialog modal-lg modal-dialog-centered">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
@@ -84,7 +81,7 @@ const EditVehicle = ({ selectedVehicle }) => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Vehicle</h4>
+                  <h4>Edit Geofence</h4>
                 </div>
                 <button
                   type="button"
@@ -99,7 +96,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Vehicle updated successfully
+                    Geofence updated successfully
                   </div>
                 )}
 
@@ -108,11 +105,11 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Name</label>
+                        <label>Point ID</label>
                         <input
-                          type="text"
-                          name="vehicle_name"
-                          value={formData.vehicle_name}
+                          type="number"
+                          name="point_id"
+                          value={formData.point_id}
                           onChange={handleChange}
                           className="form-control"
                           required
@@ -122,53 +119,14 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Type</label>
+                        <label>Radius (Meters)</label>
                         <input
-                          type="text"
-                          name="vehicle_type"
-                          value={formData.vehicle_type}
+                          type="number"
+                          name="radius_meters"
+                          value={formData.radius_meters}
                           onChange={handleChange}
                           className="form-control"
                           required
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Vehicle Number</label>
-                        <input
-                          type="text"
-                          name="vehicle_number"
-                          value={formData.vehicle_number}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>RC Number</label>
-                        <input
-                          type="text"
-                          name="rc_number"
-                          value={formData.rc_number}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Vendor ID</label>
-                        <input
-                          type="text"
-                          name="vendor_id"
-                          value={formData.vendor_id}
-                          onChange={handleChange}
-                          className="form-control"
                         />
                       </div>
                     </div>
@@ -178,12 +136,12 @@ const EditVehicle = ({ selectedVehicle }) => {
                         <label>Status</label>
                         <select
                           className="form-control"
-                          name="status"
-                          value={formData.status}
+                          name="is_active"
+                          value={formData.is_active}
                           onChange={handleChange}
                         >
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
+                          <option value={1}>Active</option>
+                          <option value={0}>Inactive</option>
                         </select>
                       </div>
                     </div>
@@ -218,4 +176,4 @@ const EditVehicle = ({ selectedVehicle }) => {
   );
 };
 
-export default EditVehicle;
+export default EditGeofences;

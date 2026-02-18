@@ -42,7 +42,15 @@ import Questions from "../feature-module/questionmanagement/questions";
 import AssetType from "../feature-module/assettypemanagement/assettype";
 import SanitationAsset from "../feature-module/assettypemanagement/sanitationAsset";
 import Vehicles from "../feature-module/vehiclemanagement/vehicles.jsx";
-
+import VehicleRoutes from "../feature-module/vehiclemanagement/vehicleroutes.jsx";
+import VehicleRouteAssignment from "../feature-module/vehiclemanagement/vehicleRouteAssignment.jsx";
+import VehicleRoutePoints from "../feature-module/vehiclemanagement/vehicleRoutePoints.jsx";
+import VehicleCollectionPoints from "../feature-module/vehiclemanagement/vehicleCollectionPoints.jsx";
+import VehicleDailyTripSummaries from "../feature-module/vehiclemanagement/vehicleDailyTripSummaries.jsx";
+import VehicleGpsTracking from "../feature-module/vehiclemanagement/vehicleGpsTracking.jsx";
+import VehicleGeofences from "../feature-module/vehiclemanagement/vehicleGeofences.jsx";
+import VehicleMaintenanceLogs from "../feature-module/vehiclemanagement/vehicleMaintenanceLogs.jsx";
+import VehiclePerformanceMetrics from "../feature-module/vehiclemanagement/vehiclePerformanceMetrics.jsx";
 
 
 
@@ -1218,10 +1226,73 @@ export const authRoutes = [
   route: Route
 },
 {
-  id: 260,
+  id: 261,
   path: routes.vehicles,
   name: "vehicles",
   element: <Vehicles />,
+  route: Route
+},
+{
+  id: 262,
+  path: routes.vehicleroutes,
+  name: "vehicleroutes",
+  element: <VehicleRoutes />,
+  route: Route
+},
+{
+  id: 263,
+  path: routes.vehiclerouteassignments,
+  name: "vehiclerouteassignments",
+  element: <VehicleRouteAssignment />,
+  route: Route
+},
+{
+  id: 264,
+  path: routes.vehicleroutepoints,
+  name: "vehicleroutepoints",
+  element: <VehicleRoutePoints />,
+  route: Route
+},
+{
+  id: 265,
+  path: routes.vehiclecollectionpoints,
+  name: "vehiclecollectionpoints",
+  element: <VehicleCollectionPoints />,
+  route: Route
+},
+{
+  id: 266,
+  path: routes.vehicledailytripsummaries,
+  name: "vehicledailytripsummaries",
+  element: <VehicleDailyTripSummaries />,
+  route: Route
+},
+{
+  id: 267,
+  path: routes.vehiclegpstracking,
+  name: "vehiclegpstracking",
+  element: <VehicleGpsTracking />,
+  route: Route
+},
+{
+  id: 268,
+  path: routes.vehiclegeofences,
+  name: "vehiclegeofences",
+  element: <VehicleGeofences />,
+  route: Route
+},
+{
+  id: 269,
+  path: routes.vehiclemaintenancelogs,
+  name: "vehiclemaintenancelogs",
+  element: <VehicleMaintenanceLogs />,
+  route: Route
+},
+{
+  id: 270,
+  path: routes.vehicleperformancemetrics,
+  name: "vehicleperformancemetrics",
+  element: <VehiclePerformanceMetrics />,
   route: Route
 },
 {

@@ -5,95 +5,95 @@ import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
 
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessages, deleteVehicle, getVehicles } from "../../core/redux/vehicleSlice";
-import AddVehicle from "../../core/modals/vehiclemanagement/addvehicle";
-import EditVehicle from "../../core/modals/vehiclemanagement/editvehicle";
-import ViewVehicle from "../../core/modals/vehiclemanagement/viewvehicle";
+import { clearMessages, deleteVehicleGpsTracking, getVehicleGpsTracking } from "../../core/redux/vehicleGpsTrackingSlice";
+import AddGpsTracking from "../../core/modals/vehiclemanagement/addgpstracking";
+import EditGpsTracking from "../../core/modals/vehiclemanagement/editgpstracking";
+import ViewGpsTracking from "../../core/modals/vehiclemanagement/viewgpstracking";
 
-
-const Vehicles = () => {
+const VehicleGpsTracking = () => {
   const dispatch = useDispatch();
 
-  const { vehicles, loading, success, error } = useSelector(
-    (state) => state.vehicles
+  const { gpsTracking, loading, success, error } = useSelector(
+    (state) => state.vehicleGpsTracking
   );
 
   const [rows, setRows] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [viewVehicleData, setViewVehicleData] = useState(null);
-  const [editVehicleData, setEditVehicleData] = useState(null);
+  const [selectedGps, setSelectedGps] = useState(null);
+  const [viewGpsData, setViewGpsData] = useState(null);
+  const [editGpsData, setEditGpsData] = useState(null);
 
-  // ============================
-  // FETCH VEHICLES
-  // ============================
+
+  /* ================= FETCH ================= */
   useEffect(() => {
-    dispatch(getVehicles({ page: currentPage, per_page: rows }));
+    dispatch(getVehicleGpsTracking({ page: currentPage, per_page: rows }));
   }, [dispatch, currentPage, rows]);
 
-  // ============================
-  // AUTO CLEAR SUCCESS / ERROR
-  // ============================
+  /* ================= AUTO CLEAR ================= */
   useEffect(() => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
       }, 5000);
-
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
 
-  // ============================
-  // DELETE VEHICLE
-  // ============================
+  /* ================= DELETE ================= */
   const handleDelete = async () => {
     if (!deleteId) return;
 
-    const res = await dispatch(deleteVehicle(deleteId));
-
+    const res = await dispatch(deleteVehicleGpsTracking(deleteId));
     if (res.meta.requestStatus === "fulfilled") {
-      dispatch(getVehicles({ page: currentPage, per_page: rows }));
+      dispatch(getVehicleGpsTracking({ page: currentPage, per_page: rows }));
     }
-
     setDeleteId(null);
   };
 
-  // ============================
-  // TABLE COLUMNS
-  // ============================
+  /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Name",
-      field: "vehicle_name",
+      header: "Vehicle ID",
+      field: "vehicle_id",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_name || "-",
+      body: (rowData) => rowData?.vehicle_id || "-",
     },
     {
-      header: "Type",
-      field: "vehicle_type",
+      header: "Assignment ID",
+      field: "assignment_id",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_type || "-",
+      body: (rowData) => rowData?.assignment_id || "-",
     },
     {
-      header: "Number",
-      field: "vehicle_number",
+      header: "Latitude",
+      field: "latitude",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_number || "-",
+      body: (rowData) => rowData?.latitude || "-",
     },
     {
-      header: "Vendor",
-      field: "vendor_id",
+      header: "Longitude",
+      field: "longitude",
       sortable: true,
-      body: (rowData) => rowData?.vendor_id || "-",
+      body: (rowData) => rowData?.longitude || "-",
     },
     {
-      header: "Status",
-      field: "status",
+      header: "Speed",
+      field: "speed",
       sortable: true,
-      body: (rowData) =>
-        rowData?.status === "Active" ? "Active" : "Inactive",
+      body: (rowData) => rowData?.speed || "-",
+    },
+    {
+      header: "Ignition",
+      field: "ignition_status",
+      sortable: true,
+      body: (rowData) => rowData?.ignition_status || "-",
+    },
+    {
+      header: "Timestamp",
+      field: "timestamp",
+      sortable: true,
+      body: (rowData) => rowData?.timestamp || "-",
     },
     {
       header: "Actions",
@@ -108,8 +108,8 @@ const Vehicles = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#view-vehicle-modal"
-              onClick={() => setViewVehicleData(rowData)}
+              data-bs-target="#view-gps-modal"
+              onClick={() => setViewGpsData(rowData)}
             >
               <i className="feather feather-eye action-eye"></i>
             </Link>
@@ -119,8 +119,8 @@ const Vehicles = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-vehicle"
-              onClick={() => setEditVehicleData(rowData)}
+              data-bs-target="#edit-gps-tracking"
+              onClick={() => setEditGpsData(rowData)}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -130,8 +130,8 @@ const Vehicles = () => {
               className="confirm-text p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#delete-vehicle-modal"
-              onClick={() => setDeleteId(rowData.vehicle_id)}
+              data-bs-target="#delete-gps-modal"
+              onClick={() => setDeleteId(rowData.id)}
             >
               <i className="feather-trash-2"></i>
             </Link>
@@ -150,26 +150,14 @@ const Vehicles = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicles</h4>
-                <h6>Manage Vehicles</h6>
+                <h4>Vehicle GPS Tracking</h4>
+                <h6>Manage Vehicle GPS Tracking</h6>
               </div>
             </div>
 
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
-
-            <div className="page-btn">
-              <Link
-                to="#"
-                className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-vehicle"
-              >
-                <i className="ti ti-circle-plus me-1"></i>
-                Add Vehicle
-              </Link>
-            </div>
           </div>
 
           <div className="card table-list-card">
@@ -181,16 +169,16 @@ const Vehicles = () => {
               <div className="table-responsive">
                 <PrimeDataTable
                   column={columns}
-                  data={Array.isArray(vehicles) ? vehicles : []}
-                  totalRecords={vehicles?.length || 0}
+                  data={Array.isArray(gpsTracking) ? gpsTracking : []}
+                  totalRecords={gpsTracking?.length || 0}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   rows={rows}
                   setRows={setRows}
                   selectionMode="checkbox"
-                  selection={selectedVehicle}
-                  onSelectionChange={(e) => setSelectedVehicle(e.value)}
-                  dataKey="vehicle_id"
+                  selection={selectedGps}
+                  onSelectionChange={(e) => setSelectedGps(e.value)}
+                  dataKey="id"
                 />
               </div>
 
@@ -205,13 +193,12 @@ const Vehicles = () => {
         </div>
       </div>
 
-      {/* MODALS */}
-      <AddVehicle />
-      <EditVehicle selectedVehicle={editVehicleData} />
-      <ViewVehicle selectedVehicle={viewVehicleData} />
+      <AddGpsTracking />
+      <EditGpsTracking selectedGps={editGpsData} />
+      <ViewGpsTracking selectedGps={viewGpsData} />
 
       {/* DELETE MODAL */}
-      <div className="modal fade" id="delete-vehicle-modal">
+      <div className="modal fade" id="delete-gps-modal">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="page-wrapper-new p-0">
@@ -220,10 +207,10 @@ const Vehicles = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Vehicle
+                  Delete GPS Record
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this vehicle?
+                  Are you sure you want to delete this GPS record?
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -252,4 +239,4 @@ const Vehicles = () => {
   );
 };
 
-export default Vehicles;
+export default VehicleGpsTracking;

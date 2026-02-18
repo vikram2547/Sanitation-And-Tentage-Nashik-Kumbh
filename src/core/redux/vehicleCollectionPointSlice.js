@@ -19,11 +19,11 @@ api.interceptors.request.use((config) => {
 });
 
 /* ================= GET ================= */
-export const getVehicles = createAsyncThunk(
-  "vehicles/getVehicles",
+export const getVehicleCollectionPoints = createAsyncThunk(
+  "vehicleCollectionPoints/getVehicleCollectionPoints",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicles", {
+      const res = await api.get("/api/vehicle-collection-points", {
         params: { page, per_page },
       });
       return res.data;
@@ -34,11 +34,14 @@ export const getVehicles = createAsyncThunk(
 );
 
 /* ================= ADD ================= */
-export const addVehicle = createAsyncThunk(
-  "vehicles/addVehicle",
+export const addVehicleCollectionPoint = createAsyncThunk(
+  "vehicleCollectionPoints/addVehicleCollectionPoint",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/vehicles/new", data);
+      const res = await api.post(
+        "/api/vehicle-collection-points/new",
+        data
+      );
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -47,11 +50,14 @@ export const addVehicle = createAsyncThunk(
 );
 
 /* ================= UPDATE ================= */
-export const updateVehicle = createAsyncThunk(
-  "vehicles/updateVehicle",
-  async ({ vehicle_id, data }, { rejectWithValue }) => {
+export const updateVehicleCollectionPoint = createAsyncThunk(
+  "vehicleCollectionPoints/updateVehicleCollectionPoint",
+  async ({ collection_point_id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/api/vehicles/edit/${vehicle_id}`, data);
+      const res = await api.post(
+        `/api/vehicle-collection-points/edit/${collection_point_id}`,
+        data
+      );
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -60,12 +66,14 @@ export const updateVehicle = createAsyncThunk(
 );
 
 /* ================= DELETE ================= */
-export const deleteVehicle = createAsyncThunk(
-  "vehicles/deleteVehicle",
-  async (vehicle_id, { rejectWithValue }) => {
+export const deleteVehicleCollectionPoint = createAsyncThunk(
+  "vehicleCollectionPoints/deleteVehicleCollectionPoint",
+  async (collection_point_id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/vehicles/delete/${vehicle_id}`);
-      return vehicle_id;
+      await api.post(
+        `/api/vehicle-collection-points/delete/${collection_point_id}`
+      );
+      return collection_point_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
     }
@@ -73,8 +81,8 @@ export const deleteVehicle = createAsyncThunk(
 );
 
 /* ================= SLICE ================= */
-const vehicleSlice = createSlice({
-  name: "vehicles",
+const vehicleCollectionPointSlice = createSlice({
+  name: "vehicleCollectionPoints",
   initialState: {
     vehicles: [],
     totalRecords: 0,
@@ -91,46 +99,50 @@ const vehicleSlice = createSlice({
   extraReducers: (builder) => {
     builder
       /* ===== GET ===== */
-      .addCase(getVehicles.pending, (state) => {
+      .addCase(getVehicleCollectionPoints.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getVehicles.fulfilled, (state, action) => {
+      .addCase(getVehicleCollectionPoints.fulfilled, (state, action) => {
         state.loading = false;
         state.vehicles = action.payload?.data?.vehicles || [];
-        state.totalRecords = action.payload?.data?.paging?.totalrecords || 0;
+        state.totalRecords =
+          action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getVehicles.rejected, (state, action) => {
+      .addCase(getVehicleCollectionPoints.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle created successfully";
+      .addCase(addVehicleCollectionPoint.fulfilled, (state, action) => {
+        state.success = "Vehicle collection point created successfully";
         state.vehicles.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle updated successfully";
+      .addCase(updateVehicleCollectionPoint.fulfilled, (state, action) => {
+        state.success = "Vehicle collection point updated successfully";
         const updated = action.payload?.data;
         state.vehicles = state.vehicles.map((v) =>
-          v.vehicle_id === updated.vehicle_id ? updated : v
+          v.collection_point_id === updated.collection_point_id
+            ? updated
+            : v
         );
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle deleted successfully";
+      .addCase(deleteVehicleCollectionPoint.fulfilled, (state, action) => {
+        state.success = "Vehicle collection point deleted successfully";
         const deletedId = action.meta.arg;
         state.vehicles = state.vehicles.filter(
-          (v) => Number(v.vehicle_id) !== Number(deletedId)
+          (v) =>
+            Number(v.collection_point_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       });
   },
 });
 
-export const { clearMessages } = vehicleSlice.actions;
-export default vehicleSlice.reducer;
+export const { clearMessages } = vehicleCollectionPointSlice.actions;
+export default vehicleCollectionPointSlice.reducer;

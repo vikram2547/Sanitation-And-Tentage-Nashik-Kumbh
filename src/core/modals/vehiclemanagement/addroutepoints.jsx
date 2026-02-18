@@ -1,34 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { updateVehicle, clearMessages } from "../../redux/vehicleSlice";
+import { addVehicleRoutePoint, clearMessages } from "../../redux/vehicleRoutePointsSlice";
 
-const EditVehicle = ({ selectedVehicle }) => {
+
+const AddRoutePoints = () => {
   const dispatch = useDispatch();
-  const { success, error, loading } = useSelector((state) => state.vehicles);
+
+  const { success, error, loading } = useSelector(
+    (state) => state.routePoints
+  );
 
   const [formData, setFormData] = useState({
-    vehicle_name: "",
-    vehicle_type: "",
-    vehicle_number: "",
-    rc_number: "",
-    vendor_id: "",
-    status: "Active",
+    route_id: "",
+    point_id: "",
+    sequence_number: "",
+    estimated_arrival_time: "",
+    expected_stay_duration: "",
   });
-
-  /* ================= PREFILL DATA ================= */
-  useEffect(() => {
-    if (!selectedVehicle) return;
-
-    setFormData({
-      vehicle_name: selectedVehicle.vehicle_name || "",
-      vehicle_type: selectedVehicle.vehicle_type || "",
-      vehicle_number: selectedVehicle.vehicle_number || "",
-      rc_number: selectedVehicle.rc_number || "",
-      vendor_id: selectedVehicle.vendor_id || "",
-      status: selectedVehicle.status || "Active",
-    });
-  }, [selectedVehicle]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
@@ -40,26 +29,27 @@ const EditVehicle = ({ selectedVehicle }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedVehicle?.vehicle_id) return;
-
     dispatch(
-      updateVehicle({
-        vehicle_id: selectedVehicle.vehicle_id,
-        data: formData,
+      addVehicleRoutePoint({
+        route_id: Number(formData.route_id),
+        point_id: Number(formData.point_id),
+        sequence_number: Number(formData.sequence_number),
+        estimated_arrival_time: formData.estimated_arrival_time,
+        expected_stay_duration: formData.expected_stay_duration,
       })
     );
   };
 
-  /* ================= CLOSE MODAL ON SUCCESS ================= */
+  /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-vehicle");
-    if (!modalEl) return;
-
-    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl);
-    modalInstance.hide();
-    modalInstance.dispose();
+    const modalEl = document.getElementById("add-route-point");
+    if (modalEl) {
+      const modalInstance =
+        Modal.getInstance(modalEl) || new Modal(modalEl);
+      modalInstance.hide();
+    }
 
     setTimeout(() => {
       document.body.classList.remove("modal-open");
@@ -67,16 +57,31 @@ const EditVehicle = ({ selectedVehicle }) => {
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
-
-      dispatch(clearMessages());
     }, 300);
-  }, [success, dispatch]);
 
-  if (!selectedVehicle) return null;
+    setFormData({
+      route_id: "",
+      point_id: "",
+      sequence_number: "",
+      estimated_arrival_time: "",
+      expected_stay_duration: "",
+    });
+  }, [success]);
+
+  /* ================= AUTO CLEAR ================= */
+  useEffect(() => {
+    if (!success && !error) return;
+
+    const timer = setTimeout(() => {
+      dispatch(clearMessages());
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [success, error, dispatch]);
 
   return (
-    <div className="modal fade" id="edit-vehicle">
-      <div className="modal-dialog modal-lg modal-dialog-centered">
+    <div className="modal fade" id="add-route-point">
+      <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -84,13 +89,15 @@ const EditVehicle = ({ selectedVehicle }) => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Vehicle</h4>
+                  <h4>Add Route Point</h4>
                 </div>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="close"
                   data-bs-dismiss="modal"
-                />
+                >
+                  <span>×</span>
+                </button>
               </div>
 
               {/* ===== BODY ===== */}
@@ -99,7 +106,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Vehicle updated successfully
+                    Route point added successfully
                   </div>
                 )}
 
@@ -108,11 +115,11 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Name</label>
+                        <label>Route ID</label>
                         <input
-                          type="text"
-                          name="vehicle_name"
-                          value={formData.vehicle_name}
+                          type="number"
+                          name="route_id"
+                          value={formData.route_id}
                           onChange={handleChange}
                           className="form-control"
                           required
@@ -122,11 +129,11 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Type</label>
+                        <label>Point ID</label>
                         <input
-                          type="text"
-                          name="vehicle_type"
-                          value={formData.vehicle_type}
+                          type="number"
+                          name="point_id"
+                          value={formData.point_id}
                           onChange={handleChange}
                           className="form-control"
                           required
@@ -136,55 +143,43 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Number</label>
+                        <label>Sequence Number</label>
                         <input
-                          type="text"
-                          name="vehicle_number"
-                          value={formData.vehicle_number}
+                          type="number"
+                          name="sequence_number"
+                          value={formData.sequence_number}
                           onChange={handleChange}
                           className="form-control"
+                          required
                         />
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>RC Number</label>
+                        <label>Estimated Arrival Time</label>
                         <input
-                          type="text"
-                          name="rc_number"
-                          value={formData.rc_number}
+                          type="time"
+                          name="estimated_arrival_time"
+                          value={formData.estimated_arrival_time}
                           onChange={handleChange}
                           className="form-control"
+                          required
                         />
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor ID</label>
+                        <label>Expected Stay Duration</label>
                         <input
-                          type="text"
-                          name="vendor_id"
-                          value={formData.vendor_id}
+                          type="time"
+                          name="expected_stay_duration"
+                          value={formData.expected_stay_duration}
                           onChange={handleChange}
                           className="form-control"
+                          required
                         />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Status</label>
-                        <select
-                          className="form-control"
-                          name="status"
-                          value={formData.status}
-                          onChange={handleChange}
-                        >
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
-                        </select>
                       </div>
                     </div>
 
@@ -204,11 +199,11 @@ const EditVehicle = ({ selectedVehicle }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? "Adding..." : "Submit"}
                     </button>
                   </div>
-
                 </form>
+
               </div>
             </div>
           </div>
@@ -218,4 +213,4 @@ const EditVehicle = ({ selectedVehicle }) => {
   );
 };
 
-export default EditVehicle;
+export default AddRoutePoints;

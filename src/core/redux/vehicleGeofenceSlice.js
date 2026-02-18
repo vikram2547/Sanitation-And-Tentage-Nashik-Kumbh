@@ -19,11 +19,11 @@ api.interceptors.request.use((config) => {
 });
 
 /* ================= GET ================= */
-export const getVehicles = createAsyncThunk(
-  "vehicles/getVehicles",
+export const getVehicleGeofences = createAsyncThunk(
+  "vehicleGeofences/getVehicleGeofences",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicles", {
+      const res = await api.get("/api/vehicle-geofences", {
         params: { page, per_page },
       });
       return res.data;
@@ -34,11 +34,11 @@ export const getVehicles = createAsyncThunk(
 );
 
 /* ================= ADD ================= */
-export const addVehicle = createAsyncThunk(
-  "vehicles/addVehicle",
+export const addVehicleGeofence = createAsyncThunk(
+  "vehicleGeofences/addVehicleGeofence",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/vehicles/new", data);
+      const res = await api.post("/api/vehicle-geofences/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -47,11 +47,14 @@ export const addVehicle = createAsyncThunk(
 );
 
 /* ================= UPDATE ================= */
-export const updateVehicle = createAsyncThunk(
-  "vehicles/updateVehicle",
-  async ({ vehicle_id, data }, { rejectWithValue }) => {
+export const updateVehicleGeofence = createAsyncThunk(
+  "vehicleGeofences/updateVehicleGeofence",
+  async ({ geofence_id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/api/vehicles/edit/${vehicle_id}`, data);
+      const res = await api.post(
+        `/api/vehicle-geofences/edit/${geofence_id}`,
+        data
+      );
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -60,12 +63,12 @@ export const updateVehicle = createAsyncThunk(
 );
 
 /* ================= DELETE ================= */
-export const deleteVehicle = createAsyncThunk(
-  "vehicles/deleteVehicle",
-  async (vehicle_id, { rejectWithValue }) => {
+export const deleteVehicleGeofence = createAsyncThunk(
+  "vehicleGeofences/deleteVehicleGeofence",
+  async (geofence_id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/vehicles/delete/${vehicle_id}`);
-      return vehicle_id;
+      await api.post(`/api/vehicle-geofences/delete/${geofence_id}`);
+      return geofence_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
     }
@@ -73,8 +76,8 @@ export const deleteVehicle = createAsyncThunk(
 );
 
 /* ================= SLICE ================= */
-const vehicleSlice = createSlice({
-  name: "vehicles",
+const vehicleGeofenceSlice = createSlice({
+  name: "vehicleGeofences",
   initialState: {
     vehicles: [],
     totalRecords: 0,
@@ -91,46 +94,47 @@ const vehicleSlice = createSlice({
   extraReducers: (builder) => {
     builder
       /* ===== GET ===== */
-      .addCase(getVehicles.pending, (state) => {
+      .addCase(getVehicleGeofences.pending, (state) => {
         state.loading = true;
       })
-      .addCase(getVehicles.fulfilled, (state, action) => {
+      .addCase(getVehicleGeofences.fulfilled, (state, action) => {
         state.loading = false;
         state.vehicles = action.payload?.data?.vehicles || [];
-        state.totalRecords = action.payload?.data?.paging?.totalrecords || 0;
+        state.totalRecords =
+          action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getVehicles.rejected, (state, action) => {
+      .addCase(getVehicleGeofences.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle created successfully";
+      .addCase(addVehicleGeofence.fulfilled, (state, action) => {
+        state.success = "Vehicle geofence created successfully";
         state.vehicles.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle updated successfully";
+      .addCase(updateVehicleGeofence.fulfilled, (state, action) => {
+        state.success = "Vehicle geofence updated successfully";
         const updated = action.payload?.data;
         state.vehicles = state.vehicles.map((v) =>
-          v.vehicle_id === updated.vehicle_id ? updated : v
+          v.geofence_id === updated.geofence_id ? updated : v
         );
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteVehicle.fulfilled, (state, action) => {
-        state.success = "Vehicle deleted successfully";
+      .addCase(deleteVehicleGeofence.fulfilled, (state, action) => {
+        state.success = "Vehicle geofence deleted successfully";
         const deletedId = action.meta.arg;
         state.vehicles = state.vehicles.filter(
-          (v) => Number(v.vehicle_id) !== Number(deletedId)
+          (v) => Number(v.geofence_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       });
   },
 });
 
-export const { clearMessages } = vehicleSlice.actions;
-export default vehicleSlice.reducer;
+export const { clearMessages } = vehicleGeofenceSlice.actions;
+export default vehicleGeofenceSlice.reducer;

@@ -5,95 +5,91 @@ import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
 
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessages, deleteVehicle, getVehicles } from "../../core/redux/vehicleSlice";
-import AddVehicle from "../../core/modals/vehiclemanagement/addvehicle";
-import EditVehicle from "../../core/modals/vehiclemanagement/editvehicle";
-import ViewVehicle from "../../core/modals/vehiclemanagement/viewvehicle";
+import { clearMessages, deleteVehicleCollectionPoint, getVehicleCollectionPoints } from "../../core/redux/vehicleCollectionPointSlice";
+import ViewCollectionPoints from "../../core/modals/vehiclemanagement/viewcollectionpoints";
+import AddCollectionPoint from "../../core/modals/vehiclemanagement/addcollectionpoint";
+import EditCollectionPoint from "../../core/modals/vehiclemanagement/editcollectionpoint";
 
 
-const Vehicles = () => {
+const VehicleCollectionPoints = () => {
   const dispatch = useDispatch();
 
-  const { vehicles, loading, success, error } = useSelector(
-    (state) => state.vehicles
+  const { collectionPoints, loading, success, error } = useSelector(
+    (state) => state.vehicleCollectionPoints
   );
 
   const [rows, setRows] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [viewVehicleData, setViewVehicleData] = useState(null);
-  const [editVehicleData, setEditVehicleData] = useState(null);
+  const [selectedPoint, setSelectedPoint] = useState(null);
+  const [viewPointData, setViewPointData] = useState(null);
+  const [editPointData, seteditPointData] = useState(null);
 
-  // ============================
-  // FETCH VEHICLES
-  // ============================
+
+  /* ================= FETCH ================= */
   useEffect(() => {
-    dispatch(getVehicles({ page: currentPage, per_page: rows }));
+    dispatch(getVehicleCollectionPoints({ page: currentPage, per_page: rows }));
   }, [dispatch, currentPage, rows]);
 
-  // ============================
-  // AUTO CLEAR SUCCESS / ERROR
-  // ============================
+  /* ================= AUTO CLEAR ================= */
   useEffect(() => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
       }, 5000);
-
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
 
-  // ============================
-  // DELETE VEHICLE
-  // ============================
+  /* ================= DELETE ================= */
   const handleDelete = async () => {
     if (!deleteId) return;
 
-    const res = await dispatch(deleteVehicle(deleteId));
-
+    const res = await dispatch(deleteVehicleCollectionPoint(deleteId));
     if (res.meta.requestStatus === "fulfilled") {
-      dispatch(getVehicles({ page: currentPage, per_page: rows }));
+      dispatch(getVehicleCollectionPoints({ page: currentPage, per_page: rows }));
     }
-
     setDeleteId(null);
   };
 
-  // ============================
-  // TABLE COLUMNS
-  // ============================
+  /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Name",
-      field: "vehicle_name",
+      header: "Point Code",
+      field: "point_code",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_name || "-",
+      body: (rowData) => rowData?.point_code || "-",
     },
     {
-      header: "Type",
-      field: "vehicle_type",
+      header: "Point Name",
+      field: "point_name",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_type || "-",
+      body: (rowData) => rowData?.point_name || "-",
     },
     {
-      header: "Number",
-      field: "vehicle_number",
+      header: "Latitude",
+      field: "latitude",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_number || "-",
+      body: (rowData) => rowData?.latitude || "-",
     },
     {
-      header: "Vendor",
-      field: "vendor_id",
+      header: "Longitude",
+      field: "longitude",
       sortable: true,
-      body: (rowData) => rowData?.vendor_id || "-",
+      body: (rowData) => rowData?.longitude || "-",
+    },
+    {
+      header: "Point Type",
+      field: "point_type",
+      sortable: true,
+      body: (rowData) => rowData?.point_type || "-",
     },
     {
       header: "Status",
       field: "status",
       sortable: true,
       body: (rowData) =>
-        rowData?.status === "Active" ? "Active" : "Inactive",
+        rowData?.status === "ACTIVE" ? "Active" : "Inactive",
     },
     {
       header: "Actions",
@@ -108,8 +104,8 @@ const Vehicles = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#view-vehicle-modal"
-              onClick={() => setViewVehicleData(rowData)}
+              data-bs-target="#view-collection-point-modal"
+              onClick={() => setViewPointData(rowData)}
             >
               <i className="feather feather-eye action-eye"></i>
             </Link>
@@ -119,8 +115,8 @@ const Vehicles = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-vehicle"
-              onClick={() => setEditVehicleData(rowData)}
+              data-bs-target="#edit-collection-point"
+              onClick={() => seteditPointData(rowData)}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -130,8 +126,8 @@ const Vehicles = () => {
               className="confirm-text p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#delete-vehicle-modal"
-              onClick={() => setDeleteId(rowData.vehicle_id)}
+              data-bs-target="#delete-collection-point-modal"
+              onClick={() => setDeleteId(rowData.point_code)}
             >
               <i className="feather-trash-2"></i>
             </Link>
@@ -150,26 +146,14 @@ const Vehicles = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicles</h4>
-                <h6>Manage Vehicles</h6>
+                <h4>Collection Points</h4>
+                <h6>Manage Collection Points</h6>
               </div>
             </div>
 
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
-
-            <div className="page-btn">
-              <Link
-                to="#"
-                className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-vehicle"
-              >
-                <i className="ti ti-circle-plus me-1"></i>
-                Add Vehicle
-              </Link>
-            </div>
           </div>
 
           <div className="card table-list-card">
@@ -181,16 +165,16 @@ const Vehicles = () => {
               <div className="table-responsive">
                 <PrimeDataTable
                   column={columns}
-                  data={Array.isArray(vehicles) ? vehicles : []}
-                  totalRecords={vehicles?.length || 0}
+                  data={Array.isArray(collectionPoints) ? collectionPoints : []}
+                  totalRecords={collectionPoints?.length || 0}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   rows={rows}
                   setRows={setRows}
                   selectionMode="checkbox"
-                  selection={selectedVehicle}
-                  onSelectionChange={(e) => setSelectedVehicle(e.value)}
-                  dataKey="vehicle_id"
+                  selection={selectedPoint}
+                  onSelectionChange={(e) => setSelectedPoint(e.value)}
+                  dataKey="point_code"
                 />
               </div>
 
@@ -205,13 +189,13 @@ const Vehicles = () => {
         </div>
       </div>
 
-      {/* MODALS */}
-      <AddVehicle />
-      <EditVehicle selectedVehicle={editVehicleData} />
-      <ViewVehicle selectedVehicle={viewVehicleData} />
+      {/* VIEW MODAL */}
+      <AddCollectionPoint />
+      <EditCollectionPoint selectedPoint={editPointData} />
+      <ViewCollectionPoints selectedPoint={viewPointData} />
 
       {/* DELETE MODAL */}
-      <div className="modal fade" id="delete-vehicle-modal">
+      <div className="modal fade" id="delete-collection-point-modal">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="page-wrapper-new p-0">
@@ -220,10 +204,10 @@ const Vehicles = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Vehicle
+                  Delete Collection Point
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this vehicle?
+                  Are you sure you want to delete this collection point?
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -252,4 +236,4 @@ const Vehicles = () => {
   );
 };
 
-export default Vehicles;
+export default VehicleCollectionPoints;

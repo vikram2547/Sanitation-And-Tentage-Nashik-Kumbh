@@ -5,95 +5,85 @@ import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
 
 import { useDispatch, useSelector } from "react-redux";
-import { clearMessages, deleteVehicle, getVehicles } from "../../core/redux/vehicleSlice";
-import AddVehicle from "../../core/modals/vehiclemanagement/addvehicle";
-import EditVehicle from "../../core/modals/vehiclemanagement/editvehicle";
-import ViewVehicle from "../../core/modals/vehiclemanagement/viewvehicle";
+import { clearMessages, deleteVehicleGeofence, getVehicleGeofences } from "../../core/redux/vehicleGeofenceSlice";
+import EditGeofences from "../../core/modals/vehiclemanagement/editgeofences";
+import ViewGeofences from "../../core/modals/vehiclemanagement/viewgeofences";
+import AddGeofences from "../../core/modals/vehiclemanagement/addgeofences";
 
 
-const Vehicles = () => {
+const VehicleGeofences = () => {
   const dispatch = useDispatch();
 
-  const { vehicles, loading, success, error } = useSelector(
-    (state) => state.vehicles
+  const { geofences, loading, success, error } = useSelector(
+    (state) => state.vehicleGeofences
   );
 
   const [rows, setRows] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
   const [deleteId, setDeleteId] = useState(null);
-  const [selectedVehicle, setSelectedVehicle] = useState(null);
-  const [viewVehicleData, setViewVehicleData] = useState(null);
-  const [editVehicleData, setEditVehicleData] = useState(null);
+  const [selectedGeofence, setSelectedGeofence] = useState(null);
+  const [viewGeofenceData, setViewGeofenceData] = useState(null);
+  const [editGeofenceData, setEditGeofenceData] = useState(null);
 
-  // ============================
-  // FETCH VEHICLES
-  // ============================
+
+  /* ================= FETCH ================= */
   useEffect(() => {
-    dispatch(getVehicles({ page: currentPage, per_page: rows }));
+    dispatch(getVehicleGeofences({ page: currentPage, per_page: rows }));
   }, [dispatch, currentPage, rows]);
 
-  // ============================
-  // AUTO CLEAR SUCCESS / ERROR
-  // ============================
+  /* ================= AUTO CLEAR ================= */
   useEffect(() => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
       }, 5000);
-
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
 
-  // ============================
-  // DELETE VEHICLE
-  // ============================
+  /* ================= DELETE ================= */
   const handleDelete = async () => {
     if (!deleteId) return;
 
-    const res = await dispatch(deleteVehicle(deleteId));
-
+    const res = await dispatch(deleteVehicleGeofence(deleteId));
     if (res.meta.requestStatus === "fulfilled") {
-      dispatch(getVehicles({ page: currentPage, per_page: rows }));
+      dispatch(getVehicleGeofences({ page: currentPage, per_page: rows }));
     }
-
     setDeleteId(null);
   };
 
-  // ============================
-  // TABLE COLUMNS
-  // ============================
+  /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Name",
-      field: "vehicle_name",
+      header: "Geofence ID",
+      field: "geofence_id",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_name || "-",
+      body: (rowData) => rowData?.geofence_id || "-",
     },
     {
-      header: "Type",
-      field: "vehicle_type",
+      header: "Point ID",
+      field: "point_id",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_type || "-",
+      body: (rowData) => rowData?.point_id || "-",
     },
     {
-      header: "Number",
-      field: "vehicle_number",
+      header: "Radius (Meters)",
+      field: "radius_meters",
       sortable: true,
-      body: (rowData) => rowData?.vehicle_number || "-",
-    },
-    {
-      header: "Vendor",
-      field: "vendor_id",
-      sortable: true,
-      body: (rowData) => rowData?.vendor_id || "-",
+      body: (rowData) => rowData?.radius_meters || "-",
     },
     {
       header: "Status",
-      field: "status",
+      field: "is_active",
       sortable: true,
       body: (rowData) =>
-        rowData?.status === "Active" ? "Active" : "Inactive",
+        rowData?.is_active === "1" ? "Active" : "Inactive",
+    },
+    {
+      header: "Created At",
+      field: "created_at",
+      sortable: true,
+      body: (rowData) => rowData?.created_at || "-",
     },
     {
       header: "Actions",
@@ -108,8 +98,8 @@ const Vehicles = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#view-vehicle-modal"
-              onClick={() => setViewVehicleData(rowData)}
+              data-bs-target="#view-geofence-modal"
+              onClick={() => setViewGeofenceData(rowData)}
             >
               <i className="feather feather-eye action-eye"></i>
             </Link>
@@ -119,8 +109,8 @@ const Vehicles = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-vehicle"
-              onClick={() => setEditVehicleData(rowData)}
+              data-bs-target="#edit-geofences"
+              onClick={() => setEditGeofenceData(rowData)}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -130,8 +120,8 @@ const Vehicles = () => {
               className="confirm-text p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#delete-vehicle-modal"
-              onClick={() => setDeleteId(rowData.vehicle_id)}
+              data-bs-target="#delete-geofence-modal"
+              onClick={() => setDeleteId(rowData.geofence_id)}
             >
               <i className="feather-trash-2"></i>
             </Link>
@@ -150,26 +140,14 @@ const Vehicles = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicles</h4>
-                <h6>Manage Vehicles</h6>
+                <h4>Vehicle Geofences</h4>
+                <h6>Manage Vehicle Geofences</h6>
               </div>
             </div>
 
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
-
-            <div className="page-btn">
-              <Link
-                to="#"
-                className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-vehicle"
-              >
-                <i className="ti ti-circle-plus me-1"></i>
-                Add Vehicle
-              </Link>
-            </div>
           </div>
 
           <div className="card table-list-card">
@@ -181,16 +159,16 @@ const Vehicles = () => {
               <div className="table-responsive">
                 <PrimeDataTable
                   column={columns}
-                  data={Array.isArray(vehicles) ? vehicles : []}
-                  totalRecords={vehicles?.length || 0}
+                  data={Array.isArray(geofences) ? geofences : []}
+                  totalRecords={geofences?.length || 0}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   rows={rows}
                   setRows={setRows}
                   selectionMode="checkbox"
-                  selection={selectedVehicle}
-                  onSelectionChange={(e) => setSelectedVehicle(e.value)}
-                  dataKey="vehicle_id"
+                  selection={selectedGeofence}
+                  onSelectionChange={(e) => setSelectedGeofence(e.value)}
+                  dataKey="geofence_id"
                 />
               </div>
 
@@ -205,13 +183,12 @@ const Vehicles = () => {
         </div>
       </div>
 
-      {/* MODALS */}
-      <AddVehicle />
-      <EditVehicle selectedVehicle={editVehicleData} />
-      <ViewVehicle selectedVehicle={viewVehicleData} />
+      <AddGeofences />
+      <EditGeofences selectedGeofence={editGeofenceData} />
+      <ViewGeofences selectedGeofence={viewGeofenceData} />
 
       {/* DELETE MODAL */}
-      <div className="modal fade" id="delete-vehicle-modal">
+      <div className="modal fade" id="delete-geofence-modal">
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="page-wrapper-new p-0">
@@ -220,10 +197,10 @@ const Vehicles = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Vehicle
+                  Delete Geofence
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this vehicle?
+                  Are you sure you want to delete this geofence?
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -252,4 +229,4 @@ const Vehicles = () => {
   );
 };
 
-export default Vehicles;
+export default VehicleGeofences;

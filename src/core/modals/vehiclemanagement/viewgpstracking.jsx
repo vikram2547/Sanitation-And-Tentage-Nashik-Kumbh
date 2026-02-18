@@ -1,19 +1,16 @@
 import React from "react";
 
-const ViewVehicle = ({ selectedVehicle }) => {
-  if (!selectedVehicle) return null;
+const ViewGpsTracking = ({ selectedGps }) => {
+  if (!selectedGps) return null;
 
   return (
-    <div
-      className="modal fade"
-      id="view-vehicle-modal"
-    >
+    <div className="modal fade" id="view-gps-modal">
       <div className="modal-dialog modal-dialog-centered modal-lg">
         <div className="modal-content">
 
-          {/* ===== Modal Header ===== */}
+          {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Vehicle Details</h5>
+            <h5 className="modal-title">GPS Tracking Details</h5>
             <button
               type="button"
               className="btn-close"
@@ -21,54 +18,59 @@ const ViewVehicle = ({ selectedVehicle }) => {
             ></button>
           </div>
 
-          {/* ===== Modal Body ===== */}
+          {/* BODY */}
           <div className="modal-body">
             <div className="row">
 
               <div className="col-md-6 mb-3">
                 <strong>Vehicle ID:</strong>
-                <div>{selectedVehicle.vehicle_id}</div>
+                <div>{selectedGps.vehicle_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Name:</strong>
-                <div>{selectedVehicle.vehicle_name || "-"}</div>
+                <strong>Assignment ID:</strong>
+                <div>{selectedGps.assignment_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Type:</strong>
-                <div>{selectedVehicle.vehicle_type || "-"}</div>
+                <strong>Latitude:</strong>
+                <div>{selectedGps.latitude}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Number:</strong>
-                <div>{selectedVehicle.vehicle_number || "-"}</div>
+                <strong>Longitude:</strong>
+                <div>{selectedGps.longitude}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>RC Number:</strong>
-                <div>{selectedVehicle.rc_number || "-"}</div>
+                <strong>Speed:</strong>
+                <div>{selectedGps.speed}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vendor ID:</strong>
-                <div>{selectedVehicle.vendor_id || "-"}</div>
+                <strong>Ignition Status:</strong>
+                <div>{selectedGps.ignition_status}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
-                <div>
-                  {selectedVehicle.status === "Active" ||
-                  selectedVehicle.status === "1"
-                    ? "Active"
-                    : "Inactive"}
-                </div>
+                <strong>Fuel Level:</strong>
+                <div>{selectedGps.fuel_level}</div>
+              </div>
+
+              <div className="col-md-6 mb-3">
+                <strong>Odometer Reading:</strong>
+                <div>{selectedGps.odometer_reading}</div>
+              </div>
+
+              <div className="col-md-6 mb-3">
+                <strong>Timestamp:</strong>
+                <div>{selectedGps.timestamp}</div>
               </div>
 
             </div>
           </div>
 
-          {/* ===== Modal Footer ===== */}
+          {/* FOOTER */}
           <div className="modal-footer">
             <button
               type="button"
@@ -85,4 +87,4 @@ const ViewVehicle = ({ selectedVehicle }) => {
   );
 };
 
-export default ViewVehicle;
+export default ViewGpsTracking;
