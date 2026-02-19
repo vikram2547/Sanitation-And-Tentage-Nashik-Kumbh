@@ -84,7 +84,7 @@ export const deleteVehicleGpsTracking = createAsyncThunk(
 const vehicleGpsTrackingSlice = createSlice({
   name: "vehicleGpsTracking",
   initialState: {
-    vehicles: [],
+    tracking: [],          // ✅ FIXED
     totalRecords: 0,
     loading: false,
     success: null,
@@ -104,9 +104,13 @@ const vehicleGpsTrackingSlice = createSlice({
       })
       .addCase(getVehicleGpsTracking.fulfilled, (state, action) => {
         state.loading = false;
-        state.vehicles = action.payload?.data?.vehicles || [];
+
+        // ✅ EXACT API MAPPING
+        state.tracking = action.payload?.data?.tracking || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
+
+        state.success = action.payload?.message || null;
       })
       .addCase(getVehicleGpsTracking.rejected, (state, action) => {
         state.loading = false;
@@ -116,28 +120,34 @@ const vehicleGpsTrackingSlice = createSlice({
       /* ===== ADD ===== */
       .addCase(addVehicleGpsTracking.fulfilled, (state, action) => {
         state.success = "Vehicle GPS tracking created successfully";
-        state.vehicles.unshift(action.payload?.data);
-        state.totalRecords += 1;
+        if (action.payload?.data) {
+          state.tracking.unshift(action.payload.data);
+          state.totalRecords += 1;
+        }
       })
 
       /* ===== UPDATE ===== */
       .addCase(updateVehicleGpsTracking.fulfilled, (state, action) => {
         state.success = "Vehicle GPS tracking updated successfully";
         const updated = action.payload?.data;
-        state.vehicles = state.vehicles.map((v) =>
-          v.gps_tracking_id === updated.gps_tracking_id
-            ? updated
-            : v
-        );
+
+        if (updated) {
+          state.tracking = state.tracking.map((v) =>
+            v.gps_tracking_id === updated.gps_tracking_id
+              ? updated
+              : v
+          );
+        }
       })
 
       /* ===== DELETE ===== */
       .addCase(deleteVehicleGpsTracking.fulfilled, (state, action) => {
         state.success = "Vehicle GPS tracking deleted successfully";
-        const deletedId = action.meta.arg;
-        state.vehicles = state.vehicles.filter(
+        const deletedId = action.payload;
+
+        state.tracking = state.tracking.filter(
           (v) =>
-            Number(v.gps_tracking_id) !== Number(deletedId)
+            String(v.gps_tracking_id) !== String(deletedId)
         );
         state.totalRecords -= 1;
       });

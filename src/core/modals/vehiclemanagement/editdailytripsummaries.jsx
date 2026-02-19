@@ -7,7 +7,7 @@ import { clearMessages, updateVehicleDailyTripSummary } from "../../redux/vehicl
 const EditDailyTripSummaries = ({ selectedTrip }) => {
   const dispatch = useDispatch();
   const { success, error, loading } = useSelector(
-    (state) => state.dailyTripSummaries
+    (state) => state.vehicleDailyTripSummaries
   );
 
   const [formData, setFormData] = useState({
@@ -81,7 +81,7 @@ const EditDailyTripSummaries = ({ selectedTrip }) => {
 
   return (
     <div className="modal fade" id="edit-daily-trip-summary">
-      <div className="modal-dialog modal-xl modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -93,9 +93,11 @@ const EditDailyTripSummaries = ({ selectedTrip }) => {
                 </div>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="close"
                   data-bs-dismiss="modal"
-                />
+                >
+                  <span>×</span>
+                </button>
               </div>
 
               {/* ===== BODY ===== */}

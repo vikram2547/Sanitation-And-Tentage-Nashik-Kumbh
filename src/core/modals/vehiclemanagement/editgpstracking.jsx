@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { clearMessages, updateVehicleGpsTracking } from "../../redux/vehicleGpsTrackingSlice";
-
+import {
+  clearMessages,
+  updateVehicleGpsTracking,
+} from "../../redux/vehicleGpsTrackingSlice";
 
 const EditGpsTracking = ({ selectedGps }) => {
   const dispatch = useDispatch();
+
   const { success, error, loading } = useSelector(
-    (state) => state.gpsTracking
+    (state) => state.vehicleGpsTracking
   );
 
   const [formData, setFormData] = useState({
@@ -27,24 +30,39 @@ const EditGpsTracking = ({ selectedGps }) => {
   /* ================= PREFILL ================= */
   useEffect(() => {
     if (!selectedGps) return;
-    setFormData({ ...selectedGps });
+
+    setFormData({
+      ...selectedGps,
+      timestamp: selectedGps.timestamp
+        ? selectedGps.timestamp.replace(" ", "T")
+        : "",
+    });
   }, [selectedGps]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!selectedGps?.id) return;
 
+    const payload = {
+      ...formData,
+      timestamp: formData.timestamp
+        ? formData.timestamp.replace("T", " ")
+        : "",
+    };
+
+    // ✅ DISPATCH WILL FIRE
     dispatch(
       updateVehicleGpsTracking({
         id: selectedGps.id,
-        data: formData,
+        data: payload,
       })
     );
   };
@@ -53,13 +71,16 @@ const EditGpsTracking = ({ selectedGps }) => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-gps-tracking");
+    const modalEl = document.getElementById("edit-gps-modal");
     if (!modalEl) return;
 
-    const modalInstance =
+    const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
-    modalInstance.hide();
-    modalInstance.dispose();
+
+    // ✅ FIX accessibility warning
+    document.activeElement?.blur();
+
+    modal.hide();
 
     setTimeout(() => {
       document.body.classList.remove("modal-open");
@@ -74,25 +95,23 @@ const EditGpsTracking = ({ selectedGps }) => {
   if (!selectedGps) return null;
 
   return (
-    <div className="modal fade" id="edit-gps-tracking">
-      <div className="modal-dialog modal-xl modal-dialog-centered">
+    <div className="modal fade" id="edit-gps-modal" tabIndex="-1">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
 
-              {/* ===== HEADER ===== */}
+              {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
                   <h4>Edit GPS Tracking</h4>
                 </div>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                />
+                <button type="button" className="close" data-bs-dismiss="modal">
+                  <span>×</span>
+                </button>
               </div>
 
-              {/* ===== BODY ===== */}
+              {/* BODY */}
               <div className="modal-body custom-modal-body">
 
                 {error && <div className="alert alert-danger">{error}</div>}
@@ -107,9 +126,16 @@ const EditGpsTracking = ({ selectedGps }) => {
                     {Object.keys(formData).map((key) => (
                       <div className="col-lg-4" key={key}>
                         <div className="input-blocks">
-                          <label>{key.replace(/_/g, " ").toUpperCase()}</label>
+                          <label>
+                            {key.replace(/_/g, " ").toUpperCase()}
+                          </label>
+
                           <input
-                            type="text"
+                            type={
+                              key === "timestamp"
+                                ? "datetime-local"
+                                : "text"
+                            }
                             name={key}
                             value={formData[key]}
                             onChange={handleChange}
@@ -121,7 +147,7 @@ const EditGpsTracking = ({ selectedGps }) => {
                     ))}
                   </div>
 
-                  {/* ===== FOOTER ===== */}
+                  {/* FOOTER */}
                   <div className="modal-footer-btn mt-3">
                     <button
                       type="button"
@@ -130,6 +156,7 @@ const EditGpsTracking = ({ selectedGps }) => {
                     >
                       Cancel
                     </button>
+
                     <button
                       type="submit"
                       className="btn btn-submit"

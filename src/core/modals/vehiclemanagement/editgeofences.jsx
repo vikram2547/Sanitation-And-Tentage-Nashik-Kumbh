@@ -6,7 +6,7 @@ import { clearMessages, updateVehicleGeofence } from "../../redux/vehicleGeofenc
 const EditGeofences = ({ selectedGeofence }) => {
   const dispatch = useDispatch();
   const { success, error, loading } = useSelector(
-    (state) => state.geofences
+    (state) => state.vehicleGeofences
   );
 
   const [formData, setFormData] = useState({
@@ -50,7 +50,7 @@ const EditGeofences = ({ selectedGeofence }) => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-geofences");
+    const modalEl = document.getElementById("edit-geofence-modal");
     if (!modalEl) return;
 
     const modalInstance =
@@ -72,8 +72,8 @@ const EditGeofences = ({ selectedGeofence }) => {
   if (!selectedGeofence) return null;
 
   return (
-    <div className="modal fade" id="edit-geofences">
-      <div className="modal-dialog modal-lg modal-dialog-centered">
+    <div className="modal fade" id="edit-geofence-modal">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -85,9 +85,11 @@ const EditGeofences = ({ selectedGeofence }) => {
                 </div>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="close"
                   data-bs-dismiss="modal"
-                />
+                >
+                  <span>×</span>
+                </button>
               </div>
 
               {/* ===== BODY ===== */}

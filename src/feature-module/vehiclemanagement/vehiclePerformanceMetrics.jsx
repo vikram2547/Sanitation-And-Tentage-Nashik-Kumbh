@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, deleteVehiclePerformanceMetric, getVehiclePerformanceMetrics } from "../../core/redux/vehiclePerformanceMetricSlice";
 import AddPerformanceMetrics from "../../core/modals/vehiclemanagement/addperformancemetrics";
 import EditPerformanceMetrics from "../../core/modals/vehiclemanagement/editperformancemetrics";
+import ViewPerformanceMetrics from "../../core/modals/vehiclemanagement/viewperformancemetrics";
 
 
 const VehiclePerformanceMetrics = () => {
@@ -113,7 +114,7 @@ const VehiclePerformanceMetrics = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-performance-metric"
+              data-bs-target="#edit-metric-modal"
               onClick={() => setEditMetricData(rowData)}
             >
               <i className="feather-edit"></i>
@@ -152,6 +153,17 @@ const VehiclePerformanceMetrics = () => {
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
+            <div className="page-btn">
+              <Link
+                to="#"
+                className="btn btn-added"
+                data-bs-toggle="modal"
+                data-bs-target="#add-metric-modal"
+              >
+                <i className="ti ti-circle-plus me-1"></i>
+                Add Performance Metrics
+              </Link>
+            </div>
           </div>
 
           <div className="card table-list-card">

@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { addVehicleMaintenanceLog, clearMessages } from "../../redux/vehicleMaintenanceLogSlice";
-
+import {
+  addVehicleMaintenanceLog,
+  clearMessages,
+} from "../../redux/vehicleMaintenanceLogSlice";
 
 const AddMaintenanceLogs = () => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.maintenanceLogs
+    (state) => state.vehicleMaintenanceLogs
   );
 
   const [formData, setFormData] = useState({
@@ -24,33 +26,36 @@ const AddMaintenanceLogs = () => {
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addVehicleMaintenanceLog(formData));
+
+    const payload = {
+      vehicle_id: Number(formData.vehicle_id),
+      maintenance_date: formData.maintenance_date, // YYYY-MM-DD
+      maintenance_type: formData.maintenance_type,
+      description: formData.description,
+      cost: Number(formData.cost),
+      next_maintenance_date: formData.next_maintenance_date,
+      vendor_id: Number(formData.vendor_id),
+    };
+
+    dispatch(addVehicleMaintenanceLog(payload));
   };
 
   /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("add-maintenance-log");
+    const modalEl = document.getElementById("add-maintenance-modal");
     if (modalEl) {
-      const modalInstance =
+      const instance =
         Modal.getInstance(modalEl) || new Modal(modalEl);
-      modalInstance.hide();
+      instance.hide();
     }
-
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-    }, 300);
 
     setFormData({
       vehicle_id: "",
@@ -61,30 +66,27 @@ const AddMaintenanceLogs = () => {
       next_maintenance_date: "",
       vendor_id: "",
     });
-  }, [success]);
 
-  /* ================= AUTO CLEAR ================= */
-  useEffect(() => {
-    if (!success && !error) return;
-    const timer = setTimeout(() => {
-      dispatch(clearMessages());
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, [success, error, dispatch]);
+    dispatch(clearMessages());
+  }, [success, dispatch]);
 
   return (
-    <div className="modal fade" id="add-maintenance-log" tabIndex="-1">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+    <div
+      className="modal fade"
+      id="add-maintenance-modal"
+    >
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
-
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
-                <div className="page-title">
-                  <h4>Add Maintenance Log</h4>
-                </div>
-                <button type="button" className="close" data-bs-dismiss="modal">
+                <h5 className="modal-title">Add Maintenance Log</h5>
+                <button
+                  type="button"
+                  className="close"
+                  data-bs-dismiss="modal"
+                >
                   <span>×</span>
                 </button>
               </div>
@@ -101,21 +103,101 @@ const AddMaintenanceLogs = () => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
-                    {Object.keys(formData).map((key) => (
-                      <div className="col-lg-6" key={key}>
-                        <div className="input-blocks">
-                          <label>{key.replace(/_/g, " ").toUpperCase()}</label>
-                          <input
-                            type="text"
-                            name={key}
-                            value={formData[key]}
-                            onChange={handleChange}
-                            className="form-control"
-                            required
-                          />
-                        </div>
-                      </div>
-                    ))}
+
+                    {/* VEHICLE ID */}
+                    <div className="col-lg-6">
+                      <label>Vehicle ID</label>
+                      <input
+                        type="number"
+                        name="vehicle_id"
+                        value={formData.vehicle_id}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+
+                    {/* VENDOR ID */}
+                    <div className="col-lg-6">
+                      <label>Vendor ID</label>
+                      <input
+                        type="number"
+                        name="vendor_id"
+                        value={formData.vendor_id}
+                        onChange={handleChange}
+                        className="form-control"
+                      />
+                    </div>
+
+
+
+                    {/* MAINTENANCE TYPE */}
+                    <div className="col-lg-6 mt-2">
+                      <label>Maintenance Type</label>
+                      <select
+                        name="maintenance_type"
+                        value={formData.maintenance_type}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                      >
+                        <option value="">Select</option>
+                        <option value="OIL_CHANGE">Oil Change</option>
+                        <option value="SERVICE">Service</option>
+                        <option value="REPAIR">Repair</option>
+                        <option value="INSPECTION">Inspection</option>
+                      </select>
+                    </div>
+
+                    {/* COST */}
+                    <div className="col-lg-6 mt-2">
+                      <label>Cost</label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        name="cost"
+                        value={formData.cost}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                    {/* MAINTENANCE DATE */}
+                    <div className="col-lg-6 mt-2">
+                      <label>Maintenance Date</label>
+                      <input
+                        type="date"
+                        name="maintenance_date"
+                        value={formData.maintenance_date}
+                        onChange={handleChange}
+                        className="form-control"
+                        required
+                      />
+                    </div>
+                    {/* NEXT MAINTENANCE DATE */}
+                    <div className="col-lg-6 mt-2">
+                      <label>Next Maintenance Date</label>
+                      <input
+                        type="date"
+                        name="next_maintenance_date"
+                        value={formData.next_maintenance_date}
+                        onChange={handleChange}
+                        className="form-control"
+                      />
+                    </div>
+
+
+
+                    {/* DESCRIPTION */}
+                    <div className="col-lg-12 mt-2">
+                      <label>Description</label>
+                      <textarea
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
+                        className="form-control"
+                      />
+                    </div>
                   </div>
 
                   {/* ===== FOOTER ===== */}

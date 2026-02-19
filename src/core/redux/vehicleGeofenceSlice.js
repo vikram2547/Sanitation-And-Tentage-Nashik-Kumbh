@@ -79,7 +79,7 @@ export const deleteVehicleGeofence = createAsyncThunk(
 const vehicleGeofenceSlice = createSlice({
   name: "vehicleGeofences",
   initialState: {
-    vehicles: [],
+    geofences: [],          // ✅ FIXED
     totalRecords: 0,
     loading: false,
     success: null,
@@ -99,7 +99,7 @@ const vehicleGeofenceSlice = createSlice({
       })
       .addCase(getVehicleGeofences.fulfilled, (state, action) => {
         state.loading = false;
-        state.vehicles = action.payload?.data?.vehicles || [];
+        state.geofences = action.payload?.data?.geofences || []; // ✅ FIXED
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -111,16 +111,20 @@ const vehicleGeofenceSlice = createSlice({
       /* ===== ADD ===== */
       .addCase(addVehicleGeofence.fulfilled, (state, action) => {
         state.success = "Vehicle geofence created successfully";
-        state.vehicles.unshift(action.payload?.data);
-        state.totalRecords += 1;
+        if (action.payload?.data) {
+          state.geofences.unshift(action.payload.data);
+          state.totalRecords += 1;
+        }
       })
 
       /* ===== UPDATE ===== */
       .addCase(updateVehicleGeofence.fulfilled, (state, action) => {
         state.success = "Vehicle geofence updated successfully";
         const updated = action.payload?.data;
-        state.vehicles = state.vehicles.map((v) =>
-          v.geofence_id === updated.geofence_id ? updated : v
+        if (!updated) return;
+
+        state.geofences = state.geofences.map((g) =>
+          g.geofence_id === updated.geofence_id ? updated : g
         );
       })
 
@@ -128,8 +132,9 @@ const vehicleGeofenceSlice = createSlice({
       .addCase(deleteVehicleGeofence.fulfilled, (state, action) => {
         state.success = "Vehicle geofence deleted successfully";
         const deletedId = action.meta.arg;
-        state.vehicles = state.vehicles.filter(
-          (v) => Number(v.geofence_id) !== Number(deletedId)
+
+        state.geofences = state.geofences.filter(
+          (g) => Number(g.geofence_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       });

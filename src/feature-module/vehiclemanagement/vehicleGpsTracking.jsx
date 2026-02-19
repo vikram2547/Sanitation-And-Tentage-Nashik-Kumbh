@@ -13,7 +13,7 @@ import ViewGpsTracking from "../../core/modals/vehiclemanagement/viewgpstracking
 const VehicleGpsTracking = () => {
   const dispatch = useDispatch();
 
-  const { gpsTracking, loading, success, error } = useSelector(
+  const { tracking, loading, success, error } = useSelector(
     (state) => state.vehicleGpsTracking
   );
 
@@ -119,7 +119,7 @@ const VehicleGpsTracking = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-gps-tracking"
+              data-bs-target="#edit-gps-modal"
               onClick={() => setEditGpsData(rowData)}
             >
               <i className="feather-edit"></i>
@@ -158,6 +158,17 @@ const VehicleGpsTracking = () => {
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
+            <div className="page-btn">
+              <Link
+                to="#"
+                className="btn btn-added"
+                data-bs-toggle="modal"
+                data-bs-target="#add-gps-modal"
+              >
+                <i className="ti ti-circle-plus me-1"></i>
+                Add GPS Tracking
+              </Link>
+            </div>
           </div>
 
           <div className="card table-list-card">
@@ -169,8 +180,8 @@ const VehicleGpsTracking = () => {
               <div className="table-responsive">
                 <PrimeDataTable
                   column={columns}
-                  data={Array.isArray(gpsTracking) ? gpsTracking : []}
-                  totalRecords={gpsTracking?.length || 0}
+                  data={Array.isArray(tracking) ? tracking : []}
+                  totalRecords={tracking?.length || 0}
                   currentPage={currentPage}
                   setCurrentPage={setCurrentPage}
                   rows={rows}
@@ -178,7 +189,7 @@ const VehicleGpsTracking = () => {
                   selectionMode="checkbox"
                   selection={selectedGps}
                   onSelectionChange={(e) => setSelectedGps(e.value)}
-                  dataKey="id"
+                  dataKey="timestamp"
                 />
               </div>
 

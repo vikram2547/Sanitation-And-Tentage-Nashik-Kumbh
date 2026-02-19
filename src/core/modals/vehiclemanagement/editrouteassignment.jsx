@@ -95,7 +95,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
 
   return (
     <div className="modal fade" id="edit-assignment-modal">
-      <div className="modal-dialog modal-lg modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -105,11 +105,9 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
                 <div className="page-title">
                   <h4>Edit Route Assignment</h4>
                 </div>
-                <button
-                  type="button"
-                  className="btn-close"
-                  data-bs-dismiss="modal"
-                />
+                <button type="button" className="close" data-bs-dismiss="modal">
+                  <span>×</span>
+                </button>
               </div>
 
               {/* ===== BODY ===== */}

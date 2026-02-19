@@ -6,9 +6,9 @@ import PrimeDataTable from "../../components/data-table";
 
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, deleteVehicleRoutePoint, getVehicleRoutePoints } from "../../core/redux/vehicleRoutePointsSlice";
-import ViewRoutePoints from "../../core/modals/vehiclemanagement/viewroutepoints";
-import EditRoutePoints from "../../core/modals/vehiclemanagement/editroutepoints";
 import AddRoutePoints from "../../core/modals/vehiclemanagement/addroutepoints";
+import EditRoutePoints from "../../core/modals/vehiclemanagement/editroutepoints";
+import ViewRoutePoints from "../../core/modals/vehiclemanagement/viewroutepoints";
 
 
 const VehicleRoutePoints = () => {
@@ -153,6 +153,17 @@ const VehicleRoutePoints = () => {
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
+            <div className="page-btn">
+              <Link
+                to="#"
+                className="btn btn-added"
+                data-bs-toggle="modal"
+                data-bs-target="#add-route-point-modal"
+              >
+                <i className="ti ti-circle-plus me-1"></i>
+                Add Route point
+              </Link>
+            </div>
           </div>
 
           <div className="card table-list-card">

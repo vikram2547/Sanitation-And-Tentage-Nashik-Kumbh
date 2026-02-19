@@ -147,6 +147,17 @@ const VehicleMaintenanceLogs = () => {
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
+            <div className="page-btn">
+              <Link
+                to="#"
+                className="btn btn-added"
+                data-bs-toggle="modal"
+                data-bs-target="#add-maintenance-modal"
+              >
+                <i className="ti ti-circle-plus me-1"></i>
+                Add Maintenance Log
+              </Link>
+            </div>
           </div>
 
           <div className="card table-list-card">

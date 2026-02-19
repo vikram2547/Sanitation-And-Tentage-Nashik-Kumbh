@@ -109,7 +109,7 @@ const VehicleGeofences = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-geofences"
+              data-bs-target="#edit-geofence-modal"
               onClick={() => setEditGeofenceData(rowData)}
             >
               <i className="feather-edit"></i>
@@ -148,6 +148,17 @@ const VehicleGeofences = () => {
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
+            <div className="page-btn">
+              <Link
+                to="#"
+                className="btn btn-added"
+                data-bs-toggle="modal"
+                data-bs-target="#add-geofence-modal"
+              >
+                <i className="ti ti-circle-plus me-1"></i>
+                Add Geofence
+              </Link>
+            </div>
           </div>
 
           <div className="card table-list-card">

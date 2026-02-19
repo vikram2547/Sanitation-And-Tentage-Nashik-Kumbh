@@ -75,7 +75,7 @@ const AddRouteAssignment = () => {
 
   return (
     <div className="modal fade" id="add-assignment-modal">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">

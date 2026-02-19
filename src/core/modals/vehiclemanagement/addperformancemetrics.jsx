@@ -1,22 +1,34 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { addVehiclePerformanceMetric, clearMessages } from "../../redux/vehiclePerformanceMetricSlice";
+import {
+  addVehiclePerformanceMetric,
+  clearMessages,
+} from "../../redux/vehiclePerformanceMetricSlice";
 
 const AddPerformanceMetrics = () => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.performanceMetrics
+    (state) => state.vehiclePerformanceMetrics
   );
 
   const [formData, setFormData] = useState({
     vehicle_id: "",
     route_id: "",
-    metric_date: "",
     metric_type: "",
     metric_value: "",
+    metric_date: "",
   });
+
+  /* ================= SET TODAY DATE ================= */
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    setFormData((prev) => ({
+      ...prev,
+      metric_date: today,
+    }));
+  }, []);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
@@ -34,7 +46,7 @@ const AddPerformanceMetrics = () => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("add-performance-metric");
+    const modalEl = document.getElementById("add-metric-modal");
     if (modalEl) {
       const modalInstance =
         Modal.getInstance(modalEl) || new Modal(modalEl);
@@ -49,12 +61,13 @@ const AddPerformanceMetrics = () => {
         .forEach((bd) => bd.remove());
     }, 300);
 
+    const today = new Date().toISOString().split("T")[0];
     setFormData({
       vehicle_id: "",
       route_id: "",
-      metric_date: "",
       metric_type: "",
       metric_value: "",
+      metric_date: today,
     });
   }, [success]);
 
@@ -68,8 +81,8 @@ const AddPerformanceMetrics = () => {
   }, [success, error, dispatch]);
 
   return (
-    <div className="modal fade" id="add-performance-metric" tabIndex="-1">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+    <div className="modal fade" id="add-metric-modal" tabIndex="-1">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -99,9 +112,12 @@ const AddPerformanceMetrics = () => {
                     {Object.keys(formData).map((key) => (
                       <div className="col-lg-6" key={key}>
                         <div className="input-blocks">
-                          <label>{key.replace(/_/g, " ").toUpperCase()}</label>
+                          <label>
+                            {key.replace(/_/g, " ").toUpperCase()}
+                          </label>
+
                           <input
-                            type="text"
+                            type={key === "metric_date" ? "date" : "text"}
                             name={key}
                             value={formData[key]}
                             onChange={handleChange}

@@ -6,7 +6,7 @@ import { clearMessages, updateVehicleMaintenanceLog } from "../../redux/vehicleM
 const EditMaintenanceLogs = ({ selectedLog }) => {
   const dispatch = useDispatch();
   const { success, error, loading } = useSelector(
-    (state) => state.maintenanceLogs
+    (state) => state.vehicleMaintenanceLogs
   );
 
   const [formData, setFormData] = useState({
@@ -70,7 +70,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
 
   return (
     <div className="modal fade" id="edit-maintenance-log">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -82,9 +82,11 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                 </div>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="close"
                   data-bs-dismiss="modal"
-                />
+                >
+                  <span>×</span>
+                </button>
               </div>
 
               {/* ===== BODY ===== */}

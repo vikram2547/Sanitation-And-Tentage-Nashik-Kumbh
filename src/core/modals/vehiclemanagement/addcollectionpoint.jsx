@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { addVehicleCollectionPoint, clearMessages } from "../../redux/vehicleCollectionPointSlice";
-
+import {
+  addVehicleCollectionPoint,
+  clearMessages,
+} from "../../redux/vehicleCollectionPointSlice";
 
 const AddCollectionPoint = () => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.collectionPoints
+    (state) => state.vehicleCollectionPoints
   );
 
   const [formData, setFormData] = useState({
@@ -28,20 +30,48 @@ const AddCollectionPoint = () => {
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addVehicleCollectionPoint(formData));
+
+    if (
+      !formData.point_code ||
+      !formData.point_name ||
+      !formData.latitude ||
+      !formData.longitude ||
+      !formData.expected_collection_time
+    ) {
+      alert("Please fill all required fields");
+      return;
+    }
+
+    const payload = {
+      point_code: formData.point_code.trim(),
+      point_name: formData.point_name.trim(),
+      latitude: String(formData.latitude),
+      longitude: String(formData.longitude),
+      address: formData.address || "",
+      ward_number: formData.ward_number || "",
+      zone: formData.zone || "",
+      point_type: formData.point_type === "PRIMARY" ? "P" : "S",
+      expected_collection_time: `${formData.expected_collection_time}:00`, // ✅ HH:mm:ss
+      collection_frequency: formData.collection_frequency,
+      status: formData.status,
+    };
+
+    console.log("ADD COLLECTION POINT PAYLOAD:", payload);
+
+    dispatch(addVehicleCollectionPoint(payload));
   };
 
   /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("add-collection-point");
+    const modalEl = document.getElementById("add-collection-point-modal");
     if (modalEl) {
       const modalInstance =
         Modal.getInstance(modalEl) || new Modal(modalEl);
@@ -69,21 +99,23 @@ const AddCollectionPoint = () => {
       collection_frequency: "DAILY",
       status: "ACTIVE",
     });
-  }, [success]);
 
-  /* ================= AUTO CLEAR MESSAGE ================= */
+    dispatch(clearMessages());
+  }, [success, dispatch]);
+
+  /* ================= AUTO CLEAR ERROR ================= */
   useEffect(() => {
-    if (!success && !error) return;
-
-    const timer = setTimeout(() => {
-      dispatch(clearMessages());
-    }, 5000);
-
+    if (!error) return;
+    const timer = setTimeout(() => dispatch(clearMessages()), 5000);
     return () => clearTimeout(timer);
-  }, [success, error, dispatch]);
+  }, [error, dispatch]);
 
   return (
-    <div className="modal fade" id="add-collection-point" tabIndex="-1">
+    <div
+      className="modal fade"
+      id="add-collection-point-modal"
+      tabIndex="-1"
+    >
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">

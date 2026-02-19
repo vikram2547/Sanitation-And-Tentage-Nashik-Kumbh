@@ -5,6 +5,7 @@ import { updateVehicle, clearMessages } from "../../redux/vehicleSlice";
 
 const EditVehicle = ({ selectedVehicle }) => {
   const dispatch = useDispatch();
+
   const { success, error, loading } = useSelector((state) => state.vehicles);
 
   const [formData, setFormData] = useState({
@@ -76,7 +77,7 @@ const EditVehicle = ({ selectedVehicle }) => {
 
   return (
     <div className="modal fade" id="edit-vehicle">
-      <div className="modal-dialog modal-lg modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -88,9 +89,12 @@ const EditVehicle = ({ selectedVehicle }) => {
                 </div>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="close"
                   data-bs-dismiss="modal"
-                />
+                >
+                  <span>×</span>
+                </button>
+
               </div>
 
               {/* ===== BODY ===== */}

@@ -52,10 +52,10 @@ export const addVehicleMaintenanceLog = createAsyncThunk(
 /* ================= UPDATE ================= */
 export const updateVehicleMaintenanceLog = createAsyncThunk(
   "vehicleMaintenanceLogs/updateVehicleMaintenanceLog",
-  async ({ maintenance_log_id, data }, { rejectWithValue }) => {
+  async ({ maintenance_id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `/api/vehicle-maintenance-logs/edit/${maintenance_log_id}`,
+        `/api/vehicle-maintenance-logs/edit/${maintenance_id}`,
         data
       );
       return res.data;
@@ -68,12 +68,12 @@ export const updateVehicleMaintenanceLog = createAsyncThunk(
 /* ================= DELETE ================= */
 export const deleteVehicleMaintenanceLog = createAsyncThunk(
   "vehicleMaintenanceLogs/deleteVehicleMaintenanceLog",
-  async (maintenance_log_id, { rejectWithValue }) => {
+  async (maintenance_id, { rejectWithValue }) => {
     try {
       await api.post(
-        `/api/vehicle-maintenance-logs/delete/${maintenance_log_id}`
+        `/api/vehicle-maintenance-logs/delete/${maintenance_id}`
       );
-      return maintenance_log_id;
+      return maintenance_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
     }
@@ -84,7 +84,7 @@ export const deleteVehicleMaintenanceLog = createAsyncThunk(
 const vehicleMaintenanceLogSlice = createSlice({
   name: "vehicleMaintenanceLogs",
   initialState: {
-    vehicles: [],
+    maintenanceLogs: [],   // ✅ FIXED
     totalRecords: 0,
     loading: false,
     success: null,
@@ -104,7 +104,8 @@ const vehicleMaintenanceLogSlice = createSlice({
       })
       .addCase(getVehicleMaintenanceLogs.fulfilled, (state, action) => {
         state.loading = false;
-        state.vehicles = action.payload?.data?.vehicles || [];
+        state.maintenanceLogs =
+          action.payload?.data?.maintenance_logs || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -116,18 +117,20 @@ const vehicleMaintenanceLogSlice = createSlice({
       /* ===== ADD ===== */
       .addCase(addVehicleMaintenanceLog.fulfilled, (state, action) => {
         state.success = "Vehicle maintenance log created successfully";
-        state.vehicles.unshift(action.payload?.data);
-        state.totalRecords += 1;
+        if (action.payload?.data) {
+          state.maintenanceLogs.unshift(action.payload.data);
+          state.totalRecords += 1;
+        }
       })
 
       /* ===== UPDATE ===== */
       .addCase(updateVehicleMaintenanceLog.fulfilled, (state, action) => {
         state.success = "Vehicle maintenance log updated successfully";
         const updated = action.payload?.data;
-        state.vehicles = state.vehicles.map((v) =>
-          v.maintenance_log_id === updated.maintenance_log_id
-            ? updated
-            : v
+        if (!updated) return;
+
+        state.maintenanceLogs = state.maintenanceLogs.map((m) =>
+          m.maintenance_id === updated.maintenance_id ? updated : m
         );
       })
 
@@ -135,9 +138,10 @@ const vehicleMaintenanceLogSlice = createSlice({
       .addCase(deleteVehicleMaintenanceLog.fulfilled, (state, action) => {
         state.success = "Vehicle maintenance log deleted successfully";
         const deletedId = action.meta.arg;
-        state.vehicles = state.vehicles.filter(
-          (v) =>
-            Number(v.maintenance_log_id) !== Number(deletedId)
+
+        state.maintenanceLogs = state.maintenanceLogs.filter(
+          (m) =>
+            Number(m.maintenance_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       });

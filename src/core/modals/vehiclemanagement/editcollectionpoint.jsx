@@ -6,7 +6,7 @@ import { clearMessages, updateVehicleCollectionPoint } from "../../redux/vehicle
 const EditCollectionPoint = ({ selectedPoint }) => {
   const dispatch = useDispatch();
   const { success, error, loading } = useSelector(
-    (state) => state.collectionPoints
+    (state) => state.vehicleCollectionPoints
   );
 
   const [formData, setFormData] = useState({
@@ -67,7 +67,7 @@ const EditCollectionPoint = ({ selectedPoint }) => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-collection-point");
+    const modalEl = document.getElementById("edit-collection-point-modal");
     if (!modalEl) return;
 
     const modalInstance =
@@ -89,8 +89,8 @@ const EditCollectionPoint = ({ selectedPoint }) => {
   if (!selectedPoint) return null;
 
   return (
-    <div className="modal fade" id="edit-collection-point">
-      <div className="modal-dialog modal-lg modal-dialog-centered">
+    <div className="modal fade" id="edit-collection-point-modal">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -102,9 +102,11 @@ const EditCollectionPoint = ({ selectedPoint }) => {
                 </div>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="close"
                   data-bs-dismiss="modal"
-                />
+                >
+                  <span>×</span>
+                </button>
               </div>
 
               {/* ===== BODY ===== */}

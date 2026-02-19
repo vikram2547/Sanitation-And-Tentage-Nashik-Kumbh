@@ -84,7 +84,7 @@ export const deleteVehiclePerformanceMetric = createAsyncThunk(
 const vehiclePerformanceMetricSlice = createSlice({
   name: "vehiclePerformanceMetrics",
   initialState: {
-    vehicles: [],
+    metrics: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -104,7 +104,7 @@ const vehiclePerformanceMetricSlice = createSlice({
       })
       .addCase(getVehiclePerformanceMetrics.fulfilled, (state, action) => {
         state.loading = false;
-        state.vehicles = action.payload?.data?.vehicles || [];
+        state.metrics = action.payload?.data?.metrics || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -117,7 +117,7 @@ const vehiclePerformanceMetricSlice = createSlice({
       .addCase(addVehiclePerformanceMetric.fulfilled, (state, action) => {
         state.success =
           "Vehicle performance metric created successfully";
-        state.vehicles.unshift(action.payload?.data);
+        state.metrics.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
 
@@ -126,7 +126,7 @@ const vehiclePerformanceMetricSlice = createSlice({
         state.success =
           "Vehicle performance metric updated successfully";
         const updated = action.payload?.data;
-        state.vehicles = state.vehicles.map((v) =>
+        state.metrics = state.metrics.map((v) =>
           v.performance_metric_id === updated.performance_metric_id
             ? updated
             : v
@@ -138,7 +138,7 @@ const vehiclePerformanceMetricSlice = createSlice({
         state.success =
           "Vehicle performance metric deleted successfully";
         const deletedId = action.meta.arg;
-        state.vehicles = state.vehicles.filter(
+        state.metrics = state.metrics.filter(
           (v) =>
             Number(v.performance_metric_id) !== Number(deletedId)
         );

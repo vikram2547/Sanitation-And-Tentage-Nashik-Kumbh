@@ -74,7 +74,7 @@ const EditRoute = ({ selectedRoute }) => {
   // if (!selectedRoute) return null;
   return (
     <div className="modal fade" id="edit-route-modal">
-      <div className="modal-dialog modal-lg modal-dialog-centered">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -86,9 +86,11 @@ const EditRoute = ({ selectedRoute }) => {
                 </div>
                 <button
                   type="button"
-                  className="btn-close"
+                  className="close"
                   data-bs-dismiss="modal"
-                />
+                >
+                  <span>×</span>
+                </button>
               </div>
 
               {/* BODY */}

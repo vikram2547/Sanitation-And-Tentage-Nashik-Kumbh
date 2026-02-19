@@ -7,7 +7,7 @@ const AddGeofences = () => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.geofences
+    (state) => state.vehicleGeofences
   );
 
   const [formData, setFormData] = useState({
@@ -32,7 +32,7 @@ const AddGeofences = () => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("add-geofences");
+    const modalEl = document.getElementById("add-geofence-modal");
     if (modalEl) {
       const modalInstance =
         Modal.getInstance(modalEl) || new Modal(modalEl);
@@ -66,7 +66,7 @@ const AddGeofences = () => {
   }, [success, error, dispatch]);
 
   return (
-    <div className="modal fade" id="add-geofences" tabIndex="-1">
+    <div className="modal fade" id="add-geofence-modal" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">

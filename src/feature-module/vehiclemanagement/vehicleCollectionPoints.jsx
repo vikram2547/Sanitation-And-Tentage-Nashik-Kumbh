@@ -115,7 +115,7 @@ const VehicleCollectionPoints = () => {
               className="me-2 p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#edit-collection-point"
+              data-bs-target="#edit-collection-point-modal"
               onClick={() => seteditPointData(rowData)}
             >
               <i className="feather-edit"></i>
@@ -153,6 +153,17 @@ const VehicleCollectionPoints = () => {
 
             <ul className="table-top-head">
               <TooltipIcons />
+               <div className="page-btn">
+              <Link
+                to="#"
+                className="btn btn-added"
+                data-bs-toggle="modal"
+                data-bs-target="#add-collection-point-modal"
+              >
+                <i className="ti ti-circle-plus me-1"></i>
+                Add Collection Point
+              </Link>
+            </div>
             </ul>
           </div>
 

@@ -8,7 +8,7 @@ const AddRoutePoints = () => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.routePoints
+    (state) => state.vehicleRoutePoints
   );
 
   const [formData, setFormData] = useState({
@@ -44,7 +44,7 @@ const AddRoutePoints = () => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("add-route-point");
+    const modalEl = document.getElementById("add-route-point-modal");
     if (modalEl) {
       const modalInstance =
         Modal.getInstance(modalEl) || new Modal(modalEl);
@@ -80,8 +80,8 @@ const AddRoutePoints = () => {
   }, [success, error, dispatch]);
 
   return (
-    <div className="modal fade" id="add-route-point">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+    <div className="modal fade" id="add-route-point-modal">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">

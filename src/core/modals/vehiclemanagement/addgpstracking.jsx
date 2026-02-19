@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { addVehicleGpsTracking, clearMessages } from "../../redux/vehicleGpsTrackingSlice";
+import {
+  addVehicleGpsTracking,
+  clearMessages,
+} from "../../redux/vehicleGpsTrackingSlice";
 
 const AddGpsTracking = () => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.gpsTracking
+    (state) => state.vehicleGpsTracking
   );
 
   const [formData, setFormData] = useState({
@@ -33,14 +36,30 @@ const AddGpsTracking = () => {
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addVehicleGpsTracking(formData));
+
+    // ✅ Convert to API-required payload
+    const payload = {
+      vehicle_id: Number(formData.vehicle_id),
+      assignment_id: Number(formData.assignment_id),
+      latitude: Number(formData.latitude),
+      longitude: Number(formData.longitude),
+      speed: Number(formData.speed),
+      direction: Number(formData.direction),
+      ignition_status: formData.ignition_status,
+      fuel_level: Number(formData.fuel_level),
+      odometer_reading: Number(formData.odometer_reading),
+      accuracy: Number(formData.accuracy),
+      timestamp: formData.timestamp,
+    };
+
+    dispatch(addVehicleGpsTracking(payload));
   };
 
   /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("add-gps-tracking");
+    const modalEl = document.getElementById("add-gps-modal");
     if (modalEl) {
       const modalInstance =
         Modal.getInstance(modalEl) || new Modal(modalEl);
@@ -80,8 +99,8 @@ const AddGpsTracking = () => {
   }, [success, error, dispatch]);
 
   return (
-    <div className="modal fade" id="add-gps-tracking" tabIndex="-1">
-      <div className="modal-dialog modal-dialog-centered modal-xl">
+    <div className="modal fade" id="add-gps-modal" tabIndex="-1">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -113,7 +132,7 @@ const AddGpsTracking = () => {
                         <div className="input-blocks">
                           <label>{key.replace(/_/g, " ").toUpperCase()}</label>
                           <input
-                            type="text"
+                            type={key === "timestamp" ? "datetime-local" : "text"}
                             name={key}
                             value={formData[key]}
                             onChange={handleChange}

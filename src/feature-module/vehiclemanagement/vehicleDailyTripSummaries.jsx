@@ -16,7 +16,7 @@ const VehicleDailyTripSummaries = () => {
   const dispatch = useDispatch();
 
   const { trips, loading, success, error } = useSelector(
-    (state) => state.dailyTripSummaries
+    (state) => state.vehicleDailyTripSummaries
   );
 
   const [rows, setRows] = useState(25);
@@ -136,7 +136,7 @@ const VehicleDailyTripSummaries = () => {
               className="confirm-text p-2"
               to="#"
               data-bs-toggle="modal"
-              data-bs-target="#delete-trip-modal"
+              data-bs-target="#delete-daily-trip-summary"
               onClick={() => setDeleteId(row.assignment_id)}
             >
               <i className="feather-trash-2"></i>
@@ -161,6 +161,17 @@ const VehicleDailyTripSummaries = () => {
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
+             <div className="page-btn">
+              <Link
+                to="#"
+                className="btn btn-added"
+                data-bs-toggle="modal"
+                data-bs-target="#add-daily-trip-summary"
+              >
+                <i className="ti ti-circle-plus me-1"></i>
+                Add Daily Trip Summary
+              </Link>
+            </div>
           </div>
 
           <div className="card table-list-card">

@@ -87,7 +87,7 @@ const AddVehicle = () => {
     }, [success, error, dispatch]);
 
     return (
-        <div className="modal fade" id="add-vehicle" tabIndex="-1">
+        <div className="modal fade" id="add-vehicle">
             <div className="modal-dialog modal-dialog-centered custom-modal-two">
                 <div className="modal-content">
                     <div className="page-wrapper-new p-0">

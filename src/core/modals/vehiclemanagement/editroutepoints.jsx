@@ -8,7 +8,7 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
   const dispatch = useDispatch();
 
   const { success, error, loading } = useSelector(
-    (state) => state.routePoints
+    (state) => state.vehicleRoutePoints
   );
 
   const [formData, setFormData] = useState({
@@ -52,7 +52,7 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
 
     dispatch(
       updateVehicleRoutePoint({
-        id: routePointId,
+        route_point_id: routePointId,
         data: {
           route_id: Number(formData.route_id),
           point_id: Number(formData.point_id),
@@ -68,7 +68,7 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
   useEffect(() => {
     if (!success) return;
 
-    const modalEl = document.getElementById("edit-route-point");
+    const modalEl = document.getElementById("edit-route-point-modal");
     if (!modalEl) return;
 
     const modalInstance =
@@ -92,8 +92,8 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
   if (!selectedRoutePoint) return null;
 
   return (
-    <div className="modal fade" id="edit-route-point">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+    <div className="modal fade" id="edit-route-point-modal">
+      <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
@@ -108,7 +108,7 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
                   className="close"
                   data-bs-dismiss="modal"
                 >
-                  <span aria-hidden="true">×</span>
+                  <span>×</span>
                 </button>
               </div>
 
