@@ -9,6 +9,7 @@ import { clearMessages, deleteVehicle, getVehicles } from "../../core/redux/vehi
 import AddVehicle from "../../core/modals/vehiclemanagement/addvehicle";
 import EditVehicle from "../../core/modals/vehiclemanagement/editvehicle";
 import ViewVehicle from "../../core/modals/vehiclemanagement/viewvehicle";
+import { Modal } from "bootstrap";
 
 
 const Vehicles = () => {
@@ -39,7 +40,7 @@ const Vehicles = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -118,9 +119,16 @@ const Vehicles = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-vehicle"
-              onClick={() => setEditVehicleData(rowData)}
+              onClick={() => {
+                setEditVehicleData(rowData);
+
+                const modalEl = document.getElementById("edit-vehicle");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -163,8 +171,14 @@ const Vehicles = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-vehicle"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-vehicle");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Vehicle

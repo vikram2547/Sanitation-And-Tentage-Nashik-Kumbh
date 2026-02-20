@@ -16,7 +16,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
   const [formData, setFormData] = useState({
     vehicle_id: "",
     route_id: "",
-    metric_type: "",
+    metric_type: "DISTANCE",
     metric_value: "",
     metric_date: "",
   });
@@ -47,7 +47,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
 
     dispatch(
       updateVehiclePerformanceMetric({
-        id: selectedMetric.metric_id,
+        metric_id: selectedMetric.metric_id,
         data: formData,
       })
     );
@@ -60,20 +60,22 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
     const modalEl = document.getElementById("edit-metric-modal");
     if (!modalEl) return;
 
-    const modalInstance =
+    const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
 
-    modalInstance.hide();
-    modalInstance.dispose();
-
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
-      dispatch(clearMessages());
-    }, 300);
+
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
   }, [success, dispatch]);
 
   if (!selectedMetric) return null;

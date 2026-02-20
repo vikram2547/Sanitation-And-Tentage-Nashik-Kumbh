@@ -9,6 +9,7 @@ import { clearMessages, deleteVehicleMaintenanceLog, getVehicleMaintenanceLogs }
 import AddMaintenanceLogs from "../../core/modals/vehiclemanagement/addmaintenancelogs";
 import ViewMaintenanceLogs from "../../core/modals/vehiclemanagement/viewmaintenancelogs";
 import EditMaintenanceLogs from "../../core/modals/vehiclemanagement/editmaintenancelogs";
+import { Modal } from "bootstrap";
 
 
 const VehicleMaintenanceLogs = () => {
@@ -36,7 +37,7 @@ const VehicleMaintenanceLogs = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
@@ -107,9 +108,16 @@ const VehicleMaintenanceLogs = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-maintenance-log"
-              onClick={() => setEditLogData(rowData)}
+              onClick={() => {
+                setEditLogData(rowData);
+
+                const modalEl = document.getElementById("edit-maintenance-log");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -151,8 +159,14 @@ const VehicleMaintenanceLogs = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-maintenance-modal"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-maintenance-modal");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Maintenance Log

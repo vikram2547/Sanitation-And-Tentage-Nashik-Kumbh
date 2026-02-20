@@ -6,6 +6,19 @@ import {
   updateVehicleGpsTracking,
 } from "../../redux/vehicleGpsTrackingSlice";
 
+/* ================= TIMESTAMP HELPERS ================= */
+const toInputDateTime = (value) => {
+  // "2026-02-19 17:04:00" → "2026-02-19T17:04"
+  if (!value) return "";
+  return value.replace(" ", "T").slice(0, 16);
+};
+
+const toApiTimestamp = (value) => {
+  // "2026-02-19T17:04" → "2026-02-19 17:04:00"
+  if (!value) return "";
+  return value.replace("T", " ") + ":00";
+};
+
 const EditGpsTracking = ({ selectedGps }) => {
   const dispatch = useDispatch();
 
@@ -32,10 +45,17 @@ const EditGpsTracking = ({ selectedGps }) => {
     if (!selectedGps) return;
 
     setFormData({
-      ...selectedGps,
-      timestamp: selectedGps.timestamp
-        ? selectedGps.timestamp.replace(" ", "T")
-        : "",
+      vehicle_id: selectedGps.vehicle_id ?? "",
+      assignment_id: selectedGps.assignment_id ?? "",
+      latitude: selectedGps.latitude ?? "",
+      longitude: selectedGps.longitude ?? "",
+      speed: selectedGps.speed ?? "",
+      direction: selectedGps.direction ?? "",
+      ignition_status: selectedGps.ignition_status ?? "ON",
+      fuel_level: selectedGps.fuel_level ?? "",
+      odometer_reading: selectedGps.odometer_reading ?? "",
+      accuracy: selectedGps.accuracy ?? "",
+      timestamp: toInputDateTime(selectedGps.timestamp),
     });
   }, [selectedGps]);
 
@@ -48,17 +68,22 @@ const EditGpsTracking = ({ selectedGps }) => {
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!selectedGps?.id) return;
 
     const payload = {
-      ...formData,
-      timestamp: formData.timestamp
-        ? formData.timestamp.replace("T", " ")
-        : "",
+      vehicle_id: Number(formData.vehicle_id),
+      assignment_id: Number(formData.assignment_id),
+      latitude: Number(formData.latitude),
+      longitude: Number(formData.longitude),
+      speed: Number(formData.speed),
+      direction: Number(formData.direction),
+      ignition_status: formData.ignition_status,
+      fuel_level: Number(formData.fuel_level),
+      odometer_reading: Number(formData.odometer_reading),
+      accuracy: Number(formData.accuracy),
+      timestamp: toApiTimestamp(formData.timestamp), // ✅ FIX
     };
 
-    // ✅ DISPATCH WILL FIRE
     dispatch(
       updateVehicleGpsTracking({
         id: selectedGps.id,
@@ -77,19 +102,8 @@ const EditGpsTracking = ({ selectedGps }) => {
     const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
 
-    // ✅ FIX accessibility warning
-    document.activeElement?.blur();
-
     modal.hide();
-
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-      dispatch(clearMessages());
-    }, 300);
+    dispatch(clearMessages());
   }, [success, dispatch]);
 
   if (!selectedGps) return null;
@@ -129,13 +143,8 @@ const EditGpsTracking = ({ selectedGps }) => {
                           <label>
                             {key.replace(/_/g, " ").toUpperCase()}
                           </label>
-
                           <input
-                            type={
-                              key === "timestamp"
-                                ? "datetime-local"
-                                : "text"
-                            }
+                            type={key === "timestamp" ? "datetime-local" : "text"}
                             name={key}
                             value={formData[key]}
                             onChange={handleChange}
@@ -156,7 +165,6 @@ const EditGpsTracking = ({ selectedGps }) => {
                     >
                       Cancel
                     </button>
-
                     <button
                       type="submit"
                       className="btn btn-submit"

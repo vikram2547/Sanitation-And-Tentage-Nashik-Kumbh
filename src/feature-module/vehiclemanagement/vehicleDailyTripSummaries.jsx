@@ -9,6 +9,7 @@ import { clearMessages, deleteVehicleDailyTripSummary, getVehicleDailyTripSummar
 import AddDailyTripSummaries from "../../core/modals/vehiclemanagement/adddailytripsummaries";
 import EditDailyTripSummaries from "../../core/modals/vehiclemanagement/editdailytripsummaries";
 import ViewDailyTripSummaries from "../../core/modals/vehiclemanagement/viewdailytripsummaries";
+import { Modal } from "bootstrap";
 
 
 
@@ -37,7 +38,7 @@ const VehicleDailyTripSummaries = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
@@ -123,9 +124,16 @@ const VehicleDailyTripSummaries = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-daily-trip-summary"
-              onClick={() => setEditTripData(rowData)}
+              onClick={() => {
+                setEditTripData(rowData);
+
+                const modalEl = document.getElementById("edit-daily-trip-summary");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -155,18 +163,24 @@ const VehicleDailyTripSummaries = () => {
 
           <div className="page-header">
             <div className="page-title">
-              <h4>Daily Trip Summaries</h4>
+              <h4>Vehicle Daily Trip Summaries</h4>
               <h6>Vehicle Trip Performance</h6>
             </div>
             <ul className="table-top-head">
               <TooltipIcons />
             </ul>
-             <div className="page-btn">
+            <div className="page-btn">
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-daily-trip-summary"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-daily-trip-summary");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Daily Trip Summary

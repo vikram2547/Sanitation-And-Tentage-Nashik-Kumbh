@@ -8,6 +8,7 @@ import { clearMessages, deleteCircle, getCircles } from "../../core/redux/circle
 import AddCircle from "../../core/modals/circlemanagement/addcircle";
 import EditCircle from "../../core/modals/circlemanagement/editcircle";
 import ViewCircle from "../../core/modals/circlemanagement/viewcircle";
+import { Modal } from "bootstrap";
 
 
 const Circles = () => {
@@ -39,7 +40,7 @@ const Circles = () => {
         if (success || error) {
             const timer = setTimeout(() => {
                 dispatch(clearMessages());
-            }, 5000);
+            }, 3000);
 
             return () => clearTimeout(timer);
         }
@@ -100,10 +101,14 @@ const Circles = () => {
                         <Link
                             className="me-2 p-2"
                             to="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#edit-circle"
                             onClick={() => {
                                 setEditCircleData(rowData);
+                                const modalEl = document.getElementById("edit-circle");
+                                if (!modalEl) return;
+
+                                const modal =
+                                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                                modal.show();
                             }}
                         >
                             <i className="feather-edit"></i>
@@ -146,8 +151,14 @@ const Circles = () => {
                             <Link
                                 to="#"
                                 className="btn btn-added"
-                                data-bs-toggle="modal"
-                                data-bs-target="#add-circle"
+                                onClick={() => {
+                                    const modalEl = document.getElementById("add-circle");
+                                    if (!modalEl) return;
+
+                                    const modal =
+                                        Modal.getInstance(modalEl) || new Modal(modalEl);
+                                    modal.show();
+                                }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
                                 Add New Circle

@@ -9,6 +9,7 @@ import { clearMessages, deleteVehicleRoute, getVehicleRoutes } from "../../core/
 import AddRoute from "../../core/modals/vehiclemanagement/addroute";
 import EditRoute from "../../core/modals/vehiclemanagement/editroute";
 import ViewRoute from "../../core/modals/vehiclemanagement/viewroute";
+import { Modal } from "bootstrap";
 
 
 
@@ -37,7 +38,7 @@ const VehicleRoutes = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
@@ -114,9 +115,16 @@ const VehicleRoutes = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-route-modal"
-              onClick={() => setEditRouteData(rowData)}
+              onClick={() => {
+                setEditRouteData(rowData);
+
+                const modalEl = document.getElementById("edit-route-modal");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -146,7 +154,7 @@ const VehicleRoutes = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Routes</h4>
+                <h4>Vehicle Routes</h4>
                 <h6>Manage Routes</h6>
               </div>
             </div>
@@ -158,8 +166,14 @@ const VehicleRoutes = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-route-modal"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-route-modal");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Vehicle Route

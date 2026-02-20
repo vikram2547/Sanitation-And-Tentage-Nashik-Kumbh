@@ -40,14 +40,6 @@ const AddRoute = () => {
       modalInstance.hide();
     }
 
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-    }, 300);
-
     setFormData({
       route_code: "",
       route_name: "",
@@ -62,7 +54,7 @@ const AddRoute = () => {
 
     const timer = setTimeout(() => {
       dispatch(clearMessages());
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [success, error, dispatch]);
@@ -132,14 +124,19 @@ const AddRoute = () => {
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>Zone</label>
-                        <input
-                          type="text"
+                        <select
                           name="zone"
                           value={formData.zone}
                           onChange={handleChange}
                           className="form-control"
                           required
-                        />
+                        >
+                          <option value="">Select Zone</option>
+                          <option value="North">North</option>
+                          <option value="South">South</option>
+                          <option value="East">East</option>
+                          <option value="West">West</option>
+                        </select>
                       </div>
                     </div>
 

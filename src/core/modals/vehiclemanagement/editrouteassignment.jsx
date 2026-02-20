@@ -75,20 +75,22 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
     const modalEl = document.getElementById("edit-assignment-modal");
     if (!modalEl) return;
 
-    const modalInstance =
+    const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
-    modalInstance.hide();
-    modalInstance.dispose();
 
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
-      dispatch(clearMessages());
-    }, 300);
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
   }, [success, dispatch]);
 
   if (!selectedAssignment) return null;
@@ -208,7 +210,6 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
                           required
                         >
                           <option value="SCHEDULED">Scheduled</option>
-                          <option value="IN_PROGRESS">In Progress</option>
                           <option value="COMPLETED">Completed</option>
                         </select>
                       </div>

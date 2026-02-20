@@ -14,6 +14,7 @@ import {
 import AddSanitationAsset from "../../core/modals/assettypemanagement/addSanitationAsset";
 import EditSanitationAsset from "../../core/modals/assettypemanagement/editSanitationAsset";
 import ViewSanitationAsset from "../../core/modals/assettypemanagement/viewSanitationAsset";
+import { Modal } from "bootstrap";
 
 const SanitationAsset = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const SanitationAsset = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -119,9 +120,16 @@ const SanitationAsset = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-sanitation-asset"
-              onClick={() => setEditAssetData(rowData)}
+              onClick={() => {
+                setEditAssetData(rowData);
+
+                const modalEl = document.getElementById("edit-sanitation-asset");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -167,8 +175,14 @@ const SanitationAsset = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-sanitation-asset"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-sanitation-asset");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Sanitation Asset

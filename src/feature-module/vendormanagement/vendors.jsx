@@ -13,6 +13,7 @@ import {
 import AddVendor from "../../core/modals/vendormanagement/addvendor";
 import EditVendor from "../../core/modals/vendormanagement/editvendor";
 import ViewVendor from "../../core/modals/vendormanagement/viewvendor";
+import { Modal } from "bootstrap";
 
 const Vendors = () => {
     const dispatch = useDispatch();
@@ -42,7 +43,7 @@ const Vendors = () => {
         if (success || error) {
             const timer = setTimeout(() => {
                 dispatch(clearMessages());
-            }, 5000);
+            }, 3000);
 
             return () => clearTimeout(timer);
         }
@@ -129,10 +130,14 @@ const Vendors = () => {
                         <Link
                             className="me-2 p-2"
                             to="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#edit-vendor"
                             onClick={() => {
                                 setEditVendorData(rowData);
+                                const modalEl = document.getElementById("edit-vendor");
+                                if (!modalEl) return;
+
+                                const modal =
+                                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                                modal.show();
                             }}
                         >
                             <i className="feather-edit"></i>
@@ -175,8 +180,14 @@ const Vendors = () => {
                             <Link
                                 to="#"
                                 className="btn btn-added"
-                                data-bs-toggle="modal"
-                                data-bs-target="#add-vendor"
+                                onClick={() => {
+                                    const modalEl = document.getElementById("add-vendor");
+                                    if (!modalEl) return;
+
+                                    const modal =
+                                        Modal.getInstance(modalEl) || new Modal(modalEl);
+                                    modal.show();
+                                }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
                                 Add New Vendor

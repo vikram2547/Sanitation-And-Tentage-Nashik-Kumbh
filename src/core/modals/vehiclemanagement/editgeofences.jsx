@@ -5,6 +5,7 @@ import { clearMessages, updateVehicleGeofence } from "../../redux/vehicleGeofenc
 
 const EditGeofences = ({ selectedGeofence }) => {
   const dispatch = useDispatch();
+
   const { success, error, loading } = useSelector(
     (state) => state.vehicleGeofences
   );
@@ -36,11 +37,11 @@ const EditGeofences = ({ selectedGeofence }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!selectedGeofence?.id) return;
+    if (!selectedGeofence?.geofence_id) return;
 
     dispatch(
       updateVehicleGeofence({
-        id: selectedGeofence.id,
+        geofence_id: selectedGeofence.geofence_id,
         data: formData,
       })
     );
@@ -53,20 +54,22 @@ const EditGeofences = ({ selectedGeofence }) => {
     const modalEl = document.getElementById("edit-geofence-modal");
     if (!modalEl) return;
 
-    const modalInstance =
+    const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
-    modalInstance.hide();
-    modalInstance.dispose();
 
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
-      dispatch(clearMessages());
-    }, 300);
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
   }, [success, dispatch]);
 
   if (!selectedGeofence) return null;

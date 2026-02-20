@@ -8,6 +8,7 @@ import { clearMessages, deleteQuestion, getQuestions } from "../../core/redux/qu
 import AddQuestion from "../../core/modals/questionmanagement/addquestions";
 import EditQuestion from "../../core/modals/questionmanagement/editquestion";
 import ViewQuestion from "../../core/modals/questionmanagement/viewquestion";
+import { Modal } from "bootstrap";
 
 
 const Questions = () => {
@@ -39,7 +40,7 @@ const Questions = () => {
         if (success || error) {
             const timer = setTimeout(() => {
                 dispatch(clearMessages());
-            }, 5000);
+            }, 3000);
 
             return () => clearTimeout(timer);
         }
@@ -113,9 +114,16 @@ const Questions = () => {
                         <Link
                             className="me-2 p-2"
                             to="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#edit-question"
-                            onClick={() => setEditQuestionData(rowData)}
+                            onClick={() => {
+                                setEditQuestionData(rowData);
+
+                                const modalEl = document.getElementById("edit-question");
+                                if (!modalEl) return;
+
+                                const modal =
+                                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                                modal.show();
+                            }}
                         >
                             <i className="feather-edit"></i>
                         </Link>
@@ -157,8 +165,14 @@ const Questions = () => {
                             <Link
                                 to="#"
                                 className="btn btn-added"
-                                data-bs-toggle="modal"
-                                data-bs-target="#add-question"
+                                onClick={() => {
+                                    const modalEl = document.getElementById("add-question");
+                                    if (!modalEl) return;
+
+                                    const modal =
+                                        Modal.getInstance(modalEl) || new Modal(modalEl);
+                                    modal.show();
+                                }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
                                 Add New Question

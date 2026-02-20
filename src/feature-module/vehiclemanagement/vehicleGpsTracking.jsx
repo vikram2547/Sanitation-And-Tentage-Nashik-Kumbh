@@ -9,6 +9,7 @@ import { clearMessages, deleteVehicleGpsTracking, getVehicleGpsTracking } from "
 import AddGpsTracking from "../../core/modals/vehiclemanagement/addgpstracking";
 import EditGpsTracking from "../../core/modals/vehiclemanagement/editgpstracking";
 import ViewGpsTracking from "../../core/modals/vehiclemanagement/viewgpstracking";
+import { Modal } from "bootstrap";
 
 const VehicleGpsTracking = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const VehicleGpsTracking = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
@@ -118,9 +119,16 @@ const VehicleGpsTracking = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-gps-modal"
-              onClick={() => setEditGpsData(rowData)}
+              onClick={() => {
+                setEditGpsData(rowData);
+
+                const modalEl = document.getElementById("edit-gps-modal");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -162,8 +170,14 @@ const VehicleGpsTracking = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-gps-modal"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-gps-modal");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add GPS Tracking

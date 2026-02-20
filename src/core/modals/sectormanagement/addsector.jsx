@@ -37,26 +37,24 @@ const AddSector = () => {
 
     /* ================= SUCCESS FLOW ================= */
     useEffect(() => {
-        if (success) {
+        if (!success) return;
+        const modalEl = document.getElementById("add-sector");
 
-            const modalEl = document.getElementById("add-sector");
 
-            if (modalEl) {
-                const modalInstance =
-                    Modal.getInstance(modalEl) || new Modal(modalEl);
 
-                modalInstance.hide();
-            }
+        if (modalEl) {
+            const modalInstance =
+                Modal.getInstance(modalEl) || new Modal(modalEl);
 
-            setTimeout(() => {
-                document.body.classList.remove("modal-open");
-                document.body.style.paddingRight = "";
-
-                const backdrops = document.querySelectorAll(".modal-backdrop");
-                backdrops.forEach((bd) => bd.remove());
-            }, 500);
-
+            modalInstance.hide();
         }
+
+        setFormData({
+            sector_name: "",
+            sector_code: "",
+            boundary_coordinates: null,
+        })
+
     }, [success]);
 
     /* ================= ERROR CLEAR ================= */
@@ -65,7 +63,7 @@ const AddSector = () => {
 
         const timer = setTimeout(() => {
             dispatch(clearMessages());
-        }, 5000);
+        }, 3000);
 
         return () => clearTimeout(timer);
     }, [success, error, dispatch]);

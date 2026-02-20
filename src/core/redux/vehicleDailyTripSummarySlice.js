@@ -84,7 +84,7 @@ export const deleteVehicleDailyTripSummary = createAsyncThunk(
 const vehicleDailyTripSummarySlice = createSlice({
   name: "vehicleDailyTripSummaries",
   initialState: {
-    vehicles: [],
+    trips: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -104,7 +104,7 @@ const vehicleDailyTripSummarySlice = createSlice({
       })
       .addCase(getVehicleDailyTripSummaries.fulfilled, (state, action) => {
         state.loading = false;
-        state.vehicles = action.payload?.data?.vehicles || [];
+        state.trips = action.payload?.data?.trips || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -116,7 +116,7 @@ const vehicleDailyTripSummarySlice = createSlice({
       /* ===== ADD ===== */
       .addCase(addVehicleDailyTripSummary.fulfilled, (state, action) => {
         state.success = "Vehicle daily trip summary created successfully";
-        state.vehicles.unshift(action.payload?.data);
+        state.trips.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
 
@@ -124,7 +124,7 @@ const vehicleDailyTripSummarySlice = createSlice({
       .addCase(updateVehicleDailyTripSummary.fulfilled, (state, action) => {
         state.success = "Vehicle daily trip summary updated successfully";
         const updated = action.payload?.data;
-        state.vehicles = state.vehicles.map((v) =>
+        state.trips = state.trips.map((v) =>
           v.daily_trip_summary_id === updated.daily_trip_summary_id
             ? updated
             : v
@@ -135,7 +135,7 @@ const vehicleDailyTripSummarySlice = createSlice({
       .addCase(deleteVehicleDailyTripSummary.fulfilled, (state, action) => {
         state.success = "Vehicle daily trip summary deleted successfully";
         const deletedId = action.meta.arg;
-        state.vehicles = state.vehicles.filter(
+        state.trips = state.trips.filter(
           (v) =>
             Number(v.daily_trip_summary_id) !== Number(deletedId)
         );

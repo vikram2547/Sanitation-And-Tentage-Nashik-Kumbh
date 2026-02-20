@@ -82,21 +82,22 @@ const EditSanitationAsset = ({ selectedAsset }) => {
     const modalEl = document.getElementById("edit-sanitation-asset");
     if (!modalEl) return;
 
-    const modalInstance =
+    const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
 
-    modalInstance.hide();
-    modalInstance.dispose();
-
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
-      dispatch(clearMessages());
-    }, 300);
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
   }, [success, dispatch]);
 
   if (!selectedAsset) return null;
@@ -178,7 +179,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
                           <option value="">Select Sector</option>
                           {sectors?.map((s) => (
                             <option key={s.sector_id} value={s.sector_id}>
-                              {s.name}
+                              {s.sector_name}
                             </option>
                           ))}
                         </select>
@@ -198,7 +199,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
                           <option value="">Select Circle</option>
                           {circles?.map((c) => (
                             <option key={c.circle_id} value={c.circle_id}>
-                              {c.name}
+                              {c.circle_name}
                             </option>
                           ))}
                         </select>

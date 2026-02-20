@@ -8,6 +8,7 @@ import AddAssetType from "../../core/modals/assettypemanagement/addassettype";
 import EditAssetType from "../../core/modals/assettypemanagement/editassettype";
 import ViewAssetType from "../../core/modals/assettypemanagement/viewassettype";
 import { useDispatch, useSelector } from "react-redux";
+import { Modal } from "bootstrap";
 
 
 const AssetType = () => {
@@ -38,7 +39,7 @@ const AssetType = () => {
         if (success || error) {
             const timer = setTimeout(() => {
                 dispatch(clearMessages());
-            }, 5000);
+            }, 3000);
 
             return () => clearTimeout(timer);
         }
@@ -117,9 +118,18 @@ const AssetType = () => {
                         <Link
                             className="me-2 p-2"
                             to="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#edit-assettype"
-                            onClick={() => setEditAssetTypeData(rowData)}
+                            onClick={() => {
+                                setEditAssetTypeData(rowData);
+
+                                const modalEl = document.getElementById("edit-assettype");
+                                if (!modalEl) return;
+
+                                const modal =
+                                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                                modal.show();
+                            }}
+
+
                         >
                             <i className="feather-edit"></i>
                         </Link>
@@ -164,8 +174,15 @@ const AssetType = () => {
                             <Link
                                 to="#"
                                 className="btn btn-added"
-                                data-bs-toggle="modal"
-                                data-bs-target="#add-assettype"
+
+                                onClick={() => {
+                                    const modalEl = document.getElementById("add-assettype");
+                                    if (!modalEl) return;
+
+                                    const modal =
+                                        Modal.getInstance(modalEl) || new Modal(modalEl);
+                                    modal.show();
+                                }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
                                 Add Asset Type

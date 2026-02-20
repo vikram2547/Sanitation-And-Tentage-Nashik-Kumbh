@@ -62,19 +62,22 @@ const EditDailyTripSummaries = ({ selectedTrip }) => {
     const modalEl = document.getElementById("edit-daily-trip-summary");
     if (!modalEl) return;
 
-    const modalInstance =
+    const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
-    modalInstance.hide();
-    modalInstance.dispose();
 
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
-      dispatch(clearMessages());
-    }, 300);
+
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
   }, [success, dispatch]);
 
   if (!selectedTrip) return null;

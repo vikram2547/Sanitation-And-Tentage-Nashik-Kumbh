@@ -9,6 +9,7 @@ import { clearMessages, deleteVehicleRoutePoint, getVehicleRoutePoints } from ".
 import AddRoutePoints from "../../core/modals/vehiclemanagement/addroutepoints";
 import EditRoutePoints from "../../core/modals/vehiclemanagement/editroutepoints";
 import ViewRoutePoints from "../../core/modals/vehiclemanagement/viewroutepoints";
+import { Modal } from "bootstrap";
 
 
 const VehicleRoutePoints = () => {
@@ -36,7 +37,7 @@ const VehicleRoutePoints = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
@@ -113,9 +114,16 @@ const VehicleRoutePoints = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-route-point-modal"
-              onClick={() => setEditRoutePointData(rowData)}
+              onClick={() => {
+                setEditRoutePointData(rowData);
+
+                const modalEl = document.getElementById("edit-route-point-modal");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -145,7 +153,7 @@ const VehicleRoutePoints = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Route Points</h4>
+                <h4>Vehicle Route Points</h4>
                 <h6>Manage Route Points</h6>
               </div>
             </div>
@@ -157,8 +165,14 @@ const VehicleRoutePoints = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-route-point-modal"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-route-point-modal");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Route point

@@ -44,26 +44,26 @@ const AddCircle = () => {
 
   /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
-    if (success) {
+    if (!success) return;
+    const modalEl = document.getElementById("add-circle");
 
-      const modalEl = document.getElementById("add-circle");
 
-      if (modalEl) {
-        const modalInstance =
-          Modal.getInstance(modalEl) || new Modal(modalEl);
 
-        modalInstance.hide();
-      }
 
-      setTimeout(() => {
-        document.body.classList.remove("modal-open");
-        document.body.style.paddingRight = "";
+    if (modalEl) {
+      const modalInstance =
+        Modal.getInstance(modalEl) || new Modal(modalEl);
 
-        const backdrops = document.querySelectorAll(".modal-backdrop");
-        backdrops.forEach((bd) => bd.remove());
-      }, 500);
-
+      modalInstance.hide();
     }
+
+    setFormData({
+      circle_name: "",
+      circle_code: "",
+      sector_id: "",
+      boundary_coordinates: null,
+    })
+
   }, [success]);
 
   /* ================= ERROR CLEAR ================= */
@@ -72,7 +72,7 @@ const AddCircle = () => {
 
     const timer = setTimeout(() => {
       dispatch(clearMessages());
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [success, error, dispatch]);

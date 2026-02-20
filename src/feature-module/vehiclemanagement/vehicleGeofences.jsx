@@ -9,6 +9,7 @@ import { clearMessages, deleteVehicleGeofence, getVehicleGeofences } from "../..
 import EditGeofences from "../../core/modals/vehiclemanagement/editgeofences";
 import ViewGeofences from "../../core/modals/vehiclemanagement/viewgeofences";
 import AddGeofences from "../../core/modals/vehiclemanagement/addgeofences";
+import { Modal } from "bootstrap";
 
 
 const VehicleGeofences = () => {
@@ -108,9 +109,16 @@ const VehicleGeofences = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-geofence-modal"
-              onClick={() => setEditGeofenceData(rowData)}
+              onClick={() => {
+                setEditGeofenceData(rowData);
+
+                const modalEl = document.getElementById("edit-geofence-modal");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -152,8 +160,14 @@ const VehicleGeofences = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-geofence-modal"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-geofence-modal");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Geofence

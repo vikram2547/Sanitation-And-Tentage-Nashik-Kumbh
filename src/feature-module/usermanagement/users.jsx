@@ -12,6 +12,7 @@ import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 // import CollapesIcon from "../../components/tooltip-content/collapes";
 import PrimeDataTable from "../../components/data-table";
 import { clearMessages, deleteUser, getUsers } from "../../core/redux/usersSlice";
+import { Modal } from "bootstrap";
 
 
 
@@ -44,7 +45,7 @@ const Users = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
@@ -124,10 +125,15 @@ const Users = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-units"
               onClick={() => {
                 setEditUserData(rowData);
+
+                const modalEl = document.getElementById("edit-units");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
               }}
             >
               <i className="feather-edit"></i>
@@ -172,8 +178,14 @@ const Users = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-units"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-units");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add New User

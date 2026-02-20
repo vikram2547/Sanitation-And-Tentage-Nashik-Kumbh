@@ -42,26 +42,27 @@ const AddVendors = () => {
 
   /* ================= SUCCESS FLOW ================= */
   useEffect(() => {
-    if (success) {
+    if (!success) return;
+    const modalEl = document.getElementById("add-vendor");
 
-      const modalEl = document.getElementById("add-vendor");
 
-      if (modalEl) {
-        const modalInstance =
-          Modal.getInstance(modalEl) || new Modal(modalEl);
 
-        modalInstance.hide();
-      }
+    if (modalEl) {
+      const modalInstance =
+        Modal.getInstance(modalEl) || new Modal(modalEl);
 
-      setTimeout(() => {
-        document.body.classList.remove("modal-open");
-        document.body.style.paddingRight = "";
-
-        const backdrops = document.querySelectorAll(".modal-backdrop");
-        backdrops.forEach((bd) => bd.remove());
-      }, 500);
-
+      modalInstance.hide();
     }
+    setFormData({
+      vendor_name: "",
+      vendor_code: "",
+      contact_person: "",
+      contact_email: "",
+      contact_phone: "",
+      address: "",
+      status: "ACTIVE",
+      user_id: 0,
+    })
   }, [success]);
 
   /* ================= ERROR CLEAR ================= */

@@ -21,29 +21,28 @@ const EditVendor = ({ selectedVendor }) => {
   });
 
   useEffect(() => {
-     if (!success) return;
- 
-     const modalEl = document.getElementById("edit-vendor");
-     if (!modalEl) return;
- 
-     const modalInstance = Modal.getInstance(modalEl);
- 
-     modalInstance?.hide();
- 
-     // 🔥 THIS IS THE FIX
-     modalInstance?.dispose();
- 
-     setTimeout(() => {
-       document.body.classList.remove("modal-open");
-       document.body.style.paddingRight = "";
- 
-       document
-         .querySelectorAll(".modal-backdrop")
-         .forEach((bd) => bd.remove());
- 
-       dispatch(clearMessages());
-     }, 200);
-   }, [success, dispatch]);
+    if (!success) return;
+
+    const modalEl = document.getElementById("edit-vendor");
+    if (!modalEl) return;
+
+    const modal =
+      Modal.getInstance(modalEl) || new Modal(modalEl);
+
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
+      document.body.classList.remove("modal-open");
+      document.body.style.paddingRight = "";
+      document
+        .querySelectorAll(".modal-backdrop")
+        .forEach((bd) => bd.remove());
+
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
+  }, [success, dispatch]);
 
   // ✅ Prefill when selectedVendor changes
   useEffect(() => {

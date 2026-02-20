@@ -8,6 +8,7 @@ import { clearMessages, deleteSector, getSectors } from "../../core/redux/sector
 import AddSector from "../../core/modals/sectormanagement/addsector";
 import EditSector from "../../core/modals/sectormanagement/editsector";
 import ViewSector from "../../core/modals/sectormanagement/viewsector";
+import { Modal } from "bootstrap";
 
 
 
@@ -39,7 +40,7 @@ const Sectors = () => {
         if (success || error) {
             const timer = setTimeout(() => {
                 dispatch(clearMessages());
-            }, 5000);
+            }, 3000);
 
             return () => clearTimeout(timer);
         }
@@ -96,10 +97,14 @@ const Sectors = () => {
                         <Link
                             className="me-2 p-2"
                             to="#"
-                            data-bs-toggle="modal"
-                            data-bs-target="#edit-sector"
                             onClick={() => {
                                 setEditSectorData(rowData);
+                                const modalEl = document.getElementById("edit-sector");
+                                if (!modalEl) return;
+
+                                const modal =
+                                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                                modal.show();
                             }}
                         >
                             <i className="feather-edit"></i>
@@ -142,8 +147,14 @@ const Sectors = () => {
                             <Link
                                 to="#"
                                 className="btn btn-added"
-                                data-bs-toggle="modal"
-                                data-bs-target="#add-sector"
+                                onClick={() => {
+                                    const modalEl = document.getElementById("add-sector");
+                                    if (!modalEl) return;
+
+                                    const modal =
+                                        Modal.getInstance(modalEl) || new Modal(modalEl);
+                                    modal.show();
+                                }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
                                 Add New Sector

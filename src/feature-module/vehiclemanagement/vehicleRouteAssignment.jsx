@@ -9,6 +9,7 @@ import { clearMessages, deleteVehicleRouteAssignment, getVehicleRouteAssignments
 import AddRouteAssignment from "../../core/modals/vehiclemanagement/addrouteassignment";
 import EditRouteAssignment from "../../core/modals/vehiclemanagement/editrouteassignment";
 import ViewRouteAssignment from "../../core/modals/vehiclemanagement/viewrouteassignment";
+import { Modal } from "bootstrap";
 
 const VehicleRouteAssignment = () => {
   const dispatch = useDispatch();
@@ -35,7 +36,7 @@ const VehicleRouteAssignment = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
@@ -112,9 +113,16 @@ const VehicleRouteAssignment = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-assignment-modal"
-              onClick={() => setEditAssignmentData(rowData)}
+              onClick={() => {
+                setEditAssignmentData(rowData);
+
+                const modalEl = document.getElementById("edit-assignment-modal");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -144,7 +152,7 @@ const VehicleRouteAssignment = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Route Assignments</h4>
+                <h4>Vehicle Route Assignments</h4>
                 <h6>Manage Route Assignments</h6>
               </div>
             </div>
@@ -156,8 +164,14 @@ const VehicleRouteAssignment = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-assignment-modal"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-assignment-modal");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Route Assignment

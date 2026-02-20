@@ -84,7 +84,7 @@ export const deleteVehicleCollectionPoint = createAsyncThunk(
 const vehicleCollectionPointSlice = createSlice({
   name: "vehicleCollectionPoints",
   initialState: {
-    vehicles: [],
+    collectionPoints: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -104,7 +104,7 @@ const vehicleCollectionPointSlice = createSlice({
       })
       .addCase(getVehicleCollectionPoints.fulfilled, (state, action) => {
         state.loading = false;
-        state.vehicles = action.payload?.data?.vehicles || [];
+        state.collectionPoints = action.payload?.data?.vehicles || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -116,7 +116,7 @@ const vehicleCollectionPointSlice = createSlice({
       /* ===== ADD ===== */
       .addCase(addVehicleCollectionPoint.fulfilled, (state, action) => {
         state.success = "Vehicle collection point created successfully";
-        state.vehicles.unshift(action.payload?.data);
+        state.collectionPoints.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
 
@@ -124,7 +124,7 @@ const vehicleCollectionPointSlice = createSlice({
       .addCase(updateVehicleCollectionPoint.fulfilled, (state, action) => {
         state.success = "Vehicle collection point updated successfully";
         const updated = action.payload?.data;
-        state.vehicles = state.vehicles.map((v) =>
+        state.collectionPoints = state.collectionPoints.map((v) =>
           v.collection_point_id === updated.collection_point_id
             ? updated
             : v
@@ -135,7 +135,7 @@ const vehicleCollectionPointSlice = createSlice({
       .addCase(deleteVehicleCollectionPoint.fulfilled, (state, action) => {
         state.success = "Vehicle collection point deleted successfully";
         const deletedId = action.meta.arg;
-        state.vehicles = state.vehicles.filter(
+        state.collectionPoints = state.collectionPoints.filter(
           (v) =>
             Number(v.collection_point_id) !== Number(deletedId)
         );

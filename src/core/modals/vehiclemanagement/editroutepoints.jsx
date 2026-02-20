@@ -71,22 +71,22 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
     const modalEl = document.getElementById("edit-route-point-modal");
     if (!modalEl) return;
 
-    const modalInstance =
+    const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
 
-    modalInstance.hide();
-    modalInstance.dispose();
-
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
-
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
-      dispatch(clearMessages());
-    }, 200);
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
   }, [success, dispatch]);
 
   if (!selectedRoutePoint) return null;

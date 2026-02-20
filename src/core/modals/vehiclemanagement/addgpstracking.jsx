@@ -13,6 +13,13 @@ const AddGpsTracking = () => {
     (state) => state.vehicleGpsTracking
   );
 
+  const formatTimestampForAPI = (value) => {
+  if (!value) return "";
+
+  // value: "2026-02-19T17:04"
+  return value.replace("T", " ") + ":00";
+};
+
   const [formData, setFormData] = useState({
     vehicle_id: "",
     assignment_id: "",
@@ -49,7 +56,7 @@ const AddGpsTracking = () => {
       fuel_level: Number(formData.fuel_level),
       odometer_reading: Number(formData.odometer_reading),
       accuracy: Number(formData.accuracy),
-      timestamp: formData.timestamp,
+      timestamp: formatTimestampForAPI(formData.timestamp),
     };
 
     dispatch(addVehicleGpsTracking(payload));
@@ -65,15 +72,6 @@ const AddGpsTracking = () => {
         Modal.getInstance(modalEl) || new Modal(modalEl);
       modalInstance.hide();
     }
-
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-    }, 300);
-
     setFormData({
       vehicle_id: "",
       assignment_id: "",
@@ -94,7 +92,7 @@ const AddGpsTracking = () => {
     if (!success && !error) return;
     const timer = setTimeout(() => {
       dispatch(clearMessages());
-    }, 5000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, [success, error, dispatch]);
 

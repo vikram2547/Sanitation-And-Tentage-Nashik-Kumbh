@@ -53,14 +53,6 @@ const AddPerformanceMetrics = () => {
       modalInstance.hide();
     }
 
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-    }, 300);
-
     const today = new Date().toISOString().split("T")[0];
     setFormData({
       vehicle_id: "",
@@ -76,7 +68,7 @@ const AddPerformanceMetrics = () => {
     if (!success && !error) return;
     const timer = setTimeout(() => {
       dispatch(clearMessages());
-    }, 5000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, [success, error, dispatch]);
 

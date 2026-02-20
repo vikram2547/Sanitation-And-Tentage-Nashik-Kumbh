@@ -63,25 +63,22 @@ const AddDailyTripSummaries = () => {
 
       start_time: `${formData.start_time}:00`, // HH:mm:ss
       end_time: `${formData.end_time}:00`,     // HH:mm:ss
+      idle_time: `${formData.idle_time}:00`, // HH:mm:ss
+      moving_time: `${formData.moving_time}:00`,     // HH:mm:ss
 
-      total_distance: Number(formData.total_distance || 0),
-      total_points_assigned: Number(formData.total_points_assigned || 0),
-      total_points_visited: Number(formData.total_points_visited || 0),
-      total_points_missed: Number(formData.total_points_missed || 0),
-      total_garbage_collected: Number(formData.total_garbage_collected || 0),
+      total_distance: Number(formData.total_distance),
+      total_points_assigned: Number(formData.total_points_assigned),
+      total_points_visited: Number(formData.total_points_visited),
+      total_points_missed: Number(formData.total_points_missed),
+      total_garbage_collected: Number(formData.total_garbage_collected),
 
-      avg_speed: Number(formData.avg_speed || 0),
-      max_speed: Number(formData.max_speed || 0),
+      avg_speed: Number(formData.avg_speed),
+      max_speed: Number(formData.max_speed),
 
-      idle_time: Number(formData.idle_time || 0),
-      moving_time: Number(formData.moving_time || 0),
-
-      completion_percentage: Number(formData.completion_percentage || 0),
+      completion_percentage: Number(formData.completion_percentage),
 
       trip_status: formData.trip_status, // COMPLETED / IN_PROGRESS / CANCELLED
     };
-
-    console.log("ADD DAILY TRIP SUMMARY PAYLOAD:", payload);
 
     dispatch(addVehicleDailyTripSummary(payload));
   };
@@ -96,14 +93,6 @@ const AddDailyTripSummaries = () => {
         Modal.getInstance(modalEl) || new Modal(modalEl);
       modalInstance.hide();
     }
-
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-    }, 300);
 
     setFormData({
       assignment_id: "",
@@ -229,6 +218,34 @@ const AddDailyTripSummaries = () => {
                       </div>
                     </div>
 
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>IDLE TIME</label>
+                        <input
+                          type="time"
+                          name="idle_time"
+                          value={formData.idle_time}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>MOVING TIME</label>
+                        <input
+                          type="time"
+                          name="moving_time"
+                          value={formData.moving_time}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
                     {/* Numeric metrics */}
                     {[
                       "total_distance",
@@ -238,8 +255,7 @@ const AddDailyTripSummaries = () => {
                       "total_garbage_collected",
                       "avg_speed",
                       "max_speed",
-                      "idle_time",
-                      "moving_time",
+
                       "completion_percentage",
                     ].map((f) => (
                       <div className="col-lg-4" key={f}>

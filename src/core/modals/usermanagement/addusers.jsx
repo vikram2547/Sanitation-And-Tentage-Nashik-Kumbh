@@ -58,8 +58,12 @@ const AddUsers = () => {
 
 
   useEffect(() => {
-  if (success) {
+    if (!success) return;
+
     const modalEl = document.getElementById("add-units");
+
+
+
 
     if (modalEl) {
       const modalInstance =
@@ -67,17 +71,18 @@ const AddUsers = () => {
 
       modalInstance.hide();
     }
+    setFormData({
+      phone: "",
+      password: "",
+      full_name: "",
+      email: "",
+      user_type_id: 0,
+      vendor_id: null,
+      is_active: 1,
+    })
 
-    // ✅ CLEAN UP BACKDROP & BODY STATE
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
 
-      const backdrops = document.querySelectorAll(".modal-backdrop");
-      backdrops.forEach((bd) => bd.remove());
-    }, 500);
-  }
-}, [success]);
+  }, [success]);
 
 
   // ✅ Show message for 5 sec

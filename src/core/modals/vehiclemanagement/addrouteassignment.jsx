@@ -44,14 +44,6 @@ const AddRouteAssignment = () => {
       modalInstance.hide();
     }
 
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-    }, 300);
-
     setFormData({
       vehicle_id: "",
       route_id: "",
@@ -69,7 +61,7 @@ const AddRouteAssignment = () => {
     if (!success && !error) return;
     const timer = setTimeout(() => {
       dispatch(clearMessages());
-    }, 5000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, [success, error, dispatch]);
 
@@ -127,7 +119,6 @@ const AddRouteAssignment = () => {
                               {key === "assignment_status" && (
                                 <>
                                   <option value="SCHEDULED">Scheduled</option>
-                                  <option value="IN_PROGRESS">In Progress</option>
                                   <option value="COMPLETED">Completed</option>
                                 </>
                               )}

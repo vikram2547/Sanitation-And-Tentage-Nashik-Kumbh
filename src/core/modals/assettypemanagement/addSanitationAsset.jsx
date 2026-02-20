@@ -55,14 +55,6 @@ const AddSanitationAsset = () => {
       modal.hide();
     }
 
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-    }, 300);
-
     setFormData({
       asset_type_id: 1,
       qr_code: "",
@@ -86,7 +78,7 @@ const AddSanitationAsset = () => {
     if (!success && !error) return;
     const timer = setTimeout(() => {
       dispatch(clearMessages());
-    }, 5000);
+    }, 3000);
     return () => clearTimeout(timer);
   }, [success, error, dispatch]);
 

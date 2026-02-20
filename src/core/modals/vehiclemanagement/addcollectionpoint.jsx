@@ -56,14 +56,11 @@ const AddCollectionPoint = () => {
       address: formData.address || "",
       ward_number: formData.ward_number || "",
       zone: formData.zone || "",
-      point_type: formData.point_type === "PRIMARY" ? "P" : "S",
+      point_type: formData.point_type,
       expected_collection_time: `${formData.expected_collection_time}:00`, // ✅ HH:mm:ss
       collection_frequency: formData.collection_frequency,
       status: formData.status,
     };
-
-    console.log("ADD COLLECTION POINT PAYLOAD:", payload);
-
     dispatch(addVehicleCollectionPoint(payload));
   };
 
@@ -77,14 +74,6 @@ const AddCollectionPoint = () => {
         Modal.getInstance(modalEl) || new Modal(modalEl);
       modalInstance.hide();
     }
-
-    setTimeout(() => {
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
-    }, 300);
 
     setFormData({
       point_code: "",
@@ -106,7 +95,7 @@ const AddCollectionPoint = () => {
   /* ================= AUTO CLEAR ERROR ================= */
   useEffect(() => {
     if (!error) return;
-    const timer = setTimeout(() => dispatch(clearMessages()), 5000);
+    const timer = setTimeout(() => dispatch(clearMessages()), 3000);
     return () => clearTimeout(timer);
   }, [error, dispatch]);
 

@@ -68,23 +68,22 @@ const EditCircle = ({ selectedCircle }) => {
     const modalEl = document.getElementById("edit-circle");
     if (!modalEl) return;
 
-    const modalInstance = Modal.getInstance(modalEl);
+    const modal =
+      Modal.getInstance(modalEl) || new Modal(modalEl);
 
-    modalInstance?.hide();
-
-    // 🔥 THIS IS THE FIX
-    modalInstance?.dispose();
-
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
-
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
-      dispatch(clearMessages());
-    }, 200);
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
   }, [success, dispatch]);
 
   return (

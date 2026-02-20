@@ -58,20 +58,23 @@ const EditVehicle = ({ selectedVehicle }) => {
     const modalEl = document.getElementById("edit-vehicle");
     if (!modalEl) return;
 
-    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl);
-    modalInstance.hide();
-    modalInstance.dispose();
+    const modal =
+      Modal.getInstance(modalEl) || new Modal(modalEl);
 
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
-      dispatch(clearMessages());
-    }, 300);
-  }, [success, dispatch]);
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
+  }, [success]);
 
   if (!selectedVehicle) return null;
 

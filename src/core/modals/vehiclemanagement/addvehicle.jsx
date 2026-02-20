@@ -52,14 +52,6 @@ const AddVehicle = () => {
             modalInstance.hide();
         }
 
-        setTimeout(() => {
-            document.body.classList.remove("modal-open");
-            document.body.style.paddingRight = "";
-            document
-                .querySelectorAll(".modal-backdrop")
-                .forEach((bd) => bd.remove());
-        }, 300);
-
         // reset form
         setFormData({
             vehicle_name: "",
@@ -81,7 +73,7 @@ const AddVehicle = () => {
 
         const timer = setTimeout(() => {
             dispatch(clearMessages());
-        }, 5000);
+        }, 3000);
 
         return () => clearTimeout(timer);
     }, [success, error, dispatch]);

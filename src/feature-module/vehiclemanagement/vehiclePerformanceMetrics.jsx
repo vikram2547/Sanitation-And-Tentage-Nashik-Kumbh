@@ -9,6 +9,7 @@ import { clearMessages, deleteVehiclePerformanceMetric, getVehiclePerformanceMet
 import AddPerformanceMetrics from "../../core/modals/vehiclemanagement/addperformancemetrics";
 import EditPerformanceMetrics from "../../core/modals/vehiclemanagement/editperformancemetrics";
 import ViewPerformanceMetrics from "../../core/modals/vehiclemanagement/viewperformancemetrics";
+import { Modal } from "bootstrap";
 
 
 const VehiclePerformanceMetrics = () => {
@@ -36,7 +37,7 @@ const VehiclePerformanceMetrics = () => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     }
   }, [success, error, dispatch]);
@@ -113,9 +114,16 @@ const VehiclePerformanceMetrics = () => {
             <Link
               className="me-2 p-2"
               to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#edit-metric-modal"
-              onClick={() => setEditMetricData(rowData)}
+              onClick={() => {
+                setEditMetricData(rowData);
+
+                const modalEl = document.getElementById("edit-metric-modal");
+                if (!modalEl) return;
+
+                const modal =
+                  Modal.getInstance(modalEl) || new Modal(modalEl);
+                modal.show();
+              }}
             >
               <i className="feather-edit"></i>
             </Link>
@@ -157,8 +165,14 @@ const VehiclePerformanceMetrics = () => {
               <Link
                 to="#"
                 className="btn btn-added"
-                data-bs-toggle="modal"
-                data-bs-target="#add-metric-modal"
+                onClick={() => {
+                  const modalEl = document.getElementById("add-metric-modal");
+                  if (!modalEl) return;
+
+                  const modal =
+                    Modal.getInstance(modalEl) || new Modal(modalEl);
+                  modal.show();
+                }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
                 Add Performance Metrics

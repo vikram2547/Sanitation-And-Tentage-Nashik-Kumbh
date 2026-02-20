@@ -68,21 +68,22 @@ const EditQuestion = ({ selectedQuestion }) => {
     const modalEl = document.getElementById("edit-question");
     if (!modalEl) return;
 
-    const modalInstance =
+    const modal =
       Modal.getInstance(modalEl) || new Modal(modalEl);
 
-    modalInstance.hide();
-    modalInstance.dispose();
-
-    setTimeout(() => {
+    const handleHidden = () => {
+      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
-      dispatch(clearMessages());
-    }, 300);
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
+    modal.hide();
   }, [success, dispatch]);
 
   return (
@@ -137,39 +138,51 @@ const EditQuestion = ({ selectedQuestion }) => {
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>Question Type</label>
-                        <input
+                        <select
                           type="text"
                           name="question_type"
                           value={formData.question_type}
                           onChange={handleChange}
                           className="form-control"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Severity</label>
-                        <input
-                          type="text"
-                          name="severity"
-                          value={formData.severity}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
+                          required
+                        >
+                          <option value="YES_NO">Yes / No</option>
+                        </select>
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>Expected Answer</label>
-                        <input
-                          type="text"
+                        <select
+                          type='text'
                           name="expected_answer"
                           value={formData.expected_answer}
                           onChange={handleChange}
                           className="form-control"
-                        />
+                          required
+                        >
+                          <option value="YES">Yes</option>
+                          <option value="NO">No</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>Severity</label>
+                        <select
+                          name="severity"
+                          value={formData.severity}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        >
+                          <option value="">Select Severity</option>
+                          <option value="LOW">Low</option>
+                          <option value="MEDIUM">Medium</option>
+                          <option value="HIGH">High</option>
+                        </select>
                       </div>
                     </div>
 

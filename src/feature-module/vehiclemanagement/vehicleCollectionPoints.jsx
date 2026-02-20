@@ -146,7 +146,7 @@ const VehicleCollectionPoints = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Collection Points</h4>
+                <h4>Vehicle Collection Points</h4>
                 <h6>Manage Collection Points</h6>
               </div>
             </div>
