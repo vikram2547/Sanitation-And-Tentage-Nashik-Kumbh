@@ -23,7 +23,7 @@ export const getVehicleCollectionPoints = createAsyncThunk(
   "vehicleCollectionPoints/getVehicleCollectionPoints",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicle-collection-points", {
+      const res = await api.get("vehicle-collection-points", {
         params: { page, per_page },
       });
       return res.data;
@@ -39,7 +39,7 @@ export const addVehicleCollectionPoint = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        "/api/vehicle-collection-points/new",
+        "vehicle-collection-points/new",
         data
       );
       return res.data;
@@ -55,7 +55,7 @@ export const updateVehicleCollectionPoint = createAsyncThunk(
   async ({ collection_point_id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `/api/vehicle-collection-points/edit/${collection_point_id}`,
+        `vehicle-collection-points/edit/${collection_point_id}`,
         data
       );
       return res.data;
@@ -71,7 +71,7 @@ export const deleteVehicleCollectionPoint = createAsyncThunk(
   async (collection_point_id, { rejectWithValue }) => {
     try {
       await api.post(
-        `/api/vehicle-collection-points/delete/${collection_point_id}`
+        `vehicle-collection-points/delete/${collection_point_id}`
       );
       return collection_point_id;
     } catch (e) {

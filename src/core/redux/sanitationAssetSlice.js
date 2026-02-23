@@ -23,7 +23,7 @@ export const getSanitationAssets = createAsyncThunk(
   "sanitationAssets/getSanitationAssets",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/sanitation-assets", {
+      const res = await api.get("sanitation-assets", {
         params: { page, per_page },
       });
       return res.data;
@@ -38,7 +38,7 @@ export const addSanitationAsset = createAsyncThunk(
   "sanitationAssets/addSanitationAsset",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/sanitation-assets/new", data);
+      const res = await api.post("sanitation-assets/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -51,7 +51,7 @@ export const updateSanitationAsset = createAsyncThunk(
   "sanitationAssets/updateSanitationAsset",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/api/sanitation-assets/edit/${id}`, data);
+      const res = await api.post(`sanitation-assets/edit/${id}`, data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -64,7 +64,7 @@ export const deleteSanitationAsset = createAsyncThunk(
   "sanitationAssets/deleteSanitationAsset",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/sanitation-assets/delete/${id}`);
+      await api.post(`sanitation-assets/delete/${id}`);
       return id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);

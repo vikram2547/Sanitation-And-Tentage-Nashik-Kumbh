@@ -23,7 +23,7 @@ export const getVehiclePerformanceMetrics = createAsyncThunk(
   "vehiclePerformanceMetrics/getVehiclePerformanceMetrics",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicle-performance-metrics", {
+      const res = await api.get("vehicle-performance-metrics", {
         params: { page, per_page },
       });
       return res.data;
@@ -39,7 +39,7 @@ export const addVehiclePerformanceMetric = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        "/api/vehicle-performance-metrics/new",
+        "vehicle-performance-metrics/new",
         data
       );
       return res.data;
@@ -55,7 +55,7 @@ export const updateVehiclePerformanceMetric = createAsyncThunk(
   async ({ metric_id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `/api/vehicle-performance-metrics/edit/${metric_id}`,
+        `vehicle-performance-metrics/edit/${metric_id}`,
         data
       );
       return res.data;
@@ -71,7 +71,7 @@ export const deleteVehiclePerformanceMetric = createAsyncThunk(
   async (metric_id, { rejectWithValue }) => {
     try {
       await api.post(
-        `/api/vehicle-performance-metrics/delete/${metric_id}`
+        `vehicle-performance-metrics/delete/${metric_id}`
       );
       return metric_id;
     } catch (e) {

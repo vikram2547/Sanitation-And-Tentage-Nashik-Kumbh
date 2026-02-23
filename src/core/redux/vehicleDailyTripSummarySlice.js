@@ -23,7 +23,7 @@ export const getVehicleDailyTripSummaries = createAsyncThunk(
   "vehicleDailyTripSummaries/getVehicleDailyTripSummaries",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicle-daily-trip-summaries", {
+      const res = await api.get("vehicle-daily-trip-summaries", {
         params: { page, per_page },
       });
       return res.data;
@@ -39,7 +39,7 @@ export const addVehicleDailyTripSummary = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        "/api/vehicle-daily-trip-summaries/new",
+        "vehicle-daily-trip-summaries/new",
         data
       );
       return res.data;
@@ -55,7 +55,7 @@ export const updateVehicleDailyTripSummary = createAsyncThunk(
   async ({ daily_trip_summary_id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `/api/vehicle-daily-trip-summaries/edit/${daily_trip_summary_id}`,
+        `vehicle-daily-trip-summaries/edit/${daily_trip_summary_id}`,
         data
       );
       return res.data;
@@ -71,7 +71,7 @@ export const deleteVehicleDailyTripSummary = createAsyncThunk(
   async (daily_trip_summary_id, { rejectWithValue }) => {
     try {
       await api.post(
-        `/api/vehicle-daily-trip-summaries/delete/${daily_trip_summary_id}`
+        `vehicle-daily-trip-summaries/delete/${daily_trip_summary_id}`
       );
       return daily_trip_summary_id;
     } catch (e) {

@@ -58,39 +58,52 @@ const VehicleCollectionPoints = () => {
       header: "Point Code",
       field: "point_code",
       sortable: true,
-      body: (rowData) => rowData?.point_code || "-",
+      body: (rowData) => rowData?.point_code || null,
     },
     {
       header: "Point Name",
       field: "point_name",
       sortable: true,
-      body: (rowData) => rowData?.point_name || "-",
+      body: (rowData) => rowData?.point_name || null,
     },
     {
       header: "Latitude",
       field: "latitude",
       sortable: true,
-      body: (rowData) => rowData?.latitude || "-",
+      body: (rowData) => rowData?.latitude || null,
     },
     {
       header: "Longitude",
       field: "longitude",
       sortable: true,
-      body: (rowData) => rowData?.longitude || "-",
+      body: (rowData) => rowData?.longitude || null,
     },
     {
       header: "Point Type",
       field: "point_type",
       sortable: true,
-      body: (rowData) => rowData?.point_type || "-",
+      body: (rowData) => rowData?.point_type || null,
     },
     {
-      header: "Status",
-      field: "status",
-      sortable: true,
-      body: (rowData) =>
-        rowData?.status === "ACTIVE" ? "Active" : "Inactive",
-    },
+            header: "Status",
+            field: "status",
+            body: (rowData) => (
+                <div>
+                    {rowData.status === "ACTIVE" ? (
+                        <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-success fs-10">
+                            <i className="ti ti-point-filled me-1 fs-11"></i>
+                            Active
+                        </span>
+                    ) : (
+                        <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-danger fs-10">
+                            <i className="ti ti-point-filled me-1 fs-11"></i>
+                            Inactive
+                        </span>
+                    )}
+                </div>
+            ),
+            sortable: true,
+        },
     {
       header: "Actions",
       field: "actions",

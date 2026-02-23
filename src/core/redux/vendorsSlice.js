@@ -35,7 +35,7 @@ export const getVendors = createAsyncThunk(
   "vendors/getVendors",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/vendors", {
+      const response = await api.get("vendors", {
         params: { page, per_page, keywords: "", status: "", order_by_col: "vendor_id", order_by: "DESC", },
       });
       return response.data;
@@ -52,7 +52,7 @@ export const addVendor = createAsyncThunk(
   "vendors/addVendor",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/vendors/new", data);
+      const response = await api.post("vendors/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -67,7 +67,7 @@ export const updateVendor = createAsyncThunk(
   "vendors/updateVendor",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/vendors/edit/${id}`, data);
+      const response = await api.post(`vendors/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -82,7 +82,7 @@ export const deleteVendor = createAsyncThunk(
   "vendors/deleteVendor",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/vendors/delete/${id}`);
+      await api.post(`vendors/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(

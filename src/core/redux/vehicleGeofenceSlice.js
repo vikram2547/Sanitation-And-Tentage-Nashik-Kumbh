@@ -23,7 +23,7 @@ export const getVehicleGeofences = createAsyncThunk(
   "vehicleGeofences/getVehicleGeofences",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicle-geofences", {
+      const res = await api.get("vehicle-geofences", {
         params: { page, per_page },
       });
       return res.data;
@@ -38,7 +38,7 @@ export const addVehicleGeofence = createAsyncThunk(
   "vehicleGeofences/addVehicleGeofence",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/vehicle-geofences/new", data);
+      const res = await api.post("vehicle-geofences/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -52,7 +52,7 @@ export const updateVehicleGeofence = createAsyncThunk(
   async ({ geofence_id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `/api/vehicle-geofences/edit/${geofence_id}`,
+        `vehicle-geofences/edit/${geofence_id}`,
         data
       );
       return res.data;
@@ -67,7 +67,7 @@ export const deleteVehicleGeofence = createAsyncThunk(
   "vehicleGeofences/deleteVehicleGeofence",
   async (geofence_id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/vehicle-geofences/delete/${geofence_id}`);
+      await api.post(`vehicle-geofences/delete/${geofence_id}`);
       return geofence_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);

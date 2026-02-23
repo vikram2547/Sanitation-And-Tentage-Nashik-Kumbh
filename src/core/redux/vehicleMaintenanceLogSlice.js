@@ -23,7 +23,7 @@ export const getVehicleMaintenanceLogs = createAsyncThunk(
   "vehicleMaintenanceLogs/getVehicleMaintenanceLogs",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicle-maintenance-logs", {
+      const res = await api.get("vehicle-maintenance-logs", {
         params: { page, per_page },
       });
       return res.data;
@@ -39,7 +39,7 @@ export const addVehicleMaintenanceLog = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        "/api/vehicle-maintenance-logs/new",
+        "vehicle-maintenance-logs/new",
         data
       );
       return res.data;
@@ -55,7 +55,7 @@ export const updateVehicleMaintenanceLog = createAsyncThunk(
   async ({ maintenance_id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `/api/vehicle-maintenance-logs/edit/${maintenance_id}`,
+        `vehicle-maintenance-logs/edit/${maintenance_id}`,
         data
       );
       return res.data;
@@ -71,7 +71,7 @@ export const deleteVehicleMaintenanceLog = createAsyncThunk(
   async (maintenance_id, { rejectWithValue }) => {
     try {
       await api.post(
-        `/api/vehicle-maintenance-logs/delete/${maintenance_id}`
+        `vehicle-maintenance-logs/delete/${maintenance_id}`
       );
       return maintenance_id;
     } catch (e) {

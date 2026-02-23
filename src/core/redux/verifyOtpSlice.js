@@ -9,7 +9,7 @@ export const verifyOtp = createAsyncThunk(
         try {
             const response = await axios({
                 method: POST_API,
-                url: `${API_HOST}api/auth/verify-otp`,
+                url: `${API_HOST}auth/verify-otp`,
                 data,
                 headers: {
                     "Content-Type": "application/json",

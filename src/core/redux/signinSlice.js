@@ -11,7 +11,7 @@ export const signinUser = createAsyncThunk(
     try {
       const res = await axios({
         method: POST_API,
-        url: `${API_HOST}api/auth/login`,
+        url: `${API_HOST}auth/login`,
         data,
         headers: {
           "Content-Type": "application/json",

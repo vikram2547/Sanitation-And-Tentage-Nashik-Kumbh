@@ -23,7 +23,7 @@ export const getVehicleGpsTracking = createAsyncThunk(
   "vehicleGpsTracking/getVehicleGpsTracking",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicle-gps-tracking", {
+      const res = await api.get("vehicle-gps-tracking", {
         params: { page, per_page },
       });
       return res.data;
@@ -39,7 +39,7 @@ export const addVehicleGpsTracking = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        "/api/vehicle-gps-tracking/new",
+        "vehicle-gps-tracking/new",
         data
       );
       return res.data;
@@ -55,7 +55,7 @@ export const updateVehicleGpsTracking = createAsyncThunk(
   async ({ gps_tracking_id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `/api/vehicle-gps-tracking/edit/${gps_tracking_id}`,
+        `vehicle-gps-tracking/edit/${gps_tracking_id}`,
         data
       );
       return res.data;
@@ -71,7 +71,7 @@ export const deleteVehicleGpsTracking = createAsyncThunk(
   async (gps_tracking_id, { rejectWithValue }) => {
     try {
       await api.post(
-        `/api/vehicle-gps-tracking/delete/${gps_tracking_id}`
+        `vehicle-gps-tracking/delete/${gps_tracking_id}`
       );
       return gps_tracking_id;
     } catch (e) {

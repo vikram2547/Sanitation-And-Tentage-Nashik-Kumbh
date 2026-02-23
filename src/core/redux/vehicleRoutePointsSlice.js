@@ -23,7 +23,7 @@ export const getVehicleRoutePoints = createAsyncThunk(
   "vehicleRoutePoints/getVehicleRoutePoints",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicle-route-points", {
+      const res = await api.get("vehicle-route-points", {
         params: { page, per_page },
       });
       return res.data;
@@ -39,7 +39,7 @@ export const addVehicleRoutePoint = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        "/api/vehicle-route-points/new",
+        "vehicle-route-points/new",
         data
       );
       return res.data;
@@ -55,7 +55,7 @@ export const updateVehicleRoutePoint = createAsyncThunk(
   async ({ route_point_id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `/api/vehicle-route-points/edit/${route_point_id}`,
+        `vehicle-route-points/edit/${route_point_id}`,
         data
       );
       return res.data;
@@ -71,7 +71,7 @@ export const deleteVehicleRoutePoint = createAsyncThunk(
   async (route_point_id, { rejectWithValue }) => {
     try {
       await api.post(
-        `/api/vehicle-route-points/delete/${route_point_id}`
+        `vehicle-route-points/delete/${route_point_id}`
       );
       return route_point_id;
     } catch (e) {

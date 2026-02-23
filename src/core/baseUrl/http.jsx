@@ -1,4 +1,4 @@
-export const API_HOST = "https://tsmonitoring.kashitsolution.com/";
+export const API_HOST = " https://tsmonitoring.kashitsolution.com/api/v1/";
 export const defaultHeaders = {
   "Content-Type": "application/json",
 };

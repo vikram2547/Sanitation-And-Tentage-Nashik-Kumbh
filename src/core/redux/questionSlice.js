@@ -35,7 +35,7 @@ export const getQuestions = createAsyncThunk(
   "questions/getQuestions",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/questions", {
+      const response = await api.get("questions", {
         params: { page, per_page, order_by_col: "question_id", order_by: "DESC", },
       });
       return response.data;
@@ -52,7 +52,7 @@ export const addQuestion = createAsyncThunk(
   "questions/addQuestion",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/questions/new", data);
+      const response = await api.post("questions/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -67,7 +67,7 @@ export const updateQuestion = createAsyncThunk(
   "questions/updateQuestion",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/questions/edit/${id}`, data);
+      const response = await api.post(`questions/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -82,7 +82,7 @@ export const deleteQuestion = createAsyncThunk(
   "questions/deleteQuestion",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/questions/delete/${id}`);
+      await api.post(`questions/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(

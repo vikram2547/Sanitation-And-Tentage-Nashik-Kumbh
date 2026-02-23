@@ -37,7 +37,7 @@ export const getUsers = createAsyncThunk(
   "users/getUsers",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/users", {
+      const response = await api.get("/users", {
         params: {
           page,
           per_page,
@@ -62,7 +62,7 @@ export const createUser = createAsyncThunk(
   "users/createUser",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/users/new", data);
+      const response = await api.post("users/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -79,7 +79,7 @@ export const updateUser = createAsyncThunk(
   "users/updateUser",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/users/edit/${id}`, data);
+      const response = await api.post(`users/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -96,7 +96,7 @@ export const deleteUser = createAsyncThunk(
   "users/deleteUser",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/users/delete/${id}`);
+      await api.post(`users/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(

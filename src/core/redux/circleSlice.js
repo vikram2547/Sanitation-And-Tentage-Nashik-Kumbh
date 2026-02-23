@@ -36,7 +36,7 @@ export const getCircles = createAsyncThunk(
   "circles/getCircles",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/circles", {
+      const response = await api.get("circles", {
         params: { page, per_page, keywords: "", status: "", order_by_col: "circle_id", order_by: "DESC", },
       });
       return response.data;
@@ -53,7 +53,7 @@ export const addCircle = createAsyncThunk(
   "circles/addCircle",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/circles/new", data);
+      const response = await api.post("circles/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -68,7 +68,7 @@ export const updateCircle = createAsyncThunk(
   "circles/updateCircle",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/circles/edit/${id}`, data);
+      const response = await api.post(`circles/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -83,7 +83,7 @@ export const deleteCircle = createAsyncThunk(
   "circles/deleteCircle",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/circles/delete/${id}`);
+      await api.post(`circles/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(

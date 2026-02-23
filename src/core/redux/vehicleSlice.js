@@ -23,7 +23,7 @@ export const getVehicles = createAsyncThunk(
   "vehicles/getVehicles",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/vehicles", {
+      const res = await api.get("vehicles", {
         params: { page, per_page },
       });
       return res.data;
@@ -38,7 +38,7 @@ export const addVehicle = createAsyncThunk(
   "vehicles/addVehicle",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/vehicles/new", data);
+      const res = await api.post("vehicles/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -51,7 +51,7 @@ export const updateVehicle = createAsyncThunk(
   "vehicles/updateVehicle",
   async ({ vehicle_id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/api/vehicles/edit/${vehicle_id}`, data);
+      const res = await api.post(`vehicles/edit/${vehicle_id}`, data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -64,7 +64,7 @@ export const deleteVehicle = createAsyncThunk(
   "vehicles/deleteVehicle",
   async (vehicle_id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/vehicles/delete/${vehicle_id}`);
+      await api.post(`vehicles/delete/${vehicle_id}`);
       return vehicle_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);

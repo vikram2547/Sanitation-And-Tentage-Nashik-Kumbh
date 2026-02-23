@@ -8,7 +8,7 @@ export const forgotPassword = createAsyncThunk(
     try {
       const response = await axios({
         method: POST_API,
-        url: `${API_HOST}api/auth/forgot-password`,
+        url: `${API_HOST}auth/forgot-password`,
         data,
         headers: {
           "Content-Type": "application/json",

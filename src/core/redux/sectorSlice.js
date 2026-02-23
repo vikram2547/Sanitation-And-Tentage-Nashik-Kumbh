@@ -35,7 +35,7 @@ export const getSectors = createAsyncThunk(
   "sectors/getSectors",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/sectors", {
+      const response = await api.get("sectors", {
         params: { page, per_page, keywords: "", order_by_col: "sector_id", order_by: "DESC", },
       });
       return response.data;
@@ -52,7 +52,7 @@ export const addSector = createAsyncThunk(
   "sectors/addSector",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/sectors/new", data);
+      const response = await api.post("sectors/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -67,7 +67,7 @@ export const updateSector = createAsyncThunk(
   "sectors/updateSector",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/sectors/edit/${id}`, data);
+      const response = await api.post(`sectors/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -82,7 +82,7 @@ export const deleteSector = createAsyncThunk(
   "sectors/deleteSector",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/sectors/delete/${id}`);
+      await api.post(`sectors/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(

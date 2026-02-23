@@ -36,7 +36,7 @@ export const getShifts = createAsyncThunk(
   "shifts/getShifts",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const response = await api.get("/api/shifts", {
+      const response = await api.get("shifts", {
         params: {
           page,
           per_page,
@@ -58,7 +58,7 @@ export const addShift = createAsyncThunk(
   "shifts/addShift",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.post("/api/shifts/new", data);
+      const response = await api.post("shifts/new", data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -73,7 +73,7 @@ export const updateShift = createAsyncThunk(
   "shifts/updateShift",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`/api/shifts/edit/${id}`, data);
+      const response = await api.post(`shifts/edit/${id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -88,7 +88,7 @@ export const deleteShift = createAsyncThunk(
   "shifts/deleteShift",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/shifts/delete/${id}`);
+      await api.post(`shifts/delete/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(

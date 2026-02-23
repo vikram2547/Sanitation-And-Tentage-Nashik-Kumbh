@@ -10,7 +10,7 @@ export const signupUser = createAsyncThunk(
     try {
       const res = await axios({
         method: POST_API,
-        url: `${API_HOST}api/auth/register`,
+        url: `${API_HOST}auth/register`,
         data,
         headers: {
           "Content-Type": "application/json",

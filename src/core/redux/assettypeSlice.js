@@ -23,7 +23,7 @@ export const getAssetTypes = createAsyncThunk(
   "assetTypes/getAssetTypes",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
-      const res = await api.get("/api/asset-types", {
+      const res = await api.get("asset-types", {
         params: { page, per_page },
       });
       return res.data;
@@ -38,7 +38,7 @@ export const addAssetType = createAsyncThunk(
   "assetTypes/addAssetType",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("/api/asset-types/new", data);
+      const res = await api.post("asset-types/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -51,7 +51,7 @@ export const updateAssetType = createAsyncThunk(
   "assetTypes/updateAssetType",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const res = await api.post(`/api/asset-types/edit/${id}`, data);
+      const res = await api.post(`asset-types/edit/${id}`, data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -64,7 +64,7 @@ export const deleteAssetType = createAsyncThunk(
   "assetTypes/deleteAssetType",
   async (id, { rejectWithValue }) => {
     try {
-      await api.post(`/api/asset-types/delete/${id}`);
+      await api.post(`asset-types/delete/${id}`);
       return id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
