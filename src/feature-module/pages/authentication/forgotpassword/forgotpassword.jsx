@@ -7,46 +7,83 @@ import {
   logoWhitePng,
   nashikKumbh,
 } from "../../../../utils/imagepath";
+
 import {
   forgotPassword,
   clearForgotPasswordState,
 } from "../../../../core/redux/forgotPasswordSlice";
+
+import {
+  verifyOtp,
+  clearVerifyOtpState,
+} from "../../../../core/redux/verifyOtpSlice";
 
 const Forgotpassword = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const route = all_routes;
 
-  const { loading, success, error } = useSelector(
-    (state) => state.forgotPassword
-  );
+  const {
+    loading,
+    success,
+    message,
+    error,
+  } = useSelector((state) => state.forgotPassword);
+
+  const {
+    loading: otpLoading,
+    success: otpSuccess,
+    error: otpError,
+  } = useSelector((state) => state.verifyOtp);
 
   const [phone, setPhone] = useState("");
+  const [otp, setOtp] = useState("");
+  const [showOtpField, setShowOtpField] = useState(false);
 
+  /* ================= SEND OTP ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(forgotPassword({ phone }));
   };
 
-  // Navigate on success
+  /* ================= VERIFY OTP ================= */
+  const handleVerifyOtp = (e) => {
+    e.preventDefault();
+    dispatch(
+      verifyOtp({
+        phone,
+        otp,
+      })
+    );
+  };
+
+  /* ================= OTP SENT SUCCESS ================= */
   useEffect(() => {
     if (success) {
-      localStorage.setItem("resetPhone", phone);
-      navigate(route.emailverification);
-      dispatch(clearForgotPasswordState());
+      setShowOtpField(true);
     }
-  }, [success, navigate, route, dispatch, phone]);
+  }, [success]);
 
-  // Show error only 5 seconds
+  /* ================= OTP VERIFIED SUCCESS ================= */
   useEffect(() => {
-    if (error) {
+    if (otpSuccess) {
+      dispatch(clearForgotPasswordState());
+      dispatch(clearVerifyOtpState());
+      navigate(route.newdashboard);
+    }
+  }, [otpSuccess, navigate, dispatch, route]);
+
+  /* ================= CLEAR ERRORS AFTER 5s ================= */
+  useEffect(() => {
+    if (error || otpError) {
       const timer = setTimeout(() => {
         dispatch(clearForgotPasswordState());
-      }, 5000);
+        dispatch(clearVerifyOtpState());
+      }, 3000);
 
       return () => clearTimeout(timer);
     }
-  }, [error, dispatch]);
+  }, [error, otpError, dispatch]);
 
   return (
     <div className="main-wrapper">
@@ -61,7 +98,7 @@ const Forgotpassword = () => {
           }}
         >
           <div className="login-content authent-content">
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={showOtpField ? handleVerifyOtp : handleSubmit}>
               <div className="login-userset">
 
                 <div className="login-logo logo-normal">
@@ -79,6 +116,7 @@ const Forgotpassword = () => {
                   </h4>
                 </div>
 
+                {/* PHONE */}
                 <div className="mb-3">
                   <label className="form-label">
                     Phone <span className="text-danger">*</span>
@@ -89,22 +127,58 @@ const Forgotpassword = () => {
                     onChange={(e) => setPhone(e.target.value)}
                     className="form-control"
                     required
+                    disabled={showOtpField}
                   />
                 </div>
 
-                {error && (
-                  <div className="alert alert-danger">
-                    {error}
+                {/* SUCCESS MESSAGE */}
+                {message && (
+                  <div className="alert alert-success">
+                    {message}
                   </div>
                 )}
 
+                {/* ERROR MESSAGE */}
+                {(error || otpError) && (
+                  <div className="alert alert-danger">
+                    {error || otpError}
+                  </div>
+                )}
+
+                {/* OTP FIELD */}
+                {showOtpField && (
+                  <div className="mb-3">
+                    <label className="form-label">
+                      Verify OTP <span className="text-danger">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={otp}
+                      onChange={(e) => setOtp(e.target.value)}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                )}
+
+                {/* SUBMIT BUTTON */}
                 <div className="form-login">
                   <button
                     type="submit"
                     className="btn btn-login w-100"
-                    disabled={loading}
+                    disabled={
+                      loading ||
+                      otpLoading ||
+                      (showOtpField && otp.length === 0)
+                    }
                   >
-                    {loading ? "Sending..." : "Send OTP"}
+                    {loading
+                      ? "Sending..."
+                      : otpLoading
+                      ? "Verifying..."
+                      : showOtpField
+                      ? "Verify OTP"
+                      : "Send OTP"}
                   </button>
                 </div>
 

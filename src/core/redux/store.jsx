@@ -13,6 +13,7 @@ import vendorsReducer from "./vendorsSlice";
 import sectorReducer from "./sectorSlice";
 import circleReducer from "./circleSlice";
 import questionReducer from "./questionSlice";
+import incidentsReducer from "./incidentsSlice";
 import shiftReducer from "./shiftSlice";
 import assetTypeReducer from "./assettypeSlice";
 import sanitationAssetReducer from "./sanitationAssetSlice";
@@ -26,6 +27,7 @@ import vehicleMaintenanceLogReducer from "./vehicleMaintenanceLogSlice";
 import vehiclePerformanceMetricReducer from "./vehiclePerformanceMetricSlice";
 import vehicleRouteAssignmentReducer from "./vehicleRouteAssignmentSlice";
 import vehicleRoutePointsReducer from "./vehicleRoutePointsSlice";
+import rolespermissionReducer from "./rolespermissionSlice";
 
 const combinedReducer = combineReducers({
   sidebar: sidebarSlice,
@@ -37,10 +39,12 @@ const combinedReducer = combineReducers({
   verifyOtp: verifyOtpReducer,
   forgotPassword: forgotPasswordReducer,
   users: usersReducer,
+  rolespermission: rolespermissionReducer,
   vendors: vendorsReducer,
   sectors: sectorReducer,
   circles: circleReducer,
   questions: questionReducer,
+  incidents: incidentsReducer,
   shifts: shiftReducer,
   assetTypes: assetTypeReducer,
   sanitationAssets: sanitationAssetReducer,

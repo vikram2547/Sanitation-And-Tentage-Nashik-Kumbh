@@ -249,6 +249,7 @@ export const all_routes = {
   sectors: "/sectors",
   circles: "/circles",
   questions: "/questions",
+  incidents: "/incidents",
   assettypes: "/assettypes",
   sanitationasset: "/sanitationasset",
   vehicles: "/vehicles",

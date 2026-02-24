@@ -51,6 +51,7 @@ import VehicleGpsTracking from "../feature-module/vehiclemanagement/vehicleGpsTr
 import VehicleGeofences from "../feature-module/vehiclemanagement/vehicleGeofences.jsx";
 import VehicleMaintenanceLogs from "../feature-module/vehiclemanagement/vehicleMaintenanceLogs.jsx";
 import VehiclePerformanceMetrics from "../feature-module/vehiclemanagement/vehiclePerformanceMetrics.jsx";
+import Incidents from "../feature-module/incidentmanagement/incidents.jsx";
 
 
 
@@ -1293,6 +1294,13 @@ export const authRoutes = [
   path: routes.vehicleperformancemetrics,
   name: "vehicleperformancemetrics",
   element: <VehiclePerformanceMetrics />,
+  route: Route
+},
+{
+  id: 271,
+  path: routes.incidents,
+  name: "incidents",
+  element: <Incidents />,
   route: Route
 },
 {

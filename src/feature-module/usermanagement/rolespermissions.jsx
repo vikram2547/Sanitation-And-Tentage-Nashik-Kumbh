@@ -1,155 +1,219 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AddRole from "../../core/modals/usermanagement/addrole";
-import EditRole from "../../core/modals/usermanagement/editrole";
+import { useDispatch, useSelector } from "react-redux";
 import { all_routes } from "../../routes/all_routes";
 import PrimeDataTable from "../../components/data-table";
-import { rolesList } from "../../core/json/roles-permission-data";
 import SearchFromApi from "../../components/data-table/search";
-import TableTopHead from "../../components/table-top-head";
-import DeleteModal from "../../components/delete-modal";
+
+import {
+  getRolePermission,
+  deleteRolePermission,
+} from "../../core/redux/rolespermissionSlice";
 
 const RolesPermissions = () => {
-  const [listData, _setListData] = useState(rolesList);
+  const dispatch = useDispatch();
+
+  const { permissions = [], totalRecords, loading } = useSelector(
+    (state) => state.rolespermission
+  );
+
+  const [rows, setRows] = useState(25);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalRecords, _setTotalRecords] = useState(5);
-  const [rows, setRows] = useState(10);
-  const [_searchQuery, setSearchQuery] = useState(undefined);
-const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [deleteId, setDeleteId] = useState(null);
+
+  /* ================= FETCH DATA ================= */
+  useEffect(() => {
+    dispatch(
+      getRolePermission({
+        page: currentPage,
+        per_page: rows,
+      })
+    );
+  }, [dispatch, currentPage, rows]);
+
+  /* ================= COLUMNS ================= */
   const columns = [
- 
-  { header: "Role", field: "role", key: "role" },
-  { header: "Created Date", field: "createdDate", key: "createdDate" },
-  {
-    header: "Status",
-    field: "status",
-    key: "status",
-    body: (row) =>
-    <span className="badge badge-success d-inline-flex align-items-center badge-xs">
-          <i className="ti ti-point-filled me-1"></i>
-          {row.status}
-        </span>
+    {
+      header: "Permission ID",
+      field: "permission_id",
+    },
+    {
+      header: "Permission",
+      field: "permission",
+    },
+    {
+      header: "Create",
+      body: (row) => (
+        <i
+          className={`ti ${row.can_create ? "ti-check text-success" : "ti-x text-danger"
+            }`}
+        />
+      ),
+    },
+    {
+      header: "View",
+      body: (row) => (
+        <i
+          className={`ti ${row.can_view ? "ti-check text-success" : "ti-x text-danger"
+            }`}
+        />
+      ),
+    },
+    {
+      header: "Edit",
+      body: (row) => (
+        <i
+          className={`ti ${row.can_edit ? "ti-check text-success" : "ti-x text-danger"
+            }`}
+        />
+      ),
+    },
+    {
+      header: "Delete",
+      body: (row) => (
+        <i
+          className={`ti ${row.can_delete ? "ti-check text-success" : "ti-x text-danger"
+            }`}
+        />
+      ),
+    },
+    {
+      header: "Actions",
+      body: (rowData) => (
+        <div className="action-table-data">
+          <div className="edit-delete-action">
 
-  },
-  {
-    header: "",
-    field: "actions",
-    key: "actions",
-    sortable: false,
-    body: (_row) =>
-    <div className="action-icon d-inline-flex">
-          <Link
-        to={all_routes.permissions}
-        className="me-2 d-flex align-items-center p-2 border rounded">
-        
-            <i className="ti ti-shield"></i>
-          </Link>
-          <Link
-        to="#"
-        className="me-2 d-flex align-items-center p-2 border rounded"
-        data-bs-toggle="modal"
-        data-bs-target="#edit-role">
-        
-            <i className="ti ti-edit"></i>
-          </Link>
-          <Link
-        to="#"
-        data-bs-toggle="modal" data-bs-target="#delete-modal"
-        className="d-flex align-items-center p-2 border rounded">
-        
-            <i className="ti ti-trash"></i>
-          </Link>
+            <Link
+              to="#"
+              className="me-2 d-flex align-items-center p-2 border rounded"
+              data-bs-toggle="modal"
+              data-bs-target="#edit-role"
+            >
+              <i className="ti ti-edit"></i>
+            </Link>
+
+            <Link
+              className="confirm-text p-2"
+              to="#"
+              data-bs-toggle="modal"
+              data-bs-target="#delete-modal"
+              onClick={() => setDeleteId(rowData.id)}
+            >
+              <i className="feather-trash-2"></i>
+            </Link>
+
+          </div>
         </div>
+      ),
+    },
+  ];
 
-  }];
+  /* ================= DELETE ================= */
+  const handleDelete = async () => {
+    if (!deleteId) return;
 
+    await dispatch(deleteRolePermission(deleteId));
 
-  const handleSearch = (value) => {
-    setSearchQuery(value);
+    // Refresh current page after delete
+    dispatch(
+      getRolePermission({
+        page: currentPage,
+        per_page: rows,
+      })
+    );
+
+    setDeleteId(null);
   };
 
   return (
-    <>
-      <div className="page-wrapper">
-        <div className="content">
-          <div className="page-header">
-            <div className="add-item d-flex">
-              <div className="page-title">
-                <h4>Roles & Permission</h4>
-                <h6>Manage your roles</h6>
-              </div>
-            </div>
-            <TableTopHead />
-            <div className="page-btn">
-              <Link
-                to="#"
-                className="btn btn-primary"
-                data-bs-toggle="modal"
-                data-bs-target="#add-units">
-                
-                <i className="feather icon-plus-circle me-2" />
-                Add Role
-              </Link>
+      <div>
+    <div className="page-wrapper">
+      <div className="content">
+        <div className="page-header">
+          <div className="add-item d-flex">
+            <div className="page-title">
+              <h4>Roles & Permission</h4>
+              <h6>Manage your roles</h6>
             </div>
           </div>
-          {/* /product list */}
-          <div className="card table-list-card">
-            <div className="card-header d-flex align-items-center justify-content-between flex-wrap row-gap-3">
-              <SearchFromApi
-                callback={handleSearch}
+
+          {/* <TableTopHead /> */}
+
+          <div className="page-btn">
+            <Link
+              to={all_routes.permissions}
+              className="btn btn-primary"
+            >
+              <i className="feather icon-plus-circle me-2" />
+              Add Role
+            </Link>
+          </div>
+        </div>
+
+        <div className="card table-list-card">
+          <div className="card-header">
+            <SearchFromApi rows={rows} setRows={setRows} />
+          </div>
+
+          <div className="card-body p-0">
+            <div className="table-responsive">
+              <PrimeDataTable
+                column={columns}
+                data={Array.isArray(permissions) ? permissions : []}
+                totalRecords={totalRecords}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
                 rows={rows}
-                setRows={setRows} />
-              
-              <div className="d-flex table-dropdown my-xl-auto right-content align-items-center flex-wrap row-gap-3">
-                <div className="dropdown me-2">
-                  <Link
-                    to="#"
-                    className="dropdown-toggle btn btn-white btn-md d-inline-flex align-items-center"
-                    data-bs-toggle="dropdown">
-                    
-                    Status
-                  </Link>
-                  <ul className="dropdown-menu  dropdown-menu-end p-3">
-                    <li>
-                      <Link to="#" className="dropdown-item rounded-1">
-                        Active
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#" className="dropdown-item rounded-1">
-                        Inactive
-                      </Link>
-                    </li>
-                  </ul>
+                setRows={setRows}
+                selectionMode="checkbox"
+                selection={selectedRows}
+                onSelectionChange={(e) => setSelectedRows(e.value)}
+                dataKey="permission_id"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+ </div>
+      {/* DELETE MODAL */}
+      <div className="modal fade" id="delete-modal">
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="page-wrapper-new p-0">
+              <div className="content p-5 px-3 text-center">
+                <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
+                  <i className="ti ti-trash fs-24 text-danger" />
+                </span>
+                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Permission</h4>
+                <p className="mb-0 fs-16">
+                  Are you sure you want to delete permission?
+                </p>
+                <div className="modal-footer-btn mt-3 d-flex justify-content-center">
+                  <button
+                    type="button"
+                    className="btn me-2 btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    data-bs-dismiss="modal"
+                    onClick={handleDelete}
+                  >
+                    Yes Delete
+                  </button>
                 </div>
               </div>
             </div>
-
-            <div className="card-body p-0">
-              <div className="table-responsive">
-                <PrimeDataTable
-                  column={columns}
-                  data={listData}
-                  rows={rows}
-                  setRows={setRows}
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                  totalRecords={totalRecords}
-                   selectionMode="multiple"
-  selection={selectedRows}
-  onSelectionChange={(e) => setSelectedRows(e.value)} />
-                
-              </div>
-            </div>
           </div>
-          {/* /product list */}
         </div>
       </div>
-      <AddRole />
-      <EditRole />
-      <DeleteModal />
-    </>);
 
+    </div>
+  );
 };
 
 export default RolesPermissions;

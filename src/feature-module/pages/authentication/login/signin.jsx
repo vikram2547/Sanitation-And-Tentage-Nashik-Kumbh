@@ -47,12 +47,22 @@ const Signin = () => {
     try {
       const res = await dispatch(signinUser(formData)).unwrap();
 
+      console.log("LOGIN API RESPONSE:", res);
+
       if (res.success === true) {
-        navigate(route.newdashboard);
-        console.log("LOGIN API RESPONSE:", res);
+        const twoFactorRequired = res.data?.two_factor_required;
+
+        if (twoFactorRequired === false) {
+          // ✅ Normal login → dashboard
+          navigate(route.newdashboard);
+        } else {
+          // ✅ 2FA required → forgot password / verification page
+          navigate(route.forgotPassword);
+        }
       }
     } catch (err) {
-      // error already handled by redux
+      // ❌ Error already handled by redux (loginError)
+      console.error("Login failed:", err);
     }
   };
 
