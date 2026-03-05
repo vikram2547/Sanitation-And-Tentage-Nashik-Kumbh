@@ -1,11 +1,10 @@
 import React from "react";
 
 const ViewGpsTracking = ({ selectedGps }) => {
-  if (!selectedGps) return null;
 
   return (
     <div className="modal fade" id="view-gps-modal">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+      <div className="modal-dialog modal-dialog-centered modal-md">
         <div className="modal-content">
 
           {/* HEADER */}
@@ -13,9 +12,11 @@ const ViewGpsTracking = ({ selectedGps }) => {
             <h5 className="modal-title">GPS Tracking Details</h5>
             <button
               type="button"
-              className="btn-close"
+              className="close"
               data-bs-dismiss="modal"
-            ></button>
+            >
+              <span>×</span>
+            </button>
           </div>
 
           {/* BODY */}
@@ -24,47 +25,47 @@ const ViewGpsTracking = ({ selectedGps }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>Vehicle ID:</strong>
-                <div>{selectedGps.vehicle_id}</div>
+                <div>{selectedGps?.vehicle_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Assignment ID:</strong>
-                <div>{selectedGps.assignment_id}</div>
+                <div>{selectedGps?.assignment_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Latitude:</strong>
-                <div>{selectedGps.latitude}</div>
+                <div>{selectedGps?.latitude}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Longitude:</strong>
-                <div>{selectedGps.longitude}</div>
+                <div>{selectedGps?.longitude}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Speed:</strong>
-                <div>{selectedGps.speed}</div>
+                <div>{selectedGps?.speed}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Ignition Status:</strong>
-                <div>{selectedGps.ignition_status}</div>
+                <div>{selectedGps?.ignition_status}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Fuel Level:</strong>
-                <div>{selectedGps.fuel_level}</div>
+                <div>{selectedGps?.fuel_level}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Odometer Reading:</strong>
-                <div>{selectedGps.odometer_reading}</div>
+                <div>{selectedGps?.odometer_reading}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Timestamp:</strong>
-                <div>{selectedGps.timestamp}</div>
+                <div>{selectedGps?.timestamp}</div>
               </div>
 
             </div>

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ===============================
    AXIOS INSTANCE
-   (TOKEN SET DYNAMICALLY)
 ================================ */
 const api = axios.create({
   baseURL: API_HOST,
@@ -15,29 +15,55 @@ const api = axios.create({
   },
 });
 
-/* 🔑 ALWAYS PICK LATEST TOKEN */
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+/* ===============================
+   REQUEST INTERCEPTOR (TOKEN)
+================================ */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
 
-  if (token) {
-    config.headers["X-ACCESS-TOKEN"] = token;
-  } else {
-    delete config.headers["X-ACCESS-TOKEN"];
-  }
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    }
 
-  return config;
-},
+    return config;
+  },
   (error) => Promise.reject(error)
 );
 
-/* ================= GET questions ================= */
+/* ===============================
+   RESPONSE INTERCEPTOR (401 FIX)
+================================ */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.log("Unauthorized - Token expired");
+
+      localStorage.removeItem("token");
+
+      // optional redirect
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+/* ================= GET QUESTIONS ================= */
 export const getQuestions = createAsyncThunk(
   "questions/getQuestions",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
       const response = await api.get("questions", {
-        params: { page, per_page, order_by_col: "question_id", order_by: "DESC", },
+        params: {
+          page,
+          per_page,
+          order_by_col: "question_id",
+          order_by: "DESC",
+        },
       });
+
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -47,7 +73,7 @@ export const getQuestions = createAsyncThunk(
   }
 );
 
-/* ================= ADD questions ================= */
+/* ================= ADD QUESTION ================= */
 export const addQuestion = createAsyncThunk(
   "questions/addQuestion",
   async (data, { rejectWithValue }) => {
@@ -62,7 +88,7 @@ export const addQuestion = createAsyncThunk(
   }
 );
 
-/* ================= UPDATE questions ================= */
+/* ================= UPDATE QUESTION ================= */
 export const updateQuestion = createAsyncThunk(
   "questions/updateQuestion",
   async ({ id, data }, { rejectWithValue }) => {
@@ -77,7 +103,7 @@ export const updateQuestion = createAsyncThunk(
   }
 );
 
-/* ================= DELETE questions ================= */
+/* ================= DELETE QUESTION ================= */
 export const deleteQuestion = createAsyncThunk(
   "questions/deleteQuestion",
   async (id, { rejectWithValue }) => {
@@ -110,18 +136,13 @@ const questionSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-
-      /* ===== GET ===== */
       .addCase(getQuestions.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
       .addCase(getQuestions.fulfilled, (state, action) => {
         state.loading = false;
-        state.questions = Array.isArray(action.payload?.data?.questions)
-          ? action.payload.data.questions
-          : [];
 
+        state.questions = action.payload?.data?.questions || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -130,65 +151,27 @@ const questionSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ===== ADD ===== */
-      .addCase(addQuestion.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(addQuestion.fulfilled, (state, action) => {
+      .addCase(addQuestion.fulfilled, (state) => {
         state.loading = false;
         state.success = "Question created successfully";
-        if (action.payload?.data) {
-          state.questions.unshift(action.payload.data);
-          state.totalRecords += 1;
-        }
-      })
-      .addCase(addQuestion.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
       })
 
-      /* ===== UPDATE ===== */
-      .addCase(updateQuestion.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(updateQuestion.fulfilled, (state, action) => {
+      .addCase(updateQuestion.fulfilled, (state) => {
         state.loading = false;
-        state.success = action.payload?.message || "Question updated successfully";
-        const updatedQuestion = action.payload?.data;
-
-        if (updatedQuestion) {
-          state.questions = state.questions.map((question) =>
-             Number(question.question_id) === Number(updatedQuestion.question_id)
-              ? updatedQuestion
-              : question
-          );
-        }
-      })
-      .addCase(updateQuestion.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
+        state.success = "Question updated successfully";
       })
 
-      /* ===== DELETE ===== */
-      .addCase(deleteQuestion.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(deleteQuestion.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Questions deleted successfully";
-         const deletedId = action.meta.arg;
+        state.success = "Question deleted successfully";
 
-          state.questions = state.questions.filter(
-          (question) => Number(question.question_id) !== Number(deletedId)
+        const deletedId = action.payload;
+
+        state.questions = state.questions.filter(
+          (q) => Number(q.question_id) !== Number(deletedId)
         );
 
         state.totalRecords -= 1;
-      })
-      .addCase(deleteQuestion.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
       });
   },
 });

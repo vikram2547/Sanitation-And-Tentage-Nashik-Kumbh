@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ===============================
    AXIOS INSTANCE
-   (TOKEN SET DYNAMICALLY)
 ================================ */
 const api = axios.create({
   baseURL: API_HOST,
@@ -15,7 +15,10 @@ const api = axios.create({
   },
 });
 
-/* 🔑 ALWAYS PICK LATEST TOKEN */
+/* ===============================
+   REQUEST INTERCEPTOR
+   ALWAYS SET LATEST TOKEN
+================================ */
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -29,6 +32,26 @@ api.interceptors.request.use(
     return config;
   },
   (error) => Promise.reject(error)
+);
+
+/* ===============================
+   RESPONSE INTERCEPTOR
+   HANDLE 401 UNAUTHORIZED
+================================ */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.warn("401 Unauthorized - Redirecting to login");
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 /* ================= GET SHIFTS ================= */

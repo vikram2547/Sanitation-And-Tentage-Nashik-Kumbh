@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,30 @@ const api = axios.create({
   },
 });
 
+/* ================= REQUEST INTERCEPTOR ================= */
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers["X-ACCESS-TOKEN"] = token;
   return config;
 });
+
+/* ================= RESPONSE INTERCEPTOR (401 FIX) ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.error("401 Unauthorized - Session expired");
+
+      // remove invalid token
+      localStorage.removeItem("token");
+
+      // redirect to login
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getVehicleMaintenanceLogs = createAsyncThunk(
@@ -38,10 +58,7 @@ export const addVehicleMaintenanceLog = createAsyncThunk(
   "vehicleMaintenanceLogs/addVehicleMaintenanceLog",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post(
-        "vehicle-maintenance-logs/new",
-        data
-      );
+      const res = await api.post("vehicle-maintenance-logs/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -70,9 +87,7 @@ export const deleteVehicleMaintenanceLog = createAsyncThunk(
   "vehicleMaintenanceLogs/deleteVehicleMaintenanceLog",
   async (maintenance_id, { rejectWithValue }) => {
     try {
-      await api.post(
-        `vehicle-maintenance-logs/delete/${maintenance_id}`
-      );
+      await api.post(`vehicle-maintenance-logs/delete/${maintenance_id}`);
       return maintenance_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -84,7 +99,7 @@ export const deleteVehicleMaintenanceLog = createAsyncThunk(
 const vehicleMaintenanceLogSlice = createSlice({
   name: "vehicleMaintenanceLogs",
   initialState: {
-    maintenanceLogs: [],   // ✅ FIXED
+    maintenanceLogs: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -140,14 +155,12 @@ const vehicleMaintenanceLogSlice = createSlice({
         const deletedId = action.meta.arg;
 
         state.maintenanceLogs = state.maintenanceLogs.filter(
-          (m) =>
-            Number(m.maintenance_id) !== Number(deletedId)
+          (m) => Number(m.maintenance_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       });
   },
 });
 
-export const { clearMessages } =
-  vehicleMaintenanceLogSlice.actions;
+export const { clearMessages } = vehicleMaintenanceLogSlice.actions;
 export default vehicleMaintenanceLogSlice.reducer;

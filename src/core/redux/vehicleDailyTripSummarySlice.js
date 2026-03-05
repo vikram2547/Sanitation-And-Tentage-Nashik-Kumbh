@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,36 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers["X-ACCESS-TOKEN"] = token;
-  return config;
-});
+/* ================= TOKEN INTERCEPTOR ================= */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    } else {
+      delete config.headers["X-ACCESS-TOKEN"];
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+/* ================= 401 HANDLER ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.warn("401 Unauthorized - Logging out");
+
+      localStorage.removeItem("token");
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getVehicleDailyTripSummaries = createAsyncThunk(
@@ -28,7 +54,10 @@ export const getVehicleDailyTripSummaries = createAsyncThunk(
       });
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message ||
+          "Failed to fetch vehicle daily trip summaries"
+      );
     }
   }
 );
@@ -44,7 +73,10 @@ export const addVehicleDailyTripSummary = createAsyncThunk(
       );
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message ||
+          "Failed to create vehicle daily trip summary"
+      );
     }
   }
 );
@@ -60,7 +92,10 @@ export const updateVehicleDailyTripSummary = createAsyncThunk(
       );
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message ||
+          "Failed to update vehicle daily trip summary"
+      );
     }
   }
 );
@@ -75,7 +110,10 @@ export const deleteVehicleDailyTripSummary = createAsyncThunk(
       );
       return daily_trip_summary_id;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message ||
+          "Failed to delete vehicle daily trip summary"
+      );
     }
   }
 );
@@ -98,13 +136,16 @@ const vehicleDailyTripSummarySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
       /* ===== GET ===== */
       .addCase(getVehicleDailyTripSummaries.pending, (state) => {
         state.loading = true;
       })
       .addCase(getVehicleDailyTripSummaries.fulfilled, (state, action) => {
         state.loading = false;
+
         state.trips = action.payload?.data?.trips || [];
+
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -116,29 +157,40 @@ const vehicleDailyTripSummarySlice = createSlice({
       /* ===== ADD ===== */
       .addCase(addVehicleDailyTripSummary.fulfilled, (state, action) => {
         state.success = "Vehicle daily trip summary created successfully";
-        state.trips.unshift(action.payload?.data);
-        state.totalRecords += 1;
+
+        if (action.payload?.data) {
+          state.trips.unshift(action.payload.data);
+          state.totalRecords += 1;
+        }
       })
 
       /* ===== UPDATE ===== */
       .addCase(updateVehicleDailyTripSummary.fulfilled, (state, action) => {
         state.success = "Vehicle daily trip summary updated successfully";
+
         const updated = action.payload?.data;
-        state.trips = state.trips.map((v) =>
-          v.daily_trip_summary_id === updated.daily_trip_summary_id
-            ? updated
-            : v
-        );
+
+        if (updated) {
+          state.trips = state.trips.map((v) =>
+            Number(v.daily_trip_summary_id) ===
+            Number(updated.daily_trip_summary_id)
+              ? updated
+              : v
+          );
+        }
       })
 
       /* ===== DELETE ===== */
       .addCase(deleteVehicleDailyTripSummary.fulfilled, (state, action) => {
         state.success = "Vehicle daily trip summary deleted successfully";
+
         const deletedId = action.meta.arg;
+
         state.trips = state.trips.filter(
           (v) =>
             Number(v.daily_trip_summary_id) !== Number(deletedId)
         );
+
         state.totalRecords -= 1;
       });
   },
@@ -146,4 +198,5 @@ const vehicleDailyTripSummarySlice = createSlice({
 
 export const { clearMessages } =
   vehicleDailyTripSummarySlice.actions;
+
 export default vehicleDailyTripSummarySlice.reducer;

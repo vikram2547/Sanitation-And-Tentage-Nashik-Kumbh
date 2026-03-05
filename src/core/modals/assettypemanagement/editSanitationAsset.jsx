@@ -34,30 +34,34 @@ const EditSanitationAsset = ({ selectedAsset }) => {
 
   /* ================= PREFILL DATA ================= */
   useEffect(() => {
-    if (!selectedAsset) return;
-
-    setFormData({
-      asset_type_id: 1,
-      qr_code: selectedAsset.qr_code || "",
-      asset_name: selectedAsset.asset_name || "",
-      short_url: selectedAsset.short_url || "",
-      description: selectedAsset.description || "",
-      gender: selectedAsset.gender || "MALE",
-      vendor_id: selectedAsset.vendor_id || 1,
-      vendor_asset_code: selectedAsset.vendor_asset_code || "",
-      status: selectedAsset.status || "ACTIVE",
-      sector_id: selectedAsset.sector_id || "",
-      circle_id: selectedAsset.circle_id || "",
-      latitude: selectedAsset.latitude || "",
-      longitude: selectedAsset.longitude || "",
-      photo: null,
-    });
+    if (selectedAsset) {
+      setFormData({
+        asset_type_id: 1,
+        qr_code: selectedAsset.qr_code || "",
+        asset_name: selectedAsset.asset_name || "",
+        short_url: selectedAsset.short_url || "",
+        description: selectedAsset.description || "",
+        gender: selectedAsset.gender || "MALE",
+        vendor_id: selectedAsset.vendor_id || 1,
+        vendor_asset_code: selectedAsset.vendor_asset_code || "",
+        status: selectedAsset.status || "ACTIVE",
+        sector_id: selectedAsset.sector_id || "",
+        circle_id: selectedAsset.circle_id || "",
+        latitude: selectedAsset.latitude || "",
+        longitude: selectedAsset.longitude || "",
+        photo: null,
+      });
+    }
   }, [selectedAsset]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   /* ================= SUBMIT ================= */
@@ -82,11 +86,9 @@ const EditSanitationAsset = ({ selectedAsset }) => {
     const modalEl = document.getElementById("edit-sanitation-asset");
     if (!modalEl) return;
 
-    const modal =
-      Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modal = Modal.getInstance(modalEl) || new Modal(modalEl);
 
     const handleHidden = () => {
-      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
@@ -100,20 +102,19 @@ const EditSanitationAsset = ({ selectedAsset }) => {
     modal.hide();
   }, [success, dispatch]);
 
-  if (!selectedAsset) return null;
-
   return (
-    <div className="modal fade" id="edit-sanitation-asset" tabIndex="-1">
+    <div className="modal fade" id="edit-sanitation-asset">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
 
-              {/* ================= HEADER ================= */}
+              {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
                   <h4>Edit Sanitation Asset</h4>
                 </div>
+
                 <button
                   type="button"
                   className="close"
@@ -123,12 +124,13 @@ const EditSanitationAsset = ({ selectedAsset }) => {
                 </button>
               </div>
 
-              {/* ================= BODY ================= */}
+              {/* BODY */}
               <div className="modal-body custom-modal-body">
 
                 {error && (
                   <div className="alert alert-danger">{error}</div>
                 )}
+
                 {success && (
                   <div className="alert alert-success">
                     Sanitation Asset updated successfully
@@ -206,36 +208,10 @@ const EditSanitationAsset = ({ selectedAsset }) => {
                       </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Latitude</label>
-                        <input
-                          type="text"
-                          name="latitude"
-                          className="form-control"
-                          value={formData.latitude}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Longitude</label>
-                        <input
-                          type="text"
-                          name="longitude"
-                          className="form-control"
-                          value={formData.longitude}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-
                   </div>
 
-                  {/* ================= FOOTER ================= */}
                   <div className="modal-footer-btn">
+
                     <button
                       type="button"
                       className="btn btn-cancel me-2"
@@ -251,6 +227,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
                     >
                       {loading ? "Updating..." : "Update"}
                     </button>
+
                   </div>
                 </form>
 

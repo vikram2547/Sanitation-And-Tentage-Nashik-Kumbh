@@ -1,7 +1,6 @@
 import React from "react";
 
 const ViewIncident = ({ selectedIncident }) => {
-    if (!selectedIncident) return null;
 
     return (
         <div className="modal fade" id="view-incident-modal" tabIndex="-1">
@@ -25,87 +24,87 @@ const ViewIncident = ({ selectedIncident }) => {
 
                             <div className="col-md-6 mb-3">
                                 <strong>Incident ID:</strong>
-                                <div>{selectedIncident.incident_id}</div>
+                                <div>{selectedIncident?.incident_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Incident Code:</strong>
-                                <div>{selectedIncident.incident_code}</div>
+                                <div>{selectedIncident?.incident_code}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Inspection ID:</strong>
-                                <div>{selectedIncident.inspection_id}</div>
+                                <div>{selectedIncident?.inspection_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Response ID:</strong>
-                                <div>{selectedIncident.response_id}</div>
+                                <div>{selectedIncident?.response_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Asset ID:</strong>
-                                <div>{selectedIncident.asset_id}</div>
+                                <div>{selectedIncident?.asset_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Question ID:</strong>
-                                <div>{selectedIncident.question_id}</div>
+                                <div>{selectedIncident?.question_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Reported By:</strong>
-                                <div>{selectedIncident.reported_by}</div>
+                                <div>{selectedIncident?.reported_by}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Resolved By:</strong>
-                                <div>{selectedIncident.resolved_by || "-"}</div>
+                                <div>{selectedIncident?.resolved_by || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Vendor ID:</strong>
-                                <div>{selectedIncident.vendor_id}</div>
+                                <div>{selectedIncident?.vendor_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Severity:</strong>
-                                <div>{selectedIncident.severity}</div>
+                                <div>{selectedIncident?.severity}</div>
                             </div>
 
                             <div className="col-md-12 mb-3">
                                 <strong>Description:</strong>
-                                <div>{selectedIncident.description}</div>
+                                <div>{selectedIncident?.description}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Incident Status:</strong>
-                                <div>{selectedIncident.incident_status}</div>
+                                <div>{selectedIncident?.incident_status}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Due Date:</strong>
-                                <div>{selectedIncident.due_date || "-"}</div>
+                                <div>{selectedIncident?.due_date || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Resolved Date:</strong>
-                                <div>{selectedIncident.resolved_date || "-"}</div>
+                                <div>{selectedIncident?.resolved_date || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Closed Date:</strong>
-                                <div>{selectedIncident.closed_date || "-"}</div>
+                                <div>{selectedIncident?.closed_date || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Created At:</strong>
-                                <div>{selectedIncident.created_at}</div>
+                                <div>{selectedIncident?.created_at}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
                                 <strong>Updated At:</strong>
-                                <div>{selectedIncident.updated_at}</div>
+                                <div>{selectedIncident?.updated_at}</div>
                             </div>
 
                         </div>

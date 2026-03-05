@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ===============================
    AXIOS INSTANCE
-   (TOKEN SET DYNAMICALLY)
 ================================ */
 const api = axios.create({
   baseURL: API_HOST,
@@ -15,29 +15,52 @@ const api = axios.create({
   },
 });
 
-/* 🔑 ALWAYS PICK LATEST TOKEN */
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+/* ===============================
+   REQUEST INTERCEPTOR
+================================ */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
 
-  if (token) {
-    config.headers["X-ACCESS-TOKEN"] = token;
-  } else {
-    delete config.headers["X-ACCESS-TOKEN"];
-  }
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    } else {
+      delete config.headers["X-ACCESS-TOKEN"];
+    }
 
-  return config;
-},
+    return config;
+  },
   (error) => Promise.reject(error)
 );
 
-/* ================= GET incidents ================= */
+/* ===============================
+   RESPONSE INTERCEPTOR (401 LOGOUT)
+================================ */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = all_routes.signin;
+    }
+    return Promise.reject(error);
+  }
+);
+
+/* ================= GET INCIDENTS ================= */
 export const getIncidents = createAsyncThunk(
   "incidents/getIncidents",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
       const response = await api.get("sanitation-incidents", {
-        params: { page, per_page, order_by_col: "incident_id", order_by: "DESC", },
+        params: {
+          page,
+          per_page,
+          order_by_col: "incident_id",
+          order_by: "DESC",
+        },
       });
+
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -47,7 +70,7 @@ export const getIncidents = createAsyncThunk(
   }
 );
 
-/* ================= ADD incidents ================= */
+/* ================= ADD INCIDENT ================= */
 export const addIncidents = createAsyncThunk(
   "incidents/addIncidents",
   async (data, { rejectWithValue }) => {
@@ -56,28 +79,31 @@ export const addIncidents = createAsyncThunk(
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to add incidents"
+        error.response?.data?.message || "Failed to add incident"
       );
     }
   }
 );
 
-/* ================= UPDATE incidents ================= */
+/* ================= UPDATE INCIDENT ================= */
 export const updateIncidents = createAsyncThunk(
   "incidents/updateIncidents",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`sanitation-incidents/edit/${id}`, data);
+      const response = await api.post(
+        `sanitation-incidents/edit/${id}`,
+        data
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to update incidents"
+        error.response?.data?.message || "Failed to update incident"
       );
     }
   }
 );
 
-/* ================= DELETE incidents ================= */
+/* ================= DELETE INCIDENT ================= */
 export const deleteIncidents = createAsyncThunk(
   "incidents/deleteIncidents",
   async (id, { rejectWithValue }) => {
@@ -86,7 +112,7 @@ export const deleteIncidents = createAsyncThunk(
       return id;
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || "Failed to delete incidents"
+        error.response?.data?.message || "Failed to delete incident"
       );
     }
   }
@@ -102,12 +128,14 @@ const incidentsSlice = createSlice({
     success: null,
     error: null,
   },
+
   reducers: {
     clearMessages: (state) => {
       state.success = null;
       state.error = null;
     },
   },
+
   extraReducers: (builder) => {
     builder
 
@@ -118,6 +146,7 @@ const incidentsSlice = createSlice({
       })
       .addCase(getIncidents.fulfilled, (state, action) => {
         state.loading = false;
+
         state.incidents = Array.isArray(action.payload?.data?.incidents)
           ? action.payload.data.incidents
           : [];
@@ -136,7 +165,8 @@ const incidentsSlice = createSlice({
       })
       .addCase(addIncidents.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = "incidents created successfully";
+        state.success = "Incident created successfully";
+
         if (action.payload?.data) {
           state.incidents.unshift(action.payload.data);
           state.totalRecords += 1;
@@ -154,14 +184,17 @@ const incidentsSlice = createSlice({
       })
       .addCase(updateIncidents.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "incidents updated successfully";
-        const updateIncidents = action.payload?.data;
+        state.success =
+          action.payload?.message || "Incident updated successfully";
 
-        if (updateIncidents) {
-          state.incidents = state.incidents.map((incidents) =>
-             Number(incidents.incident_id) === Number(updateIncidents.incident_id)
-              ? updateIncidents
-              : incidents
+        const updatedIncident = action.payload?.data;
+
+        if (updatedIncident) {
+          state.incidents = state.incidents.map((incident) =>
+            Number(incident.incident_id) ===
+            Number(updatedIncident.incident_id)
+              ? updatedIncident
+              : incident
           );
         }
       })
@@ -177,14 +210,18 @@ const incidentsSlice = createSlice({
       })
       .addCase(deleteIncidents.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "incidents deleted successfully";
-         const deletedId = action.meta.arg;
+        state.success = "Incident deleted successfully";
 
-          state.incidents = state.incidents.filter(
-          (incidents) => Number(incidents.incident_id) !== Number(deletedId)
+        const deletedId = action.meta.arg;
+
+        state.incidents = state.incidents.filter(
+          (incident) =>
+            Number(incident.incident_id) !== Number(deletedId)
         );
 
-        state.totalRecords -= 1;
+        if (state.totalRecords > 0) {
+          state.totalRecords -= 1;
+        }
       })
       .addCase(deleteIncidents.rejected, (state, action) => {
         state.loading = false;

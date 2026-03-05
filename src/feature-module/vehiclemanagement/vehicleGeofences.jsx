@@ -78,7 +78,7 @@ const VehicleGeofences = () => {
       field: "status",
       body: (rowData) => (
         <div>
-          {rowData.status === "ACTIVE" ? (
+          {Number(rowData.is_active) === 1 ? (
             <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-success fs-10">
               <i className="ti ti-point-filled me-1 fs-11"></i>
               Active

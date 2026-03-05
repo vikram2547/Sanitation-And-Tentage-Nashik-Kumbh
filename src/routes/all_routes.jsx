@@ -252,6 +252,7 @@ export const all_routes = {
   incidents: "/incidents",
   assettypes: "/assettypes",
   sanitationasset: "/sanitationasset",
+  sanitationassetallocation: "/sanitationassetallocation",
   vehicles: "/vehicles",
   vehicleroutes: "/vehicleroutes",
   vehiclerouteassignments: "/vehiclerouteassignments",

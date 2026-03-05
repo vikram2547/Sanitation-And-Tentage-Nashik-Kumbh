@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { clearMessages, updateVehicleRoutePoint } from "../../redux/vehicleRoutePointsSlice";
 
-
 const EditRoutePoints = ({ selectedRoutePoint }) => {
   const dispatch = useDispatch();
 
@@ -75,7 +74,6 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
       Modal.getInstance(modalEl) || new Modal(modalEl);
 
     const handleHidden = () => {
-      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
@@ -89,8 +87,6 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
     modal.hide();
   }, [success, dispatch]);
 
-  if (!selectedRoutePoint) return null;
-
   return (
     <div className="modal fade" id="edit-route-point-modal">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
@@ -98,7 +94,7 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
           <div className="page-wrapper-new p-0">
             <div className="content">
 
-              {/* ===== HEADER ===== */}
+              {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
                   <h4>Edit Route Point</h4>
@@ -112,7 +108,7 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
                 </button>
               </div>
 
-              {/* ===== BODY ===== */}
+              {/* BODY */}
               <div className="modal-body custom-modal-body">
 
                 {error && <div className="alert alert-danger">{error}</div>}
@@ -197,7 +193,6 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
 
                   </div>
 
-                  {/* ===== FOOTER ===== */}
                   <div className="modal-footer-btn mt-3">
                     <button
                       type="button"
@@ -215,6 +210,7 @@ const EditRoutePoints = ({ selectedRoutePoint }) => {
                       {loading ? "Updating..." : "Update"}
                     </button>
                   </div>
+
                 </form>
 
               </div>

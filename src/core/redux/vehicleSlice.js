@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,32 @@ const api = axios.create({
   },
 });
 
+/* ================= REQUEST INTERCEPTOR ================= */
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) config.headers["X-ACCESS-TOKEN"] = token;
+
+  if (token) {
+    config.headers["X-ACCESS-TOKEN"] = token;
+  }
+
   return config;
 });
+
+/* ================= RESPONSE INTERCEPTOR (401 FIX) ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.log("Unauthorized - Token expired");
+
+      localStorage.removeItem("token");
+
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getVehicles = createAsyncThunk(
@@ -114,7 +136,9 @@ const vehicleSlice = createSlice({
       /* ===== UPDATE ===== */
       .addCase(updateVehicle.fulfilled, (state, action) => {
         state.success = "Vehicle updated successfully";
+
         const updated = action.payload?.data;
+
         state.vehicles = state.vehicles.map((v) =>
           v.vehicle_id === updated.vehicle_id ? updated : v
         );
@@ -123,14 +147,18 @@ const vehicleSlice = createSlice({
       /* ===== DELETE ===== */
       .addCase(deleteVehicle.fulfilled, (state, action) => {
         state.success = "Vehicle deleted successfully";
+
         const deletedId = action.meta.arg;
+
         state.vehicles = state.vehicles.filter(
           (v) => Number(v.vehicle_id) !== Number(deletedId)
         );
+
         state.totalRecords -= 1;
       });
   },
 });
 
 export const { clearMessages } = vehicleSlice.actions;
+
 export default vehicleSlice.reducer;

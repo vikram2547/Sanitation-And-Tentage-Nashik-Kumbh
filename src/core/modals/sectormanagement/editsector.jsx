@@ -1,161 +1,161 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Modal } from "bootstrap";
-import { clearMessages, updateSector } from "../../redux/sectorSlice";
+  import { useState, useEffect } from "react";
+  import { useDispatch, useSelector } from "react-redux";
+  import { Modal } from "bootstrap";
+  import { clearMessages, updateSector } from "../../redux/sectorSlice";
 
 
-const EditSector = ({ selectedSector }) => {
-  const dispatch = useDispatch();
-  const { success, error, loading } = useSelector((state) => state.sectors);
+  const EditSector = ({ selectedSector }) => {
+    const dispatch = useDispatch();
+    const { success, error, loading } = useSelector((state) => state.sectors);
 
-  const [formData, setFormData] = useState({
-    sector_name: "",
-    sector_code: "",
-    boundary_coordinates: null,
-  });
+    const [formData, setFormData] = useState({
+      sector_name: "",
+      sector_code: "",
+      boundary_coordinates: null,
+    });
 
-  // ✅ CLOSE MODAL + REMOVE BACKDROP PROPERLY
-  useEffect(() => {
-    if (!success) return;
+    // ✅ CLOSE MODAL + REMOVE BACKDROP PROPERLY
+    useEffect(() => {
+      if (!success) return;
 
-    const modalEl = document.getElementById("edit-sector");
-    if (!modalEl) return;
+      const modalEl = document.getElementById("edit-sector");
+      if (!modalEl) return;
 
-    const modal =
-      Modal.getInstance(modalEl) || new Modal(modalEl);
+      const modal =
+        Modal.getInstance(modalEl) || new Modal(modalEl);
 
-    const handleHidden = () => {
-      // CLEANUP AFTER BOOTSTRAP FINISHES
-      document.body.classList.remove("modal-open");
-      document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
+      const handleHidden = () => {
+        // CLEANUP AFTER BOOTSTRAP FINISHES
+        document.body.classList.remove("modal-open");
+        document.body.style.paddingRight = "";
+        document
+          .querySelectorAll(".modal-backdrop")
+          .forEach((bd) => bd.remove());
 
-      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+        modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+      };
+
+      modalEl.addEventListener("hidden.bs.modal", handleHidden);
+      modal.hide();
+    }, [success, dispatch]);
+
+
+    // ✅ Prefill when selectedSector changes
+    useEffect(() => {
+      if (selectedSector) {
+        setFormData({
+          sector_name: selectedSector.sector_name || "",
+          sector_code: selectedSector.sector_code || "",
+        });
+      }
+    }, [selectedSector]);
+
+    const handleChange = (e) => {
+      setFormData({
+        ...formData,
+        [e.target.name]: e.target.value,
+      });
     };
 
-    modalEl.addEventListener("hidden.bs.modal", handleHidden);
-    modal.hide();
-  }, [success, dispatch]);
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
+      const sectorId = selectedSector?.sector_id || selectedSector?.id;
 
-  // ✅ Prefill when selectedSector changes
-  useEffect(() => {
-    if (selectedSector) {
-      setFormData({
-        sector_name: selectedSector.sector_name || "",
-        sector_code: selectedSector.sector_code || "",
-      });
-    }
-  }, [selectedSector]);
+      if (!sectorId) {
+        console.log("No User ID found");
+        return;
+      }
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+      const resultAction = await dispatch(
+        updateSector({
+          id: sectorId,
+          data: formData,
+        })
+      );
+    };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const sectorId = selectedSector?.sector_id || selectedSector?.id;
-
-    if (!sectorId) {
-      console.log("No User ID found");
-      return;
-    }
-
-    const resultAction = await dispatch(
-      updateSector({
-        id: sectorId,
-        data: formData,
-      })
-    );
-  };
-
-  return (
-    <div className="modal fade" id="edit-sector">
-      <div className="modal-dialog modal-dialog-centered custom-modal-two">
-        <div className="modal-content">
-          <div className="page-wrapper-new p-0">
-            <div className="content">
-              <div className="modal-header border-0 custom-modal-header">
-                <div className="page-title">
-                  <h4>Edit Sector</h4>
+    return (
+      <div className="modal fade" id="edit-sector">
+        <div className="modal-dialog modal-dialog-centered custom-modal-two">
+          <div className="modal-content">
+            <div className="page-wrapper-new p-0">
+              <div className="content">
+                <div className="modal-header border-0 custom-modal-header">
+                  <div className="page-title">
+                    <h4>Edit Sector</h4>
+                  </div>
+                  <button
+                    type="button"
+                    className="close"
+                    data-bs-dismiss="modal"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
 
-              <div className="modal-body custom-modal-body">
-                {error && <div className="alert alert-danger">{error}</div>}
-                {success && (
-                  <div className="alert alert-success">{success}</div>
-                )}
+                <div className="modal-body custom-modal-body">
+                  {error && <div className="alert alert-danger">{error}</div>}
+                  {success && (
+                    <div className="alert alert-success">{success}</div>
+                  )}
 
-                <form onSubmit={handleSubmit}>
-                  <div className="row">
+                  <form onSubmit={handleSubmit}>
+                    <div className="row">
 
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Sector Name</label>
-                        <input
-                          type="text"
-                          name="sector_name"
-                          value={formData.sector_name}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
+                      <div className="col-lg-6">
+                        <div className="input-blocks">
+                          <label>Sector Name</label>
+                          <input
+                            type="text"
+                            name="sector_name"
+                            value={formData.sector_name}
+                            onChange={handleChange}
+                            className="form-control"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        <div className="input-blocks">
+                          <label>Sector Code</label>
+                          <input
+                            type="text"
+                            name="sector_code"
+                            value={formData.sector_code}
+                            onChange={handleChange}
+                            className="form-control"
+                          />
+                        </div>
                       </div>
                     </div>
 
-                    <div className="col-lg-6">
-                      <div className="input-blocks">
-                        <label>Sector Code</label>
-                        <input
-                          type="text"
-                          name="sector_code"
-                          value={formData.sector_code}
-                          onChange={handleChange}
-                          className="form-control"
-                        />
-                      </div>
+                    <div className="modal-footer-btn">
+                      <button
+                        type="button"
+                        className="btn btn-cancel me-2"
+                        data-bs-dismiss="modal"
+                      >
+                        Cancel
+                      </button>
+
+                      <button
+                        type="submit"
+                        className="btn btn-submit"
+                        disabled={loading}
+                      >
+                        {loading ? "Updating..." : "Update"}
+                      </button>
                     </div>
-                  </div>
+                  </form>
 
-                  <div className="modal-footer-btn">
-                    <button
-                      type="button"
-                      className="btn btn-cancel me-2"
-                      data-bs-dismiss="modal"
-                    >
-                      Cancel
-                    </button>
-
-                    <button
-                      type="submit"
-                      className="btn btn-submit"
-                      disabled={loading}
-                    >
-                      {loading ? "Updating..." : "Update"}
-                    </button>
-                  </div>
-                </form>
-
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
-export default EditSector;
+  export default EditSector;

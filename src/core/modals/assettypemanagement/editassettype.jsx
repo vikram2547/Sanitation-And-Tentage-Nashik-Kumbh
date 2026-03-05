@@ -20,25 +20,29 @@ const EditAssetType = ({ selectedAssetType }) => {
 
   /* ================= PREFILL DATA ================= */
   useEffect(() => {
-    if (!selectedAssetType) return;
-
-    setFormData({
-      type: selectedAssetType.type || "",
-      name: selectedAssetType.name || "",
-      description: selectedAssetType.description || "",
-      questions: Array.isArray(selectedAssetType.questions)
-        ? selectedAssetType.questions
-        : selectedAssetType.questions
-        ? selectedAssetType.questions.split(",")
-        : [],
-      status: selectedAssetType.status ?? 1,
-    });
+    if (selectedAssetType) {
+      setFormData({
+        type: selectedAssetType.type || "",
+        name: selectedAssetType.name || "",
+        description: selectedAssetType.description || "",
+        questions: Array.isArray(selectedAssetType.questions)
+          ? selectedAssetType.questions
+          : selectedAssetType.questions
+          ? selectedAssetType.questions.split(",")
+          : [],
+        status: selectedAssetType.status ?? 1,
+      });
+    }
   }, [selectedAssetType]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   /* ================= SUBMIT ================= */
@@ -72,11 +76,9 @@ const EditAssetType = ({ selectedAssetType }) => {
     const modalEl = document.getElementById("edit-assettype");
     if (!modalEl) return;
 
-    const modal =
-      Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modal = Modal.getInstance(modalEl) || new Modal(modalEl);
 
     const handleHidden = () => {
-      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
@@ -90,10 +92,8 @@ const EditAssetType = ({ selectedAssetType }) => {
     modal.hide();
   }, [success, dispatch]);
 
-  if (!selectedAssetType) return null;
-
   return (
-    <div className="modal fade" id="edit-assettype" tabIndex="-1">
+    <div className="modal fade" id="edit-assettype">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
@@ -104,6 +104,7 @@ const EditAssetType = ({ selectedAssetType }) => {
                 <div className="page-title">
                   <h4>Edit Asset Type</h4>
                 </div>
+
                 <button
                   type="button"
                   className="close"
@@ -168,14 +169,11 @@ const EditAssetType = ({ selectedAssetType }) => {
                       </div>
                     </div>
 
-                    {/* QUESTIONS FIELD
-                       (Assumes multi-select handled elsewhere and stored in formData.questions)
-                    */}
-
                   </div>
 
                   {/* ===== Footer ===== */}
                   <div className="modal-footer-btn">
+
                     <button
                       type="button"
                       className="btn btn-cancel me-2"
@@ -191,10 +189,12 @@ const EditAssetType = ({ selectedAssetType }) => {
                     >
                       {loading ? "Updating..." : "Update"}
                     </button>
+
                   </div>
                 </form>
 
               </div>
+
             </div>
           </div>
         </div>

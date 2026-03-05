@@ -214,7 +214,7 @@ const Header = () => {
                 type="button"
                 onClick={handleLogout}
                 title="Logout"
-                className="icon-btn"
+                className="btn btn-primary"
               >
                 Logout
               </button>

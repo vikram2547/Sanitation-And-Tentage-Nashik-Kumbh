@@ -1,0 +1,1 @@
+import{ag as e,cw as s,j as i}from"./index-CY5r4GMr.js";const h=a=>{const t=`${s}${a.src}`;return i.jsx("img",{className:a.className,src:t,height:a.height,alt:a.alt,width:a.width,id:a.id})},c=e.memo(h);export{c as I};

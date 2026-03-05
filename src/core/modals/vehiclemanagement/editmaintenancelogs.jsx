@@ -8,7 +8,6 @@ import {
 
 const EditMaintenanceLogs = ({ selectedLog }) => {
   const dispatch = useDispatch();
-
   const { success, error, loading } = useSelector(
     (state) => state.vehicleMaintenanceLogs
   );
@@ -23,7 +22,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
     description: "",
   });
 
-  /* ================= PREFILL ================= */
+  /* ================= PREFILL FORM ================= */
   useEffect(() => {
     if (!selectedLog) return;
 
@@ -36,6 +35,15 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
       next_maintenance_date: selectedLog.next_maintenance_date ?? "",
       description: selectedLog.description ?? "",
     });
+
+    // ✅ SHOW MODAL MANUALLY
+    const modalEl = document.getElementById("edit-maintenance-log");
+    if (!modalEl) return;
+
+    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl, {
+      backdrop: "static",
+    });
+    modalInstance.show();
   }, [selectedLog]);
 
   /* ================= HANDLE CHANGE ================= */
@@ -47,7 +55,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!selectedLog?.id) return;
 
     const payload = {
@@ -75,8 +82,8 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
     const modalEl = document.getElementById("edit-maintenance-log");
     if (!modalEl) return;
 
-    const modal =
-      Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modalInstance = Modal.getInstance(modalEl);
+    if (!modalInstance) return;
 
     const handleHidden = () => {
       document.body.classList.remove("modal-open");
@@ -84,20 +91,17 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
-
       modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+      dispatch(clearMessages());
     };
 
     modalEl.addEventListener("hidden.bs.modal", handleHidden);
-    modal.hide();
-
-    dispatch(clearMessages());
+    modalInstance.hide();
   }, [success, dispatch]);
 
-  if (!selectedLog) return null;
-
+  /* ================= RENDER MODAL ================= */
   return (
-    <div className="modal fade" id="edit-maintenance-log">
+    <div className="modal fade" id="edit-maintenance-log" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
@@ -128,7 +132,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    {/* VEHICLE ID */}
                     <div className="col-lg-6">
                       <label>Vehicle ID</label>
                       <input
@@ -141,7 +144,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                       />
                     </div>
 
-                    {/* VENDOR ID */}
                     <div className="col-lg-6">
                       <label>Vendor ID</label>
                       <input
@@ -153,7 +155,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                       />
                     </div>
 
-                    {/* MAINTENANCE TYPE */}
                     <div className="col-lg-6 mt-2">
                       <label>Maintenance Type</label>
                       <select
@@ -171,7 +172,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                       </select>
                     </div>
 
-                    {/* COST */}
                     <div className="col-lg-6 mt-2">
                       <label>Cost</label>
                       <input
@@ -185,7 +185,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                       />
                     </div>
 
-                    {/* MAINTENANCE DATE */}
                     <div className="col-lg-6 mt-2">
                       <label>Maintenance Date</label>
                       <input
@@ -198,7 +197,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                       />
                     </div>
 
-                    {/* NEXT MAINTENANCE DATE */}
                     <div className="col-lg-6 mt-2">
                       <label>Next Maintenance Date</label>
                       <input
@@ -210,7 +208,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                       />
                     </div>
 
-                    {/* DESCRIPTION */}
                     <div className="col-lg-12 mt-2">
                       <label>Description</label>
                       <textarea
@@ -223,7 +220,6 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
 
                   </div>
 
-                  {/* ===== FOOTER ===== */}
                   <div className="modal-footer-btn mt-3">
                     <button
                       type="button"

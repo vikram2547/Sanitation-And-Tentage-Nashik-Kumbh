@@ -7,14 +7,13 @@ import {
 } from "../../redux/vehicleGpsTrackingSlice";
 
 /* ================= TIMESTAMP HELPERS ================= */
+
 const toInputDateTime = (value) => {
-  // "2026-02-19 17:04:00" → "2026-02-19T17:04"
   if (!value) return "";
   return value.replace(" ", "T").slice(0, 16);
 };
 
 const toApiTimestamp = (value) => {
-  // "2026-02-19T17:04" → "2026-02-19 17:04:00"
   if (!value) return "";
   return value.replace("T", " ") + ":00";
 };
@@ -41,6 +40,7 @@ const EditGpsTracking = ({ selectedGps }) => {
   });
 
   /* ================= PREFILL ================= */
+
   useEffect(() => {
     if (!selectedGps) return;
 
@@ -60,14 +60,17 @@ const EditGpsTracking = ({ selectedGps }) => {
   }, [selectedGps]);
 
   /* ================= HANDLE CHANGE ================= */
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   /* ================= SUBMIT ================= */
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!selectedGps?.id) return;
 
     const payload = {
@@ -81,7 +84,7 @@ const EditGpsTracking = ({ selectedGps }) => {
       fuel_level: Number(formData.fuel_level),
       odometer_reading: Number(formData.odometer_reading),
       accuracy: Number(formData.accuracy),
-      timestamp: toApiTimestamp(formData.timestamp), // ✅ FIX
+      timestamp: toApiTimestamp(formData.timestamp),
     };
 
     dispatch(
@@ -92,21 +95,33 @@ const EditGpsTracking = ({ selectedGps }) => {
     );
   };
 
-  /* ================= CLOSE ON SUCCESS ================= */
+  /* ================= CLOSE MODAL ON SUCCESS ================= */
+
   useEffect(() => {
     if (!success) return;
 
     const modalEl = document.getElementById("edit-gps-modal");
     if (!modalEl) return;
 
-    const modal =
-      Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modal = Modal.getInstance(modalEl) || new Modal(modalEl);
+
+    const handleHidden = () => {
+      document.body.classList.remove("modal-open");
+      document.body.style.paddingRight = "";
+
+      document
+        .querySelectorAll(".modal-backdrop")
+        .forEach((bd) => bd.remove());
+
+      modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+
+      dispatch(clearMessages());
+    };
+
+    modalEl.addEventListener("hidden.bs.modal", handleHidden);
 
     modal.hide();
-    dispatch(clearMessages());
   }, [success, dispatch]);
-
-  if (!selectedGps) return null;
 
   return (
     <div className="modal fade" id="edit-gps-modal" tabIndex="-1">
@@ -116,19 +131,29 @@ const EditGpsTracking = ({ selectedGps }) => {
             <div className="content">
 
               {/* HEADER */}
+
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
                   <h4>Edit GPS Tracking</h4>
                 </div>
-                <button type="button" className="close" data-bs-dismiss="modal">
+
+                <button
+                  type="button"
+                  className="close"
+                  data-bs-dismiss="modal"
+                >
                   <span>×</span>
                 </button>
               </div>
 
               {/* BODY */}
+
               <div className="modal-body custom-modal-body">
 
-                {error && <div className="alert alert-danger">{error}</div>}
+                {error && (
+                  <div className="alert alert-danger">{error}</div>
+                )}
+
                 {success && (
                   <div className="alert alert-success">
                     GPS tracking updated successfully
@@ -137,27 +162,38 @@ const EditGpsTracking = ({ selectedGps }) => {
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
+
                     {Object.keys(formData).map((key) => (
                       <div className="col-lg-4" key={key}>
                         <div className="input-blocks">
+
                           <label>
                             {key.replace(/_/g, " ").toUpperCase()}
                           </label>
+
                           <input
-                            type={key === "timestamp" ? "datetime-local" : "text"}
+                            type={
+                              key === "timestamp"
+                                ? "datetime-local"
+                                : "text"
+                            }
                             name={key}
                             value={formData[key]}
                             onChange={handleChange}
                             className="form-control"
                             required
                           />
+
                         </div>
                       </div>
                     ))}
+
                   </div>
 
                   {/* FOOTER */}
+
                   <div className="modal-footer-btn mt-3">
+
                     <button
                       type="button"
                       className="btn btn-cancel me-2"
@@ -165,6 +201,7 @@ const EditGpsTracking = ({ selectedGps }) => {
                     >
                       Cancel
                     </button>
+
                     <button
                       type="submit"
                       className="btn btn-submit"
@@ -172,10 +209,12 @@ const EditGpsTracking = ({ selectedGps }) => {
                     >
                       {loading ? "Updating..." : "Update"}
                     </button>
+
                   </div>
                 </form>
 
               </div>
+
             </div>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,38 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers["X-ACCESS-TOKEN"] = token;
-  return config;
-});
+/* ================= REQUEST INTERCEPTOR ================= */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    } else {
+      delete config.headers["X-ACCESS-TOKEN"];
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+/* ================= RESPONSE INTERCEPTOR (401 FIX) ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.log("Unauthorized - Token expired");
+
+      localStorage.removeItem("token");
+
+      // Redirect to login page
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getSanitationAssets = createAsyncThunk(
@@ -26,9 +54,12 @@ export const getSanitationAssets = createAsyncThunk(
       const res = await api.get("sanitation-assets", {
         params: { page, per_page },
       });
+
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message || "Failed to fetch sanitation assets"
+      );
     }
   }
 );
@@ -41,7 +72,9 @@ export const addSanitationAsset = createAsyncThunk(
       const res = await api.post("sanitation-assets/new", data);
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message || "Failed to add sanitation asset"
+      );
     }
   }
 );
@@ -54,7 +87,9 @@ export const updateSanitationAsset = createAsyncThunk(
       const res = await api.post(`sanitation-assets/edit/${id}`, data);
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message || "Failed to update sanitation asset"
+      );
     }
   }
 );
@@ -67,11 +102,14 @@ export const deleteSanitationAsset = createAsyncThunk(
       await api.post(`sanitation-assets/delete/${id}`);
       return id;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message || "Failed to delete sanitation asset"
+      );
     }
   }
 );
 
+/* ================= SLICE ================= */
 const sanitationAssetSlice = createSlice({
   name: "sanitationAssets",
   initialState: {
@@ -89,14 +127,18 @@ const sanitationAssetSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
       /* ===== GET ===== */
       .addCase(getSanitationAssets.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(getSanitationAssets.fulfilled, (state, action) => {
         state.loading = false;
+
         state.sanitationAssets =
           action.payload?.data?.sanitation_assets || [];
+
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -106,24 +148,51 @@ const sanitationAssetSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addSanitationAsset.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addSanitationAsset.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Sanitation Asset created successfully";
-        state.sanitationAssets.unshift(action.payload?.data);
+
+        if (action.payload?.data) {
+          state.sanitationAssets.unshift(action.payload.data);
+          state.totalRecords += 1;
+        }
+      })
+      .addCase(addSanitationAsset.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       /* ===== UPDATE ===== */
+      .addCase(updateSanitationAsset.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(updateSanitationAsset.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Sanitation Asset updated successfully";
+
         const updated = action.payload?.data;
 
-        state.sanitationAssets = state.sanitationAssets.map((item) =>
-          item.sanitation_asset_id === updated.sanitation_asset_id
-            ? updated
-            : item
-        );
+        if (updated) {
+          state.sanitationAssets = state.sanitationAssets.map((item) =>
+            Number(item.sanitation_asset_id) ===
+            Number(updated.sanitation_asset_id)
+              ? updated
+              : item
+          );
+        }
+      })
+      .addCase(updateSanitationAsset.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
+      .addCase(deleteSanitationAsset.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(deleteSanitationAsset.fulfilled, (state, action) => {
         state.loading = false;
         state.success = "Sanitation Asset deleted successfully";
@@ -136,6 +205,10 @@ const sanitationAssetSlice = createSlice({
         );
 
         state.totalRecords -= 1;
+      })
+      .addCase(deleteSanitationAsset.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });

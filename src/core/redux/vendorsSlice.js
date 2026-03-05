@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ===============================
    AXIOS INSTANCE
-   (TOKEN SET DYNAMICALLY)
 ================================ */
 const api = axios.create({
   baseURL: API_HOST,
@@ -15,19 +15,40 @@ const api = axios.create({
   },
 });
 
-/* 🔑 ALWAYS PICK LATEST TOKEN */
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+/* ===============================
+   REQUEST INTERCEPTOR (TOKEN)
+================================ */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
 
-  if (token) {
-    config.headers["X-ACCESS-TOKEN"] = token;
-  } else {
-    delete config.headers["X-ACCESS-TOKEN"];
-  }
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    } else {
+      delete config.headers["X-ACCESS-TOKEN"];
+    }
 
-  return config;
-},
+    return config;
+  },
   (error) => Promise.reject(error)
+);
+
+/* ===============================
+   RESPONSE INTERCEPTOR (401 FIX)
+================================ */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.log("Unauthorized - Token expired");
+
+      localStorage.removeItem("token");
+
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 /* ================= GET VENDORS ================= */
@@ -36,7 +57,14 @@ export const getVendors = createAsyncThunk(
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
       const response = await api.get("vendors", {
-        params: { page, per_page, keywords: "", status: "", order_by_col: "vendor_id", order_by: "DESC", },
+        params: {
+          page,
+          per_page,
+          keywords: "",
+          status: "",
+          order_by_col: "vendor_id",
+          order_by: "DESC",
+        },
       });
       return response.data;
     } catch (error) {
@@ -118,6 +146,7 @@ const vendorsSlice = createSlice({
       })
       .addCase(getVendors.fulfilled, (state, action) => {
         state.loading = false;
+
         state.vendors = Array.isArray(action.payload?.data?.vendors)
           ? action.payload.data.vendors
           : [];
@@ -137,6 +166,7 @@ const vendorsSlice = createSlice({
       .addCase(addVendor.fulfilled, (state, action) => {
         state.loading = false;
         state.success = "Vendor created successfully";
+
         if (action.payload?.data) {
           state.vendors.unshift(action.payload.data);
           state.totalRecords += 1;
@@ -154,12 +184,14 @@ const vendorsSlice = createSlice({
       })
       .addCase(updateVendor.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Vendor updated successfully";
+        state.success =
+          action.payload?.message || "Vendor updated successfully";
+
         const updatedVendor = action.payload?.data;
 
         if (updatedVendor) {
           state.vendors = state.vendors.map((vendor) =>
-             Number(vendor.vendor_id) === Number(updatedVendor.vendor_id)
+            Number(vendor.vendor_id) === Number(updatedVendor.vendor_id)
               ? updatedVendor
               : vendor
           );
@@ -177,10 +209,12 @@ const vendorsSlice = createSlice({
       })
       .addCase(deleteVendor.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Vendor deleted successfully";
-         const deletedId = action.meta.arg;
+        state.success =
+          action.payload?.message || "Vendor deleted successfully";
 
-          state.vendors = state.vendors.filter(
+        const deletedId = action.meta.arg;
+
+        state.vendors = state.vendors.filter(
           (vendor) => Number(vendor.vendor_id) !== Number(deletedId)
         );
 
@@ -194,4 +228,5 @@ const vendorsSlice = createSlice({
 });
 
 export const { clearMessages } = vendorsSlice.actions;
+
 export default vendorsSlice.reducer;

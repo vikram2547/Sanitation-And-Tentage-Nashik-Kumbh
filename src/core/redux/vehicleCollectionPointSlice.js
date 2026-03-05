@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,36 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) config.headers["X-ACCESS-TOKEN"] = token;
-  return config;
-});
+/* ================= ATTACH TOKEN ================= */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    } else {
+      delete config.headers["X-ACCESS-TOKEN"];
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+/* ================= HANDLE 401 ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.warn("401 Unauthorized - Redirecting to login");
+
+      localStorage.removeItem("token");
+     window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getVehicleCollectionPoints = createAsyncThunk(
@@ -28,7 +54,9 @@ export const getVehicleCollectionPoints = createAsyncThunk(
       });
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message || "Failed to fetch collection points"
+      );
     }
   }
 );
@@ -38,13 +66,12 @@ export const addVehicleCollectionPoint = createAsyncThunk(
   "vehicleCollectionPoints/addVehicleCollectionPoint",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post(
-        "vehicle-collection-points/new",
-        data
-      );
+      const res = await api.post("vehicle-collection-points/new", data);
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message || "Failed to create collection point"
+      );
     }
   }
 );
@@ -60,7 +87,9 @@ export const updateVehicleCollectionPoint = createAsyncThunk(
       );
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message || "Failed to update collection point"
+      );
     }
   }
 );
@@ -75,7 +104,9 @@ export const deleteVehicleCollectionPoint = createAsyncThunk(
       );
       return collection_point_id;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        e.response?.data?.message || "Failed to delete collection point"
+      );
     }
   }
 );
@@ -98,6 +129,7 @@ const vehicleCollectionPointSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
       /* ===== GET ===== */
       .addCase(getVehicleCollectionPoints.pending, (state) => {
         state.loading = true;
@@ -123,9 +155,11 @@ const vehicleCollectionPointSlice = createSlice({
       /* ===== UPDATE ===== */
       .addCase(updateVehicleCollectionPoint.fulfilled, (state, action) => {
         state.success = "Vehicle collection point updated successfully";
+
         const updated = action.payload?.data;
+
         state.collectionPoints = state.collectionPoints.map((v) =>
-          v.collection_point_id === updated.collection_point_id
+          Number(v.collection_point_id) === Number(updated.collection_point_id)
             ? updated
             : v
         );
@@ -134,11 +168,13 @@ const vehicleCollectionPointSlice = createSlice({
       /* ===== DELETE ===== */
       .addCase(deleteVehicleCollectionPoint.fulfilled, (state, action) => {
         state.success = "Vehicle collection point deleted successfully";
+
         const deletedId = action.meta.arg;
+
         state.collectionPoints = state.collectionPoints.filter(
-          (v) =>
-            Number(v.collection_point_id) !== Number(deletedId)
+          (v) => Number(v.collection_point_id) !== Number(deletedId)
         );
+
         state.totalRecords -= 1;
       });
   },

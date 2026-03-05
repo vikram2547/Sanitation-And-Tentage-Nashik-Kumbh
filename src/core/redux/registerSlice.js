@@ -1,31 +1,77 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { API_HOST, POST_API } from "../baseUrl/http";
+import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
-// ------------------ ASYNC THUNK ------------------
+/* ===============================
+   AXIOS INSTANCE
+================================ */
+const api = axios.create({
+  baseURL: API_HOST,
+  headers: {
+    "Content-Type": "application/json",
+    "X-API-KEY":
+      "fx4ni3n75wtxywa9wlu70fycp2e0ajxkh7o6adjshiifmvaukq57jyrs15e3d55u",
+  },
+});
 
+/* ===============================
+   REQUEST INTERCEPTOR (TOKEN)
+================================ */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    } else {
+      delete config.headers["X-ACCESS-TOKEN"];
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+/* ===============================
+   RESPONSE INTERCEPTOR (401 FIX)
+================================ */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.log("Unauthorized - Token expired");
+
+      localStorage.removeItem("token");
+
+      // optional redirect
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+/* ===============================
+   SIGNUP USER
+================================ */
 export const signupUser = createAsyncThunk(
   "signup/signupUser",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await axios({
-        method: POST_API,
-        url: `${API_HOST}auth/register`,
-        data,
-        headers: {
-          "Content-Type": "application/json",
-          "X-API-KEY": "fx4ni3n75wtxywa9wlu70fycp2e0ajxkh7o6adjshiifmvaukq57jyrs15e3d55u",
-        },
-      });
+      const res = await api.post("auth/register", data);
       return res.data;
     } catch (err) {
-      return rejectWithValue(err.response?.data || "Registration failed");
+      return rejectWithValue(
+        err.response?.data?.message || "Registration failed"
+      );
     }
   }
 );
 
-// ------------------ INITIAL STATE ------------------
-
+/* ===============================
+   INITIAL STATE
+================================ */
 const initialState = {
   registrationStatus: false,
   token: null,
@@ -34,8 +80,9 @@ const initialState = {
   loading: false,
 };
 
-// ------------------ SLICE ------------------
-
+/* ===============================
+   SLICE
+================================ */
 const signupSlice = createSlice({
   name: "signup",
   initialState,
@@ -53,8 +100,14 @@ const signupSlice = createSlice({
         state.loading = false;
         state.registrationStatus = true;
         state.registrationError = null;
-        state.token = action.payload.token;
-        state.user = action.payload.user || null;
+
+        state.token = action.payload?.token || null;
+        state.user = action.payload?.user || null;
+
+        // store token for future API calls
+        if (action.payload?.token) {
+          localStorage.setItem("token", action.payload.token);
+        }
       })
       .addCase(signupUser.rejected, (state, action) => {
         state.loading = false;
@@ -63,7 +116,8 @@ const signupSlice = createSlice({
   },
 });
 
-// ------------------ EXPORTS ------------------
-
+/* ===============================
+   EXPORTS
+================================ */
 export const { clearSignupState } = signupSlice.actions;
 export default signupSlice.reducer;

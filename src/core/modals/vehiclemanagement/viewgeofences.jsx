@@ -1,11 +1,10 @@
 import React from "react";
 
 const ViewGeofences = ({ selectedGeofence }) => {
-  if (!selectedGeofence) return null;
 
   return (
     <div className="modal fade" id="view-geofence-modal">
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+      <div className="modal-dialog modal-dialog-centered modal-md">
         <div className="modal-content">
 
           {/* HEADER */}
@@ -13,9 +12,11 @@ const ViewGeofences = ({ selectedGeofence }) => {
             <h5 className="modal-title">Geofence Details</h5>
             <button
               type="button"
-              className="btn-close"
+              className="close"
               data-bs-dismiss="modal"
-            ></button>
+            >
+              <span>×</span>
+            </button>
           </div>
 
           {/* BODY */}
@@ -24,23 +25,23 @@ const ViewGeofences = ({ selectedGeofence }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>Geofence ID:</strong>
-                <div>{selectedGeofence.geofence_id}</div>
+                <div>{selectedGeofence?.geofence_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Point ID:</strong>
-                <div>{selectedGeofence.point_id}</div>
+                <div>{selectedGeofence?.point_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Radius (Meters):</strong>
-                <div>{selectedGeofence.radius_meters}</div>
+                <div>{selectedGeofence?.radius_meters}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Status:</strong>
                 <div>
-                  {selectedGeofence.is_active === "1"
+                  {selectedGeofence?.is_active === "1"
                     ? "Active"
                     : "Inactive"}
                 </div>
@@ -48,7 +49,7 @@ const ViewGeofences = ({ selectedGeofence }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>Created At:</strong>
-                <div>{selectedGeofence.created_at}</div>
+                <div>{selectedGeofence?.created_at}</div>
               </div>
 
             </div>

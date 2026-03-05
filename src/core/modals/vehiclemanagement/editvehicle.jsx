@@ -19,22 +19,26 @@ const EditVehicle = ({ selectedVehicle }) => {
 
   /* ================= PREFILL DATA ================= */
   useEffect(() => {
-    if (!selectedVehicle) return;
-
-    setFormData({
-      vehicle_name: selectedVehicle.vehicle_name || "",
-      vehicle_type: selectedVehicle.vehicle_type || "",
-      vehicle_number: selectedVehicle.vehicle_number || "",
-      rc_number: selectedVehicle.rc_number || "",
-      vendor_id: selectedVehicle.vendor_id || "",
-      status: selectedVehicle.status || "Active",
-    });
+    if (selectedVehicle) {
+      setFormData({
+        vehicle_name: selectedVehicle.vehicle_name || "",
+        vehicle_type: selectedVehicle.vehicle_type || "",
+        vehicle_number: selectedVehicle.vehicle_number || "",
+        rc_number: selectedVehicle.rc_number || "",
+        vendor_id: selectedVehicle.vendor_id || "",
+        status: selectedVehicle.status || "Active",
+      });
+    }
   }, [selectedVehicle]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   /* ================= SUBMIT ================= */
@@ -62,21 +66,22 @@ const EditVehicle = ({ selectedVehicle }) => {
       Modal.getInstance(modalEl) || new Modal(modalEl);
 
     const handleHidden = () => {
-      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
+
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
       modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+
+      dispatch(clearMessages());
     };
 
     modalEl.addEventListener("hidden.bs.modal", handleHidden);
-    modal.hide();
-  }, [success]);
 
-  if (!selectedVehicle) return null;
+    modal.hide();
+  }, [success, dispatch]);
 
   return (
     <div className="modal fade" id="edit-vehicle">
@@ -90,6 +95,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                 <div className="page-title">
                   <h4>Edit Vehicle</h4>
                 </div>
+
                 <button
                   type="button"
                   className="close"
@@ -97,13 +103,13 @@ const EditVehicle = ({ selectedVehicle }) => {
                 >
                   <span>×</span>
                 </button>
-
               </div>
 
               {/* ===== BODY ===== */}
               <div className="modal-body custom-modal-body">
 
                 {error && <div className="alert alert-danger">{error}</div>}
+
                 {success && (
                   <div className="alert alert-success">
                     Vehicle updated successfully
@@ -199,6 +205,7 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                   {/* ===== FOOTER ===== */}
                   <div className="modal-footer-btn mt-3">
+
                     <button
                       type="button"
                       className="btn btn-cancel me-2"
@@ -206,6 +213,7 @@ const EditVehicle = ({ selectedVehicle }) => {
                     >
                       Cancel
                     </button>
+
                     <button
                       type="submit"
                       className="btn btn-submit"
@@ -213,9 +221,11 @@ const EditVehicle = ({ selectedVehicle }) => {
                     >
                       {loading ? "Updating..." : "Update"}
                     </button>
+
                   </div>
 
                 </form>
+
               </div>
             </div>
           </div>

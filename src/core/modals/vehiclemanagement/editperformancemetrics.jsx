@@ -8,7 +8,6 @@ import {
 
 const EditPerformanceMetrics = ({ selectedMetric }) => {
   const dispatch = useDispatch();
-
   const { success, error, loading } = useSelector(
     (state) => state.vehiclePerformanceMetrics
   );
@@ -21,17 +20,26 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
     metric_date: "",
   });
 
-  /* ================= PREFILL ================= */
+  /* ================= PREFILL FORM AND SHOW MODAL ================= */
   useEffect(() => {
     if (!selectedMetric) return;
 
     setFormData({
       vehicle_id: selectedMetric.vehicle_id || "",
       route_id: selectedMetric.route_id || "",
-      metric_type: selectedMetric.metric_type || "",
+      metric_type: selectedMetric.metric_type || "DISTANCE",
       metric_value: selectedMetric.metric_value || "",
       metric_date: selectedMetric.metric_date || "",
     });
+
+    // ✅ SHOW MODAL
+    const modalEl = document.getElementById("edit-metric-modal");
+    if (!modalEl) return;
+
+    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl, {
+      backdrop: "static",
+    });
+    modalInstance.show();
   }, [selectedMetric]);
 
   /* ================= HANDLE CHANGE ================= */
@@ -53,33 +61,31 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
     );
   };
 
-  /* ================= CLOSE ON SUCCESS ================= */
+  /* ================= CLOSE MODAL ON SUCCESS ================= */
   useEffect(() => {
     if (!success) return;
 
     const modalEl = document.getElementById("edit-metric-modal");
     if (!modalEl) return;
 
-    const modal =
-      Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modalInstance = Modal.getInstance(modalEl);
+    if (!modalInstance) return;
 
     const handleHidden = () => {
-      // CLEANUP AFTER BOOTSTRAP FINISHES
+      // CLEANUP
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
-      document
-        .querySelectorAll(".modal-backdrop")
-        .forEach((bd) => bd.remove());
+      document.querySelectorAll(".modal-backdrop").forEach((bd) => bd.remove());
 
       modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+      dispatch(clearMessages());
     };
 
     modalEl.addEventListener("hidden.bs.modal", handleHidden);
-    modal.hide();
+    modalInstance.hide();
   }, [success, dispatch]);
 
-  if (!selectedMetric) return null;
-
+  /* ================= RENDER MODAL ================= */
   return (
     <div className="modal fade" id="edit-metric-modal" tabIndex="-1">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
@@ -92,18 +98,13 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                 <div className="page-title">
                   <h4>Edit Performance Metric</h4>
                 </div>
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                >
+                <button type="button" className="close" data-bs-dismiss="modal">
                   <span>×</span>
                 </button>
               </div>
 
               {/* ===== BODY ===== */}
               <div className="modal-body custom-modal-body">
-
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
@@ -114,7 +115,6 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    {/* VEHICLE ID */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>VEHICLE ID</label>
@@ -129,7 +129,6 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                       </div>
                     </div>
 
-                    {/* ROUTE ID */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>ROUTE ID</label>
@@ -144,7 +143,6 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                       </div>
                     </div>
 
-                    {/* METRIC TYPE */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>METRIC TYPE</label>
@@ -159,7 +157,6 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                       </div>
                     </div>
 
-                    {/* METRIC VALUE */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>METRIC VALUE</label>
@@ -174,7 +171,6 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                       </div>
                     </div>
 
-                    {/* METRIC DATE (FIXED) */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
                         <label>METRIC DATE</label>
@@ -188,9 +184,9 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                         />
                       </div>
                     </div>
+
                   </div>
 
-                  {/* ===== FOOTER ===== */}
                   <div className="modal-footer-btn mt-3">
                     <button
                       type="button"

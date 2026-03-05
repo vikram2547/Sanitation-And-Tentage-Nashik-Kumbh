@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ===============================
    AXIOS INSTANCE
@@ -14,18 +15,41 @@ const api = axios.create({
   },
 });
 
-/* 🔑 ALWAYS PICK LATEST TOKEN */
+/* ===============================
+   REQUEST INTERCEPTOR (TOKEN)
+================================ */
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
+
     if (token) {
       config.headers["X-ACCESS-TOKEN"] = token;
     } else {
       delete config.headers["X-ACCESS-TOKEN"];
     }
+
     return config;
   },
   (error) => Promise.reject(error)
+);
+
+/* ===============================
+   RESPONSE INTERCEPTOR (401 FIX)
+================================ */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.log("Unauthorized - Token expired");
+
+      localStorage.removeItem("token");
+
+      // redirect to login
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
 );
 
 /* ================= GET USER PERMISSIONS ================= */
@@ -43,6 +67,7 @@ export const getRolePermission = createAsyncThunk(
           order_by: "DESC",
         },
       });
+
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -123,6 +148,7 @@ const rolespermissionSlice = createSlice({
       })
       .addCase(getRolePermission.fulfilled, (state, action) => {
         state.loading = false;
+
         state.permissions = Array.isArray(action.payload?.data?.permissions)
           ? action.payload.data.permissions
           : [];

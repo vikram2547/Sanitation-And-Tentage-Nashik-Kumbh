@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,30 @@ const api = axios.create({
   },
 });
 
+/* ================= REQUEST INTERCEPTOR ================= */
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers["X-ACCESS-TOKEN"] = token;
   return config;
 });
+
+/* ================= RESPONSE INTERCEPTOR (401 FIX) ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.error("401 Unauthorized - Session expired");
+
+      // remove token
+      localStorage.removeItem("token");
+
+      // redirect to login
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getVehiclePerformanceMetrics = createAsyncThunk(

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,34 @@ const api = axios.create({
   },
 });
 
+/* ================= REQUEST INTERCEPTOR ================= */
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) config.headers["X-ACCESS-TOKEN"] = token;
+
+  if (token) {
+    config.headers["X-ACCESS-TOKEN"] = token;
+  } else {
+    delete config.headers["X-ACCESS-TOKEN"];
+  }
+
   return config;
 });
+
+/* ================= RESPONSE INTERCEPTOR (401 FIX) ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error?.response?.status === 401) {
+      console.error("401 Unauthorized - Token expired");
+
+      localStorage.removeItem("token");
+
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getVehicleRouteAssignments = createAsyncThunk(
@@ -38,10 +62,7 @@ export const addVehicleRouteAssignment = createAsyncThunk(
   "vehicleRouteAssignments/addVehicleRouteAssignment",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post(
-        "vehicle-route-assignments/new",
-        data
-      );
+      const res = await api.post("vehicle-route-assignments/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -104,7 +125,7 @@ const vehicleRouteAssignmentSlice = createSlice({
       })
       .addCase(getVehicleRouteAssignments.fulfilled, (state, action) => {
         state.loading = false;
-        state.assignments  = action.payload?.data?.assignments  || [];
+        state.assignments = action.payload?.data?.assignments || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -126,6 +147,7 @@ const vehicleRouteAssignmentSlice = createSlice({
         state.success =
           "Vehicle route assignment updated successfully";
         const updated = action.payload?.data;
+
         state.assignments = state.assignments.map((v) =>
           v.route_assignment_id === updated.route_assignment_id
             ? updated
@@ -137,11 +159,14 @@ const vehicleRouteAssignmentSlice = createSlice({
       .addCase(deleteVehicleRouteAssignment.fulfilled, (state, action) => {
         state.success =
           "Vehicle route assignment deleted successfully";
+
         const deletedId = action.meta.arg;
+
         state.assignments = state.assignments.filter(
           (v) =>
             Number(v.route_assignment_id) !== Number(deletedId)
         );
+
         state.totalRecords -= 1;
       });
   },
@@ -149,4 +174,5 @@ const vehicleRouteAssignmentSlice = createSlice({
 
 export const { clearMessages } =
   vehicleRouteAssignmentSlice.actions;
+
 export default vehicleRouteAssignmentSlice.reducer;

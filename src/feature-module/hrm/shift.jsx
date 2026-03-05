@@ -78,9 +78,22 @@ const Shift = () => {
     {
       header: "Status",
       field: "is_active",
+      body: (rowData) => (
+        <div>
+          {Number(rowData.is_active) === 1 ? (
+            <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-success fs-10">
+              <i className="ti ti-point-filled me-1 fs-11"></i>
+              Active
+            </span>
+          ) : (
+            <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-danger fs-10">
+              <i className="ti ti-point-filled me-1 fs-11"></i>
+              Inactive
+            </span>
+          )}
+        </div>
+      ),
       sortable: true,
-      body: (rowData) =>
-        rowData?.is_active === "1" ? "Active" : "Inactive"
     },
     {
       header: "Actions",

@@ -17,6 +17,7 @@ import incidentsReducer from "./incidentsSlice";
 import shiftReducer from "./shiftSlice";
 import assetTypeReducer from "./assettypeSlice";
 import sanitationAssetReducer from "./sanitationAssetSlice";
+import sanitationAssetAllocationReducer from "./sanitationAssetAllocationSlice";
 import vehicleReducer from "./vehicleSlice";
 import vehicleRouteReducer from "./vehicleRouteSlice";
 import vehicleGeofenceReducer from "./vehicleGeofenceSlice";
@@ -48,6 +49,7 @@ const combinedReducer = combineReducers({
   shifts: shiftReducer,
   assetTypes: assetTypeReducer,
   sanitationAssets: sanitationAssetReducer,
+  sanitationAssetsAllocation: sanitationAssetAllocationReducer,
   vehicles: vehicleReducer,
   vehicleRoutes: vehicleRouteReducer,
   vehicleGeofences: vehicleGeofenceReducer,

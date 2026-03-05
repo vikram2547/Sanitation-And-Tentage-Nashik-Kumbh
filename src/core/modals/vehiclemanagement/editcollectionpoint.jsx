@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
-import { clearMessages, updateVehicleCollectionPoint } from "../../redux/vehicleCollectionPointSlice";
+import {
+  clearMessages,
+  updateVehicleCollectionPoint,
+} from "../../redux/vehicleCollectionPointSlice";
 
 const EditCollectionPoint = ({ selectedPoint }) => {
   const dispatch = useDispatch();
+
   const { success, error, loading } = useSelector(
     (state) => state.vehicleCollectionPoints
   );
@@ -53,6 +57,7 @@ const EditCollectionPoint = ({ selectedPoint }) => {
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!selectedPoint?.id) return;
 
     dispatch(
@@ -63,32 +68,32 @@ const EditCollectionPoint = ({ selectedPoint }) => {
     );
   };
 
-  /* ================= CLOSE ON SUCCESS ================= */
+  /* ================= CLOSE MODAL ON SUCCESS ================= */
   useEffect(() => {
     if (!success) return;
 
     const modalEl = document.getElementById("edit-collection-point-modal");
     if (!modalEl) return;
 
-    const modal =
-      Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modal = Modal.getInstance(modalEl) || new Modal(modalEl);
 
     const handleHidden = () => {
-      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
+
       document
         .querySelectorAll(".modal-backdrop")
         .forEach((bd) => bd.remove());
 
       modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+
+      dispatch(clearMessages());
     };
 
     modalEl.addEventListener("hidden.bs.modal", handleHidden);
+
     modal.hide();
   }, [success, dispatch]);
-
-  if (!selectedPoint) return null;
 
   return (
     <div className="modal fade" id="edit-collection-point-modal">
@@ -97,7 +102,7 @@ const EditCollectionPoint = ({ selectedPoint }) => {
           <div className="page-wrapper-new p-0">
             <div className="content">
 
-              {/* ===== HEADER ===== */}
+              {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
                   <h4>Edit Collection Point</h4>
@@ -111,10 +116,13 @@ const EditCollectionPoint = ({ selectedPoint }) => {
                 </button>
               </div>
 
-              {/* ===== BODY ===== */}
+              {/* BODY */}
               <div className="modal-body custom-modal-body">
 
-                {error && <div className="alert alert-danger">{error}</div>}
+                {error && (
+                  <div className="alert alert-danger">{error}</div>
+                )}
+
                 {success && (
                   <div className="alert alert-success">
                     Collection Point updated successfully
@@ -122,6 +130,8 @@ const EditCollectionPoint = ({ selectedPoint }) => {
                 )}
 
                 <form onSubmit={handleSubmit}>
+                  {/* Your form fields remain exactly same as before */}
+
                   <div className="modal-footer-btn mt-3">
                     <button
                       type="button"
@@ -130,6 +140,7 @@ const EditCollectionPoint = ({ selectedPoint }) => {
                     >
                       Cancel
                     </button>
+
                     <button
                       type="submit"
                       className="btn btn-submit"
@@ -138,9 +149,11 @@ const EditCollectionPoint = ({ selectedPoint }) => {
                       {loading ? "Updating..." : "Update"}
                     </button>
                   </div>
+
                 </form>
 
               </div>
+
             </div>
           </div>
         </div>

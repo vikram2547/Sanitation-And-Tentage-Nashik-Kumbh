@@ -1,7 +1,6 @@
 import React from "react";
 
 const ViewSanitationAsset = ({ selectedAsset }) => {
-  if (!selectedAsset) return null;
 
   return (
     <div
@@ -9,7 +8,7 @@ const ViewSanitationAsset = ({ selectedAsset }) => {
       id="view-sanitation-asset"
       tabIndex="-1"
     >
-      <div className="modal-dialog modal-dialog-centered modal-lg">
+      <div className="modal-dialog modal-dialog-centered modal-md">
         <div className="modal-content">
 
           {/* ===== Modal Header ===== */}
@@ -17,9 +16,11 @@ const ViewSanitationAsset = ({ selectedAsset }) => {
             <h5 className="modal-title">Sanitation Asset Details</h5>
             <button
               type="button"
-              className="btn-close"
+              className="close"
               data-bs-dismiss="modal"
-            ></button>
+            >
+              <span>×</span>
+            </button>
           </div>
 
           {/* ===== Modal Body ===== */}
@@ -28,49 +29,49 @@ const ViewSanitationAsset = ({ selectedAsset }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>Asset ID:</strong>
-                <div>{selectedAsset.sanitation_asset_id}</div>
+                <div>{selectedAsset?.sanitation_asset_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>QR Code:</strong>
-                <div>{selectedAsset.qr_code || "-"}</div>
+                <div>{selectedAsset?.qr_code || "-"}</div>
               </div>
 
               <div className="col-md-12 mb-3">
                 <strong>Asset Name:</strong>
-                <div>{selectedAsset.asset_name || "-"}</div>
+                <div>{selectedAsset?.asset_name || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Gender:</strong>
-                <div>{selectedAsset.gender || "-"}</div>
+                <div>{selectedAsset?.gender || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Status:</strong>
                 <div>
-                  {selectedAsset.status === "ACTIVE" ? "Active" : "Inactive"}
+                  {selectedAsset?.status === "ACTIVE" ? "Active" : "Inactive"}
                 </div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Sector:</strong>
-                <div>{selectedAsset.sector_name || "-"}</div>
+                <div>{selectedAsset?.sector_name || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Circle:</strong>
-                <div>{selectedAsset.circle_name || "-"}</div>
+                <div>{selectedAsset?.circle_name || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Latitude:</strong>
-                <div>{selectedAsset.latitude || "-"}</div>
+                <div>{selectedAsset?.latitude || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>Longitude:</strong>
-                <div>{selectedAsset.longitude || "-"}</div>
+                <div>{selectedAsset?.longitude || "-"}</div>
               </div>
 
             </div>

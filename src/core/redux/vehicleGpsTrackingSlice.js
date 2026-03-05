@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,29 @@ const api = axios.create({
   },
 });
 
+/* ================= REQUEST INTERCEPTOR ================= */
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
   if (token) config.headers["X-ACCESS-TOKEN"] = token;
   return config;
 });
+
+/* ================= RESPONSE INTERCEPTOR (401 FIX) ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.error("401 Unauthorized - Session expired");
+
+      localStorage.removeItem("token");
+
+      // Redirect to login
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getVehicleGpsTracking = createAsyncThunk(
@@ -38,10 +57,7 @@ export const addVehicleGpsTracking = createAsyncThunk(
   "vehicleGpsTracking/addVehicleGpsTracking",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post(
-        "vehicle-gps-tracking/new",
-        data
-      );
+      const res = await api.post("vehicle-gps-tracking/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -70,9 +86,7 @@ export const deleteVehicleGpsTracking = createAsyncThunk(
   "vehicleGpsTracking/deleteVehicleGpsTracking",
   async (gps_tracking_id, { rejectWithValue }) => {
     try {
-      await api.post(
-        `vehicle-gps-tracking/delete/${gps_tracking_id}`
-      );
+      await api.post(`vehicle-gps-tracking/delete/${gps_tracking_id}`);
       return gps_tracking_id;
     } catch (e) {
       return rejectWithValue(e.response?.data?.message);
@@ -84,7 +98,7 @@ export const deleteVehicleGpsTracking = createAsyncThunk(
 const vehicleGpsTrackingSlice = createSlice({
   name: "vehicleGpsTracking",
   initialState: {
-    tracking: [],          // ✅ FIXED
+    tracking: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -105,7 +119,6 @@ const vehicleGpsTrackingSlice = createSlice({
       .addCase(getVehicleGpsTracking.fulfilled, (state, action) => {
         state.loading = false;
 
-        // ✅ EXACT API MAPPING
         state.tracking = action.payload?.data?.tracking || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
@@ -133,9 +146,7 @@ const vehicleGpsTrackingSlice = createSlice({
 
         if (updated) {
           state.tracking = state.tracking.map((v) =>
-            v.gps_tracking_id === updated.gps_tracking_id
-              ? updated
-              : v
+            v.gps_tracking_id === updated.gps_tracking_id ? updated : v
           );
         }
       })
@@ -146,8 +157,7 @@ const vehicleGpsTrackingSlice = createSlice({
         const deletedId = action.payload;
 
         state.tracking = state.tracking.filter(
-          (v) =>
-            String(v.gps_tracking_id) !== String(deletedId)
+          (v) => String(v.gps_tracking_id) !== String(deletedId)
         );
         state.totalRecords -= 1;
       });

@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ===============================
    AXIOS INSTANCE
-   (TOKEN SET DYNAMICALLY)
 ================================ */
 const api = axios.create({
   baseURL: API_HOST,
@@ -15,29 +15,59 @@ const api = axios.create({
   },
 });
 
-/* 🔑 ALWAYS PICK LATEST TOKEN */
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
+/* ===============================
+   REQUEST INTERCEPTOR
+   (ALWAYS PICK LATEST TOKEN)
+================================ */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
 
-  if (token) {
-    config.headers["X-ACCESS-TOKEN"] = token;
-  } else {
-    delete config.headers["X-ACCESS-TOKEN"];
-  }
+    if (token) {
+      config.headers["X-ACCESS-TOKEN"] = token;
+    } else {
+      delete config.headers["X-ACCESS-TOKEN"];
+    }
 
-  return config;
-},
+    return config;
+  },
   (error) => Promise.reject(error)
 );
 
-/* ================= GET Sectors ================= */
+/* ===============================
+   RESPONSE INTERCEPTOR (401 FIX)
+================================ */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.log("401 Unauthorized - Token expired");
+
+      localStorage.removeItem("token");
+
+      // Redirect user to login
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+/* ================= GET SECTORS ================= */
 export const getSectors = createAsyncThunk(
   "sectors/getSectors",
   async ({ page, per_page }, { rejectWithValue }) => {
     try {
       const response = await api.get("sectors", {
-        params: { page, per_page, keywords: "", order_by_col: "sector_id", order_by: "DESC", },
+        params: {
+          page,
+          per_page,
+          keywords: "",
+          order_by_col: "sector_id",
+          order_by: "DESC",
+        },
       });
+
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -47,7 +77,7 @@ export const getSectors = createAsyncThunk(
   }
 );
 
-/* ================= ADD VENDOR ================= */
+/* ================= ADD SECTOR ================= */
 export const addSector = createAsyncThunk(
   "sectors/addSector",
   async (data, { rejectWithValue }) => {
@@ -62,7 +92,7 @@ export const addSector = createAsyncThunk(
   }
 );
 
-/* ================= UPDATE VENDOR ================= */
+/* ================= UPDATE SECTOR ================= */
 export const updateSector = createAsyncThunk(
   "sectors/updateSector",
   async ({ id, data }, { rejectWithValue }) => {
@@ -77,7 +107,7 @@ export const updateSector = createAsyncThunk(
   }
 );
 
-/* ================= DELETE VENDOR ================= */
+/* ================= DELETE SECTOR ================= */
 export const deleteSector = createAsyncThunk(
   "sectors/deleteSector",
   async (id, { rejectWithValue }) => {
@@ -118,6 +148,7 @@ const sectorSlice = createSlice({
       })
       .addCase(getSectors.fulfilled, (state, action) => {
         state.loading = false;
+
         state.sectors = Array.isArray(action.payload?.data?.sectors)
           ? action.payload.data.sectors
           : [];
@@ -137,6 +168,7 @@ const sectorSlice = createSlice({
       .addCase(addSector.fulfilled, (state, action) => {
         state.loading = false;
         state.success = "Sector created successfully";
+
         if (action.payload?.data) {
           state.sectors.unshift(action.payload.data);
           state.totalRecords += 1;
@@ -154,12 +186,14 @@ const sectorSlice = createSlice({
       })
       .addCase(updateSector.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Sector updated successfully";
+        state.success =
+          action.payload?.message || "Sector updated successfully";
+
         const updatedSector = action.payload?.data;
 
         if (updatedSector) {
           state.sectors = state.sectors.map((sector) =>
-             Number(sector.sector_id) === Number(updatedSector.sector_id)
+            Number(sector.sector_id) === Number(updatedSector.sector_id)
               ? updatedSector
               : sector
           );
@@ -177,10 +211,11 @@ const sectorSlice = createSlice({
       })
       .addCase(deleteSector.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = action.payload?.message || "Sector deleted successfully";
-         const deletedId = action.meta.arg;
+        state.success = "Sector deleted successfully";
 
-          state.sectors = state.sectors.filter(
+        const deletedId = action.meta.arg;
+
+        state.sectors = state.sectors.filter(
           (sector) => Number(sector.sector_id) !== Number(deletedId)
         );
 

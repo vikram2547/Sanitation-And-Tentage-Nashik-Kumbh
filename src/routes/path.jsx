@@ -52,6 +52,7 @@ import VehicleGeofences from "../feature-module/vehiclemanagement/vehicleGeofenc
 import VehicleMaintenanceLogs from "../feature-module/vehiclemanagement/vehicleMaintenanceLogs.jsx";
 import VehiclePerformanceMetrics from "../feature-module/vehiclemanagement/vehiclePerformanceMetrics.jsx";
 import Incidents from "../feature-module/incidentmanagement/incidents.jsx";
+import SanitationAssetAllocation from "../feature-module/assettypemanagement/sanitationAssetAllocation.jsx";
 
 
 
@@ -1301,6 +1302,13 @@ export const authRoutes = [
   path: routes.incidents,
   name: "incidents",
   element: <Incidents />,
+  route: Route
+},
+{
+  id: 272,
+  path: routes.sanitationassetallocation,
+  name: "sanitationassetallocation",
+  element: <SanitationAssetAllocation />,
   route: Route
 },
 {

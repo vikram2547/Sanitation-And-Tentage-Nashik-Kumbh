@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { API_HOST } from "../baseUrl/http";
+import { all_routes } from "../../routes/all_routes";
 
 /* ================= AXIOS ================= */
 const api = axios.create({
@@ -12,11 +13,31 @@ const api = axios.create({
   },
 });
 
+/* ================= REQUEST INTERCEPTOR ================= */
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
-  if (token) config.headers["X-ACCESS-TOKEN"] = token;
+  if (token) {
+    config.headers["X-ACCESS-TOKEN"] = token;
+  }
   return config;
 });
+
+/* ================= RESPONSE INTERCEPTOR (401 FIX) ================= */
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      console.error("401 Unauthorized - Logging out");
+
+      localStorage.removeItem("token");
+
+      // redirect to login
+      window.location.href = all_routes.signin;
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 /* ================= GET ================= */
 export const getVehicleGeofences = createAsyncThunk(
@@ -28,7 +49,7 @@ export const getVehicleGeofences = createAsyncThunk(
       });
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(e.response?.data?.message || "Error");
     }
   }
 );
@@ -41,7 +62,7 @@ export const addVehicleGeofence = createAsyncThunk(
       const res = await api.post("vehicle-geofences/new", data);
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(e.response?.data?.message || "Error");
     }
   }
 );
@@ -57,7 +78,7 @@ export const updateVehicleGeofence = createAsyncThunk(
       );
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(e.response?.data?.message || "Error");
     }
   }
 );
@@ -70,7 +91,7 @@ export const deleteVehicleGeofence = createAsyncThunk(
       await api.post(`vehicle-geofences/delete/${geofence_id}`);
       return geofence_id;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(e.response?.data?.message || "Error");
     }
   }
 );
@@ -79,7 +100,7 @@ export const deleteVehicleGeofence = createAsyncThunk(
 const vehicleGeofenceSlice = createSlice({
   name: "vehicleGeofences",
   initialState: {
-    geofences: [],          // ✅ FIXED
+    geofences: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -99,7 +120,7 @@ const vehicleGeofenceSlice = createSlice({
       })
       .addCase(getVehicleGeofences.fulfilled, (state, action) => {
         state.loading = false;
-        state.geofences = action.payload?.data?.geofences || []; // ✅ FIXED
+        state.geofences = action.payload?.data?.geofences || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })

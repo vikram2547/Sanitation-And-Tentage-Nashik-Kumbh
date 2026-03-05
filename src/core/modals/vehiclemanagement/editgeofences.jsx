@@ -5,7 +5,6 @@ import { clearMessages, updateVehicleGeofence } from "../../redux/vehicleGeofenc
 
 const EditGeofences = ({ selectedGeofence }) => {
   const dispatch = useDispatch();
-
   const { success, error, loading } = useSelector(
     (state) => state.vehicleGeofences
   );
@@ -25,18 +24,30 @@ const EditGeofences = ({ selectedGeofence }) => {
       radius_meters: selectedGeofence.radius_meters || "",
       is_active: selectedGeofence.is_active ?? 1,
     });
+
+    // ✅ Initialize and show Bootstrap modal on first click
+    const modalEl = document.getElementById("edit-geofence-modal");
+    if (!modalEl) return;
+
+    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl, {
+      backdrop: "static",
+    });
+
+    modalInstance.show();
   }, [selectedGeofence]);
 
   /* ================= HANDLE CHANGE ================= */
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "is_active" ? Number(value) : value,
+    }));
   };
 
   /* ================= SUBMIT ================= */
   const handleSubmit = (e) => {
     e.preventDefault();
-
     if (!selectedGeofence?.geofence_id) return;
 
     dispatch(
@@ -54,11 +65,9 @@ const EditGeofences = ({ selectedGeofence }) => {
     const modalEl = document.getElementById("edit-geofence-modal");
     if (!modalEl) return;
 
-    const modal =
-      Modal.getInstance(modalEl) || new Modal(modalEl);
+    const modal = Modal.getInstance(modalEl) || new Modal(modalEl);
 
     const handleHidden = () => {
-      // CLEANUP AFTER BOOTSTRAP FINISHES
       document.body.classList.remove("modal-open");
       document.body.style.paddingRight = "";
       document
@@ -66,14 +75,14 @@ const EditGeofences = ({ selectedGeofence }) => {
         .forEach((bd) => bd.remove());
 
       modalEl.removeEventListener("hidden.bs.modal", handleHidden);
+      dispatch(clearMessages());
     };
 
     modalEl.addEventListener("hidden.bs.modal", handleHidden);
     modal.hide();
   }, [success, dispatch]);
 
-  if (!selectedGeofence) return null;
-
+  /* ================= RENDER MODAL ================= */
   return (
     <div className="modal fade" id="edit-geofence-modal">
       <div className="modal-dialog modal-dialog-centered custom-modal-two">
@@ -99,11 +108,9 @@ const EditGeofences = ({ selectedGeofence }) => {
               <div className="modal-body custom-modal-body">
 
                 {error && <div className="alert alert-danger">{error}</div>}
-                {success && (
-                  <div className="alert alert-success">
-                    Geofence updated successfully
-                  </div>
-                )}
+                {success && <div className="alert alert-success">
+                  Geofence updated successfully
+                </div>}
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
@@ -173,6 +180,7 @@ const EditGeofences = ({ selectedGeofence }) => {
 
                 </form>
               </div>
+
             </div>
           </div>
         </div>
