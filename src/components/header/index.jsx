@@ -9,6 +9,8 @@ import {
 } from
   "../../utils/imagepath";
 import { logout } from "../../core/redux/signinSlice";
+import i18n from "i18next";
+
 const Header = () => {
   const route = all_routes;
   const dispatch = useDispatch();
@@ -178,6 +180,17 @@ const Header = () => {
               </div>
             </li>
             {/* /Search */}
+            <li className="nav-item nav-item-box">
+              <select
+                className="form-select form-select-sm btn btn-info"
+                style={{ color: "white" }}
+                onChange={(e) => i18n.changeLanguage(e.target.value)}
+                defaultValue={i18n.language}
+              >
+                <option value="en" style={{ color: "black" }}>ENG</option>
+                <option value="hi" style={{ color: "black" }}>HIN</option>
+              </select>
+            </li>
 
             <li className="nav-item nav-item-box">
               <Link
@@ -216,11 +229,9 @@ const Header = () => {
                 title="Logout"
                 className="btn btn-primary"
               >
-                Logout
+                LOG-OUT
               </button>
             </li>
-
-
           </ul>
           {/* /Header Menu */}
         </div>

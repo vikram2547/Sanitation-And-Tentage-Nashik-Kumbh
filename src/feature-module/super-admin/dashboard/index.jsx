@@ -4,11 +4,12 @@ import ReactApexChart from "react-apexcharts";
 import CommonFooter from "../../../components/footer/commonFooter";
 
 import { all_routes } from "../../../routes/all_routes";
-import CommonDateRangePicker from "../../../components/date-range-picker/common-date-range-picker";
 import { useDispatch, useSelector } from "react-redux";
 import { getCounts } from "../../../core/redux/dashboardCountsSlice";
+import { useTranslation } from "react-i18next";
 
 const SuperAdminDashboard = () => {
+  const { t } = useTranslation();
   const routes = all_routes;
   const [CompanyChart] = useState({
     chart: {
@@ -638,7 +639,8 @@ const SuperAdminDashboard = () => {
                   <i className="ti ti-building fs-24" />
                 </span>
                 <div className="ms-2">
-                  <p className="text-white mb-1">Total Toilets</p>
+                  {/* <p className="text-white mb-1">Total Toilets</p> */}
+                  <p className="text-white mb-1">{t("total_toilets")}</p>
                   <div className="d-inline-flex align-items-center flex-wrap gap-2">
                     <h4 className="text-white">
                       {countsData?.total_toilets ?? 0}

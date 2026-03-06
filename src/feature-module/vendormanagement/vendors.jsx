@@ -64,11 +64,6 @@ const Vendors = () => {
     // ============================
     const columns = [
         {
-            header: "Vendor Name",
-            field: "vendor_name",
-            sortable: true,
-        },
-        {
             header: "Vendor Code",
             field: "vendor_code",
             sortable: true,
@@ -86,6 +81,11 @@ const Vendors = () => {
         {
             header: "Phone",
             field: "contact_phone",
+            sortable: true,
+        },
+         {
+            header: "Address",
+            field: "address",
             sortable: true,
         },
         {
