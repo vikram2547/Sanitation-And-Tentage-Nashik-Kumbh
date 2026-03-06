@@ -21,7 +21,6 @@ import "../node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css";
 import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <Provider store={store}>
         <PrimeReactProvider
         value={{
@@ -35,5 +34,4 @@ createRoot(document.getElementById('root')).render(
           </LazyWrapper>
         </PrimeReactProvider>
       </Provider>
-  </StrictMode>
 );

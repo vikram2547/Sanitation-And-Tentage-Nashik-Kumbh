@@ -47,14 +47,12 @@ const Signin = () => {
     try {
       const res = await dispatch(signinUser(formData)).unwrap();
 
-      console.log("LOGIN API RESPONSE:", res);
-
       if (res.success === true) {
         const twoFactorRequired = res.data?.two_factor_required;
 
         if (twoFactorRequired === false) {
           // ✅ Normal login → dashboard
-          navigate(route.newdashboard);
+          navigate(route.superadmindashboard);
         } else {
           // ✅ 2FA required → forgot password / verification page
           navigate(route.forgotPassword);

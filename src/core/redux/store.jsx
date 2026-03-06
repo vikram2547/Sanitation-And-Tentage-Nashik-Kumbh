@@ -14,10 +14,12 @@ import sectorReducer from "./sectorSlice";
 import circleReducer from "./circleSlice";
 import questionReducer from "./questionSlice";
 import incidentsReducer from "./incidentsSlice";
+import inspectionsReducer from "./inspectionsSlice";
 import shiftReducer from "./shiftSlice";
 import assetTypeReducer from "./assettypeSlice";
 import sanitationAssetReducer from "./sanitationAssetSlice";
 import sanitationAssetAllocationReducer from "./sanitationAssetAllocationSlice";
+import sanitationAssetTaggingReducer from "./sanitationAssetTaggingSlice";
 import vehicleReducer from "./vehicleSlice";
 import vehicleRouteReducer from "./vehicleRouteSlice";
 import vehicleGeofenceReducer from "./vehicleGeofenceSlice";
@@ -29,6 +31,7 @@ import vehiclePerformanceMetricReducer from "./vehiclePerformanceMetricSlice";
 import vehicleRouteAssignmentReducer from "./vehicleRouteAssignmentSlice";
 import vehicleRoutePointsReducer from "./vehicleRoutePointsSlice";
 import rolespermissionReducer from "./rolespermissionSlice";
+import countsReducer from "./dashboardCountsSlice";
 
 const combinedReducer = combineReducers({
   sidebar: sidebarSlice,
@@ -40,16 +43,19 @@ const combinedReducer = combineReducers({
   verifyOtp: verifyOtpReducer,
   forgotPassword: forgotPasswordReducer,
   users: usersReducer,
+  counts: countsReducer,
   rolespermission: rolespermissionReducer,
   vendors: vendorsReducer,
   sectors: sectorReducer,
   circles: circleReducer,
   questions: questionReducer,
   incidents: incidentsReducer,
+  inspections: inspectionsReducer,
   shifts: shiftReducer,
   assetTypes: assetTypeReducer,
   sanitationAssets: sanitationAssetReducer,
   sanitationAssetsAllocation: sanitationAssetAllocationReducer,
+  sanitationAssetsTagging: sanitationAssetTaggingReducer,
   vehicles: vehicleReducer,
   vehicleRoutes: vehicleRouteReducer,
   vehicleGeofences: vehicleGeofenceReducer,

@@ -56,7 +56,7 @@ export const getVehicleDailyTripSummaries = createAsyncThunk(
     } catch (e) {
       return rejectWithValue(
         e.response?.data?.message ||
-          "Failed to fetch vehicle daily trip summaries"
+        "Failed to fetch vehicle daily trip summaries"
       );
     }
   }
@@ -75,7 +75,7 @@ export const addVehicleDailyTripSummary = createAsyncThunk(
     } catch (e) {
       return rejectWithValue(
         e.response?.data?.message ||
-          "Failed to create vehicle daily trip summary"
+        "Failed to create vehicle daily trip summary"
       );
     }
   }
@@ -94,7 +94,7 @@ export const updateVehicleDailyTripSummary = createAsyncThunk(
     } catch (e) {
       return rejectWithValue(
         e.response?.data?.message ||
-          "Failed to update vehicle daily trip summary"
+        "Failed to update vehicle daily trip summary"
       );
     }
   }
@@ -112,7 +112,7 @@ export const deleteVehicleDailyTripSummary = createAsyncThunk(
     } catch (e) {
       return rejectWithValue(
         e.response?.data?.message ||
-          "Failed to delete vehicle daily trip summary"
+        "Failed to delete vehicle daily trip summary"
       );
     }
   }
@@ -164,6 +164,10 @@ const vehicleDailyTripSummarySlice = createSlice({
         }
       })
 
+      .addCase(addVehicleDailyTripSummary.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       /* ===== UPDATE ===== */
       .addCase(updateVehicleDailyTripSummary.fulfilled, (state, action) => {
         state.success = "Vehicle daily trip summary updated successfully";
@@ -173,11 +177,16 @@ const vehicleDailyTripSummarySlice = createSlice({
         if (updated) {
           state.trips = state.trips.map((v) =>
             Number(v.daily_trip_summary_id) ===
-            Number(updated.daily_trip_summary_id)
+              Number(updated.daily_trip_summary_id)
               ? updated
               : v
           );
         }
+      })
+
+      .addCase(updateVehicleDailyTripSummary.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
@@ -192,7 +201,13 @@ const vehicleDailyTripSummarySlice = createSlice({
         );
 
         state.totalRecords -= 1;
-      });
+      })
+
+      .addCase(deleteVehicleDailyTripSummary.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
   },
 });
 

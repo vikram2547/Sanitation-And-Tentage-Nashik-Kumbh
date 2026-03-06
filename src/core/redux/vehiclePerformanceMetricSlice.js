@@ -140,7 +140,10 @@ const vehiclePerformanceMetricSlice = createSlice({
         state.metrics.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
-
+      .addCase(addVehiclePerformanceMetric.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       /* ===== UPDATE ===== */
       .addCase(updateVehiclePerformanceMetric.fulfilled, (state, action) => {
         state.success =
@@ -151,6 +154,10 @@ const vehiclePerformanceMetricSlice = createSlice({
             ? updated
             : v
         );
+      })
+      .addCase(updateVehiclePerformanceMetric.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
@@ -163,7 +170,11 @@ const vehiclePerformanceMetricSlice = createSlice({
             Number(v.performance_metric_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteVehiclePerformanceMetric.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

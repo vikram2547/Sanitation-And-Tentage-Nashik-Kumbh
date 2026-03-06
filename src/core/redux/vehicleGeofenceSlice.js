@@ -138,6 +138,10 @@ const vehicleGeofenceSlice = createSlice({
         }
       })
 
+      .addCase(addVehicleGeofence.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       /* ===== UPDATE ===== */
       .addCase(updateVehicleGeofence.fulfilled, (state, action) => {
         state.success = "Vehicle geofence updated successfully";
@@ -149,6 +153,11 @@ const vehicleGeofenceSlice = createSlice({
         );
       })
 
+
+      .addCase(updateVehicleGeofence.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       /* ===== DELETE ===== */
       .addCase(deleteVehicleGeofence.fulfilled, (state, action) => {
         state.success = "Vehicle geofence deleted successfully";
@@ -158,7 +167,11 @@ const vehicleGeofenceSlice = createSlice({
           (g) => Number(g.geofence_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteVehicleGeofence.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

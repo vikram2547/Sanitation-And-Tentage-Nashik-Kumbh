@@ -139,6 +139,10 @@ const vehicleGpsTrackingSlice = createSlice({
         }
       })
 
+      .addCase(addVehicleGpsTracking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       /* ===== UPDATE ===== */
       .addCase(updateVehicleGpsTracking.fulfilled, (state, action) => {
         state.success = "Vehicle GPS tracking updated successfully";
@@ -150,6 +154,10 @@ const vehicleGpsTrackingSlice = createSlice({
           );
         }
       })
+      .addCase(updateVehicleGpsTracking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
       /* ===== DELETE ===== */
       .addCase(deleteVehicleGpsTracking.fulfilled, (state, action) => {
@@ -160,7 +168,11 @@ const vehicleGpsTrackingSlice = createSlice({
           (v) => String(v.gps_tracking_id) !== String(deletedId)
         );
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteVehicleGpsTracking.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

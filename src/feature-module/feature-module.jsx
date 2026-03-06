@@ -30,20 +30,22 @@ const FeatureModule = () => {
     (state) => state.themeSetting.dataTopbarAll
   );
 
+  // useEffect(() => {
+  //   setShowLoader(true);
+
+  //   const timeoutId = setTimeout(() => {
+  //     setShowLoader(false);
+  //   }, 2000);
+
+  //   window.scrollTo(0, 0);
+  //   return () => {
+  //     clearTimeout(timeoutId); 
+  //   };
+  // }, [location.pathname]);
   useEffect(() => {
-    // Show the loader when navigating to a new route
-    setShowLoader(true);
-
-    // Hide the loader after 2 seconds
-    const timeoutId = setTimeout(() => {
-      setShowLoader(false);
-    }, 2000);
-
     window.scrollTo(0, 0);
-    return () => {
-      clearTimeout(timeoutId); // Clear the timeout when component unmounts
-    };
   }, [location.pathname]);
+
   const Preloader = () => {
     return (
       <div id="global-loader">
@@ -53,22 +55,22 @@ const FeatureModule = () => {
   };
 
   const isUnAuthRoute = unAuthRoutes.some((route) =>
-  matchPath(
-    { path: typeof route === "string" ? route : route.path, end: true },
-    location.pathname
-  )
+    matchPath(
+      { path: typeof route === "string" ? route : route.path, end: true },
+      location.pathname
+    )
   );
   const isPosPage = posPages.some((route) =>
-  matchPath(
-    { path: typeof route === "string" ? route : route.path, end: true },
-    location.pathname
-  )
+    matchPath(
+      { path: typeof route === "string" ? route : route.path, end: true },
+      location.pathname
+    )
   );
   const isAuthRoute = authRoutes.some((route) =>
-  matchPath(
-    { path: typeof route === "string" ? route : route.path, end: true },
-    location.pathname
-  )
+    matchPath(
+      { path: typeof route === "string" ? route : route.path, end: true },
+      location.pathname
+    )
   );
 
   if (isUnAuthRoute) {
@@ -105,24 +107,22 @@ const FeatureModule = () => {
 
         <div
           className={`
-          ${
-            dataLayout === "horizontal" ||
-            dataLayout === "horizontal-single" ||
-            dataLayout === "horizontal-overlay" ||
-            dataLayout === "horizontal-box" ?
-            "menu-horizontal" :
-            ""}
-         ${
-            dataWidth === "box" ? "layout-box-mode" : ""} 
+          ${dataLayout === "horizontal" ||
+              dataLayout === "horizontal-single" ||
+              dataLayout === "horizontal-overlay" ||
+              dataLayout === "horizontal-box" ?
+              "menu-horizontal" :
+              ""}
+         ${dataWidth === "box" ? "layout-box-mode" : ""} 
        
          
          `}>
-          
+
           <>
-            {showLoader && <Preloader />}
+            {/* {showLoader && <Preloader />} */}
             <div
               className={`main-wrapper ${data ? "header-collapse" : ""}`}>
-              
+
               {/* <Loader /> */}
               <Header />
               <Sidebar />
@@ -130,9 +130,9 @@ const FeatureModule = () => {
               <HorizontalSidebar />
               <Outlet />
               {location.pathname.includes("layout") ?
-              <></> :
+                <></> :
 
-              <ThemeSettings />
+                <ThemeSettings />
               }
             </div>
           </>

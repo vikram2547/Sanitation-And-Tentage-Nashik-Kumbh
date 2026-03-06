@@ -222,11 +222,11 @@ const Users = () => {
                 />
               </div>
 
-              {loading && (
+              {/* {loading && (
                 <div className="text-center mt-3">
                   <div className="spinner-border text-primary"></div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </div>

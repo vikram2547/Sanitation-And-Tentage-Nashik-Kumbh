@@ -37,7 +37,7 @@ api.interceptors.response.use(
       console.warn("401 Unauthorized - Redirecting to login");
 
       localStorage.removeItem("token");
-     window.location.href = all_routes.signin;
+      window.location.href = all_routes.signin;
     }
 
     return Promise.reject(error);
@@ -152,6 +152,11 @@ const vehicleCollectionPointSlice = createSlice({
         state.totalRecords += 1;
       })
 
+      .addCase(addVehicleCollectionPoint.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
       /* ===== UPDATE ===== */
       .addCase(updateVehicleCollectionPoint.fulfilled, (state, action) => {
         state.success = "Vehicle collection point updated successfully";
@@ -165,6 +170,11 @@ const vehicleCollectionPointSlice = createSlice({
         );
       })
 
+      .addCase(updateVehicleCollectionPoint.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
       /* ===== DELETE ===== */
       .addCase(deleteVehicleCollectionPoint.fulfilled, (state, action) => {
         state.success = "Vehicle collection point deleted successfully";
@@ -176,7 +186,11 @@ const vehicleCollectionPointSlice = createSlice({
         );
 
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteVehicleCollectionPoint.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

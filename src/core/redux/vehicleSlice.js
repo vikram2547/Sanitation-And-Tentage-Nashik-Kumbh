@@ -63,7 +63,12 @@ export const addVehicle = createAsyncThunk(
       const res = await api.post("vehicles/new", data);
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      const errorMessage =
+        e.response?.data?.message ||
+        e.response?.data?.error ||
+        "Something went wrong";
+
+      return rejectWithValue(errorMessage);
     }
   }
 );
@@ -133,6 +138,11 @@ const vehicleSlice = createSlice({
         state.totalRecords += 1;
       })
 
+      .addCase(addVehicle.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
       /* ===== UPDATE ===== */
       .addCase(updateVehicle.fulfilled, (state, action) => {
         state.success = "Vehicle updated successfully";
@@ -142,6 +152,11 @@ const vehicleSlice = createSlice({
         state.vehicles = state.vehicles.map((v) =>
           v.vehicle_id === updated.vehicle_id ? updated : v
         );
+      })
+
+      .addCase(updateVehicle.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
@@ -155,7 +170,14 @@ const vehicleSlice = createSlice({
         );
 
         state.totalRecords -= 1;
-      });
+      })
+
+      .addCase(deleteVehicle.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+
   },
 });
 

@@ -137,6 +137,10 @@ const vehicleMaintenanceLogSlice = createSlice({
           state.totalRecords += 1;
         }
       })
+      .addCase(addVehicleMaintenanceLog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
       /* ===== UPDATE ===== */
       .addCase(updateVehicleMaintenanceLog.fulfilled, (state, action) => {
@@ -148,6 +152,10 @@ const vehicleMaintenanceLogSlice = createSlice({
           m.maintenance_id === updated.maintenance_id ? updated : m
         );
       })
+      .addCase(updateVehicleMaintenanceLog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
       /* ===== DELETE ===== */
       .addCase(deleteVehicleMaintenanceLog.fulfilled, (state, action) => {
@@ -158,7 +166,11 @@ const vehicleMaintenanceLogSlice = createSlice({
           (m) => Number(m.maintenance_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteVehicleMaintenanceLog.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

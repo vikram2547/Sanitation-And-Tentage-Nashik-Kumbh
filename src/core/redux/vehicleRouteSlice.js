@@ -132,7 +132,10 @@ const vehicleRouteSlice = createSlice({
         state.vehicleRoutes.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
-
+      .addCase(addVehicleRoute.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       /* ===== UPDATE ===== */
       .addCase(updateVehicleRoute.fulfilled, (state, action) => {
         state.success = "Vehicle route updated successfully";
@@ -143,7 +146,10 @@ const vehicleRouteSlice = createSlice({
           v.route_id === updated.route_id ? updated : v
         );
       })
-
+      .addCase(updateVehicleRoute.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       /* ===== DELETE ===== */
       .addCase(deleteVehicleRoute.fulfilled, (state, action) => {
         state.success = "Vehicle route deleted successfully";
@@ -155,7 +161,11 @@ const vehicleRouteSlice = createSlice({
         );
 
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteVehicleRoute.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

@@ -137,6 +137,10 @@ const vehicleRoutePointsSlice = createSlice({
         state.totalRecords += 1;
       })
 
+      .addCase(addVehicleRoutePoint.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       /* ===== UPDATE ===== */
       .addCase(updateVehicleRoutePoint.fulfilled, (state, action) => {
         state.success = "Vehicle route point updated successfully";
@@ -146,6 +150,10 @@ const vehicleRoutePointsSlice = createSlice({
         state.routePoints = state.routePoints.map((rp) =>
           rp.route_point_id === updated.route_point_id ? updated : rp
         );
+      })
+      .addCase(updateVehicleRoutePoint.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
@@ -159,7 +167,11 @@ const vehicleRoutePointsSlice = createSlice({
         );
 
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteVehicleRoutePoint.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

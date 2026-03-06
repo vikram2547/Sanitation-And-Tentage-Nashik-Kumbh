@@ -155,10 +155,19 @@ const questionSlice = createSlice({
         state.loading = false;
         state.success = "Question created successfully";
       })
+      .addCase(addQuestion.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
       .addCase(updateQuestion.fulfilled, (state) => {
         state.loading = false;
         state.success = "Question updated successfully";
+      })
+
+      .addCase(updateQuestion.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       .addCase(deleteQuestion.fulfilled, (state, action) => {
@@ -172,7 +181,11 @@ const questionSlice = createSlice({
         );
 
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteQuestion.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

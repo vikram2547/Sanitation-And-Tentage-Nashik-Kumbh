@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import ReactApexChart from "react-apexcharts";
-import CollapesIcon from "../../../components/tooltip-content/collapes";
 import CommonFooter from "../../../components/footer/commonFooter";
 
 import { all_routes } from "../../../routes/all_routes";
 import CommonDateRangePicker from "../../../components/date-range-picker/common-date-range-picker";
+import { useDispatch, useSelector } from "react-redux";
+import { getCounts } from "../../../core/redux/dashboardCountsSlice";
 
 const SuperAdminDashboard = () => {
   const routes = all_routes;
@@ -19,16 +20,16 @@ const SuperAdminDashboard = () => {
     },
     colors: ["#212529"],
     responsive: [
-    {
-      breakpoint: 480,
-      options: {
-        legend: {
-          position: "bottom",
-          offsetX: -10,
-          offsetY: 0
+      {
+        breakpoint: 480,
+        options: {
+          legend: {
+            position: "bottom",
+            offsetX: -10,
+            offsetY: 0
+          }
         }
-      }
-    }],
+      }],
 
     plotOptions: {
       bar: {
@@ -42,10 +43,10 @@ const SuperAdminDashboard = () => {
       }
     },
     series: [
-    {
-      name: "Company",
-      data: [40, 60, 20, 80, 60, 60, 60]
-    }],
+      {
+        name: "Company",
+        data: [40, 60, 20, 80, 60, 60, 60]
+      }],
 
     xaxis: {
       categories: ["M", "T", "W", "T", "F", "S", "S"],
@@ -90,16 +91,16 @@ const SuperAdminDashboard = () => {
     },
     colors: ["#FF6F28", "#F8F9FA"],
     responsive: [
-    {
-      breakpoint: 480,
-      options: {
-        legend: {
-          position: "bottom",
-          offsetX: -10,
-          offsetY: 0
+      {
+        breakpoint: 480,
+        options: {
+          legend: {
+            position: "bottom",
+            offsetX: -10,
+            offsetY: 0
+          }
         }
-      }
-    }],
+      }],
 
     plotOptions: {
       bar: {
@@ -109,29 +110,29 @@ const SuperAdminDashboard = () => {
       }
     },
     series: [
-    {
-      name: "Income",
-      data: [40, 30, 45, 80, 85, 90, 80, 80, 80, 85, 20, 80]
-    },
-    {
-      name: "Expenses",
-      data: [60, 70, 55, 20, 15, 10, 20, 20, 20, 15, 80, 20]
-    }],
+      {
+        name: "Income",
+        data: [40, 30, 45, 80, 85, 90, 80, 80, 80, 85, 20, 80]
+      },
+      {
+        name: "Expenses",
+        data: [60, 70, 55, 20, 15, 10, 20, 20, 20, 15, 80, 20]
+      }],
 
     xaxis: {
       categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec"],
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"],
 
       labels: {
         style: {
@@ -210,25 +211,25 @@ const SuperAdminDashboard = () => {
     },
     legend: { show: false },
     responsive: [
-    {
-      breakpoint: 480,
-      options: {
-        chart: {
-          height: 180
-        },
-        legend: {
-          position: "bottom"
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            height: 180
+          },
+          legend: {
+            position: "bottom"
+          }
         }
-      }
-    }]
+      }]
 
   });
   const [ApexChart] = useState({
     series: [
-    {
-      name: "Messages",
-      data: [5, 10, 7, 5, 10, 7, 5]
-    }],
+      {
+        name: "Messages",
+        data: [5, 10, 7, 5, 10, 7, 5]
+      }],
 
 
     chart: {
@@ -278,15 +279,15 @@ const SuperAdminDashboard = () => {
     colors: ["#FF6F28"],
     xaxis: {
       categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep"],
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep"],
 
       labels: {
         show: false
@@ -308,10 +309,10 @@ const SuperAdminDashboard = () => {
   });
   const [ApexChart2] = useState({
     series: [
-    {
-      name: "Messages",
-      data: [5, 3, 7, 6, 3, 10, 5]
-    }],
+      {
+        name: "Messages",
+        data: [5, 3, 7, 6, 3, 10, 5]
+      }],
 
 
     chart: {
@@ -361,15 +362,15 @@ const SuperAdminDashboard = () => {
     colors: ["#4B3088"],
     xaxis: {
       categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep"],
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep"],
 
       labels: {
         show: false
@@ -391,10 +392,10 @@ const SuperAdminDashboard = () => {
   });
   const [ApexChart3] = useState({
     series: [
-    {
-      name: "Messages",
-      data: [8, 10, 10, 8, 8, 10, 8]
-    }],
+      {
+        name: "Messages",
+        data: [8, 10, 10, 8, 8, 10, 8]
+      }],
 
 
     chart: {
@@ -444,15 +445,15 @@ const SuperAdminDashboard = () => {
     colors: ["#177DBC"],
     xaxis: {
       categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep"],
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep"],
 
       labels: {
         show: false
@@ -474,10 +475,10 @@ const SuperAdminDashboard = () => {
   });
   const [ApexChart4] = useState({
     series: [
-    {
-      name: "Messages",
-      data: [5, 10, 7, 5, 10, 7, 5]
-    }],
+      {
+        name: "Messages",
+        data: [5, 10, 7, 5, 10, 7, 5]
+      }],
 
 
     chart: {
@@ -527,15 +528,15 @@ const SuperAdminDashboard = () => {
     colors: ["#2DCB73"],
     xaxis: {
       categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep"],
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep"],
 
       labels: {
         show: false
@@ -555,179 +556,199 @@ const SuperAdminDashboard = () => {
       }
     }
   });
+
+  const dispatch = useDispatch();
+
+  const { counts, error, success, data: countsData } = useSelector(
+    (state) => state.counts
+  );
+
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+
+    dispatch(getCounts({ date: today }));
+  }, [dispatch]);
+
+  // ============================
+  // AUTO CLEAR SUCCESS / ERROR
+  // ============================
+  useEffect(() => {
+    if (success || error) {
+      const timer = setTimeout(() => {
+        dispatch(clearMessages());
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [success, error, dispatch]);
+  const today = new Date().toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
   return (
     <div className="page-wrapper">
       <div className="content">
-        <div className="d-lg-flex align-items-center justify-content-between mb-4">
-          <div>
-            <h2 className="mb-1">Welcome, Admin</h2>
-            <p>
-              You have <span className="text-primary fw-bold">200+</span>{" "}
-              Orders, Today
-            </p>
-          </div>
-          <ul className="table-top-head">
-            <li>
-              <div className="input-icon-start position-relative">
-                <span className="input-icon-addon fs-16 text-gray-9">
-                  <i className="ti ti-calendar" />
-                </span>
-                <CommonDateRangePicker />
-              </div>
-            </li>
-            <CollapesIcon />
-          </ul>
-        </div>
-        {/* Welcome Wrap */}
         <div className="welcome-wrap mb-4">
           <div className=" d-flex align-items-center justify-content-between flex-wrap">
             <div className="mb-3">
-              <h2 className="mb-1 text-white">Welcome Back, Adrian</h2>
-              <p className="text-light">
+              <h2 className="mb-1 text-white">Welcome Admin</h2>
+              {/* <p className="text-light">
                 14 New Companies Subscribed Today !!!
-              </p>
+              </p> */}
             </div>
-            <div className="d-flex align-items-center flex-wrap mb-1">
-              <Link
-                to={routes.companies}
-                className="btn btn-dark btn-md me-2 mb-2">
-                
-                Companies
-              </Link>
-              <Link
-                to={routes.packagelist}
-                className="btn btn-light btn-md mb-2">
-                
-                All Packages
-              </Link>
-            </div>
+            <ul className="table-top-head">
+              <li>
+                <div className="input-icon-start position-relative">
+                  <div className="d-flex justify-content-end mb-3">
+                    <span className="badge bg-light text-dark fs-16">
+                      {today}
+                    </span>
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
           <div className="welcome-bg">
             <img
               src="src/assets/img/bg/welcome-bg-02.svg"
               alt="img"
               className="welcome-bg-01" />
-            
+
             <img
               src="src/assets/img/bg/welcome-bg-03.svg"
               alt="img"
               className="welcome-bg-02" />
-            
+
             <img
               src="src/assets/img/bg/welcome-bg-01.svg"
               alt="img"
               className="welcome-bg-03" />
-            
+
           </div>
+        </div>
+        <div className="row">
+
+          {/* Total Toilets */}
+          <div className="col-xl-3 col-sm-6 col-12 d-flex">
+            <div className="card bg-primary sale-widget flex-fill">
+              <div className="card-body d-flex align-items-center">
+                <span className="sale-icon bg-white text-primary">
+                  <i className="ti ti-building fs-24" />
+                </span>
+                <div className="ms-2">
+                  <p className="text-white mb-1">Total Toilets</p>
+                  <div className="d-inline-flex align-items-center flex-wrap gap-2">
+                    <h4 className="text-white">
+                      {countsData?.total_toilets ?? 0}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Registered Toilets */}
+          <div className="col-xl-3 col-sm-6 col-12 d-flex">
+            <div className="card bg-secondary sale-widget flex-fill">
+              <div className="card-body d-flex align-items-center">
+                <span className="sale-icon bg-white text-secondary">
+                  <i className="ti ti-check fs-24" />
+                </span>
+                <div className="ms-2">
+                  <p className="text-white mb-1">Registered Toilets</p>
+                  <div className="d-inline-flex align-items-center flex-wrap gap-2">
+                    <h4 className="text-white">
+                      {countsData?.registered_toilets ?? 0}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Under Monitoring */}
+          <div className="col-xl-3 col-sm-6 col-12 d-flex">
+            <div className="card bg-teal sale-widget flex-fill">
+              <div className="card-body d-flex align-items-center">
+                <span className="sale-icon bg-white text-teal">
+                  <i className="ti ti-activity fs-24" />
+                </span>
+                <div className="ms-2">
+                  <p className="text-white mb-1">Under Monitoring</p>
+                  <div className="d-inline-flex align-items-center flex-wrap gap-2">
+                    <h4 className="text-white">
+                      {countsData?.under_monitoring ?? 0}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Off Monitoring */}
+          <div className="col-xl-3 col-sm-6 col-12 d-flex">
+            <div className="card bg-info sale-widget flex-fill">
+              <div className="card-body d-flex align-items-center">
+                <span className="sale-icon bg-white text-info">
+                  <i className="ti ti-power fs-24" />
+                </span>
+                <div className="ms-2">
+                  <p className="text-white mb-1">Off Monitoring</p>
+                  <div className="d-inline-flex align-items-center flex-wrap gap-2">
+                    <h4 className="text-white">
+                      {countsData?.off_monitoring ?? 0}
+                    </h4>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
         {/* /Welcome Wrap */}
         <div className="row">
-          {/* Total Companies */}
-          <div className="col-xl-3 col-sm-6 d-flex">
-            <div className="card flex-fill">
-              <div className="card-body">
-                <div className="d-flex align-items-center justify-content-between">
-                  <span className="avatar avatar-md bg-dark mb-3">
-                    <i className="ti ti-building fs-16" />
-                  </span>
-                  <span className="badge bg-success fw-normal mb-3">
-                    +19.01%
-                  </span>
-                </div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div>
-                    <h2 className="mb-1">5468</h2>
-                    <p className="fs-13">Total Companies</p>
+          {counts?.map((item, index) => (
+            <div className="col-xl-3 col-sm-6 d-flex" key={index}>
+              <div className="card flex-fill">
+                <div className="card-body">
+
+                  {/* Top Section */}
+                  <div className="d-flex align-items-center justify-content-between mb-2">
+                    <h6 className="fw-semibold mb-0">
+                      {item?.asset_type_name || "-"}
+                    </h6>
                   </div>
-                  <ReactApexChart
-                    options={ApexChart}
-                    series={ApexChart.series}
-                    type="bar"
-                    width={70} />
-                  
+
+                  {/* Registered */}
+                  <div className="d-flex justify-content-between mb-1">
+                    <span className="fs-13 text-muted">Registered</span>
+                    <span className="fw-semibold">
+                      {item?.registered_toilets ?? 0}
+                    </span>
+                  </div>
+
+                  {/* Under Monitoring */}
+                  <div className="d-flex justify-content-between mb-1">
+                    <span className="fs-13 text-muted">Under Monitoring</span>
+                    <span className="fw-semibold text-success">
+                      {item?.under_monitoring ?? 0}
+                    </span>
+                  </div>
+
+                  {/* Off Monitoring */}
+                  <div className="d-flex justify-content-between">
+                    <span className="fs-13 text-muted">Off Monitoring</span>
+                    <span className="fw-semibold text-danger">
+                      {item?.off_monitoring ?? 0}
+                    </span>
+                  </div>
+
                 </div>
               </div>
             </div>
-          </div>
-          {/* /Total Companies */}
-          {/* Active Companies */}
-          <div className="col-xl-3 col-sm-6 d-flex">
-            <div className="card flex-fill">
-              <div className="card-body">
-                <div className="d-flex align-items-center justify-content-between">
-                  <span className="avatar avatar-md bg-dark mb-3">
-                    <i className="ti ti-carousel-vertical fs-16" />
-                  </span>
-                  <span className="badge bg-danger fw-normal mb-3">-12%</span>
-                </div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div>
-                    <h2 className="mb-1">4598</h2>
-                    <p className="fs-13">Active Companies</p>
-                  </div>
-                  <ReactApexChart
-                    options={ApexChart2}
-                    series={ApexChart2.series}
-                    type="bar"
-                    width={70} />
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* /Active Companies */}
-          {/* Total Subscribers */}
-          <div className="col-xl-3 col-sm-6 d-flex">
-            <div className="card flex-fill">
-              <div className="card-body">
-                <div className="d-flex align-items-center justify-content-between">
-                  <span className="avatar avatar-md bg-dark mb-3">
-                    <i className="ti ti-chalkboard-off fs-16" />
-                  </span>
-                  <span className="badge bg-success fw-normal mb-3">+6%</span>
-                </div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div>
-                    <h2 className="mb-1">3698</h2>
-                    <p className="fs-13">Total Subscribers</p>
-                  </div>
-                  <ReactApexChart
-                    options={ApexChart3}
-                    series={ApexChart3.series}
-                    type="bar"
-                    width={70} />
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* /Total Subscribers */}
-          {/* Total Earnings */}
-          <div className="col-xl-3 col-sm-6 d-flex">
-            <div className="card flex-fill">
-              <div className="card-body">
-                <div className="d-flex align-items-center justify-content-between">
-                  <span className="avatar avatar-md bg-dark mb-3">
-                    <i className="ti ti-businessplan fs-16" />
-                  </span>
-                  <span className="badge bg-danger fw-normal mb-3">-16%</span>
-                </div>
-                <div className="d-flex align-items-center justify-content-between">
-                  <div>
-                    <h2 className="mb-1">$89,878,58</h2>
-                    <p className="fs-13">Total Earnings</p>
-                  </div>
-                  <ReactApexChart
-                    options={ApexChart4}
-                    series={ApexChart4.series}
-                    type="bar"
-                    width={70} />
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* /Total Earnings */}
+          ))}
         </div>
         <div className="row">
           {/* Companies */}
@@ -740,7 +761,7 @@ const SuperAdminDashboard = () => {
                     to="#"
                     className="btn btn-white border btn-sm d-inline-flex align-items-center"
                     data-bs-toggle="dropdown">
-                    
+
                     <i className="ti ti-calendar me-1" />
                     This Week
                   </Link>
@@ -770,7 +791,7 @@ const SuperAdminDashboard = () => {
                   series={CompanyChart.series}
                   type="bar"
                   height={240} />
-                
+
                 <p className="f-13 d-inline-flex align-items-center">
                   <span className="badge badge-success me-1">+6%</span> 5
                   Companies from last month
@@ -789,7 +810,7 @@ const SuperAdminDashboard = () => {
                     to="#"
                     className="btn btn-white border btn-sm d-inline-flex align-items-center"
                     data-bs-toggle="dropdown">
-                    
+
                     <i className="ti ti-calendar me-1" />
                     2025
                   </Link>
@@ -832,7 +853,7 @@ const SuperAdminDashboard = () => {
                   series={RevenueChart.series}
                   type="bar"
                   height={230} />
-                
+
               </div>
             </div>
           </div>
@@ -847,7 +868,7 @@ const SuperAdminDashboard = () => {
                     to="#"
                     className="btn btn-white border btn-sm d-inline-flex align-items-center"
                     data-bs-toggle="dropdown">
-                    
+
                     <i className="ti ti-calendar me-1" />
                     This Month
                   </Link>
@@ -876,7 +897,7 @@ const SuperAdminDashboard = () => {
                   series={PlanChart.series}
                   type="donut"
                   height={240} />
-                
+
                 <div className="d-flex align-items-center justify-content-between mb-2">
                   <p className="f-13 mb-0">
                     <i className="ti ti-circle-filled text-primary me-1" />
@@ -912,7 +933,7 @@ const SuperAdminDashboard = () => {
                 <Link
                   to={routes.purchasetransaction}
                   className="btn btn-light btn-md mb-2">
-                  
+
                   View All
                 </Link>
               </div>
@@ -922,12 +943,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/company/company-02.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -950,12 +971,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/company/company-03.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -978,12 +999,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/company/company-05.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -1006,12 +1027,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/company/company-07.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -1034,12 +1055,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/company/company-08.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -1069,7 +1090,7 @@ const SuperAdminDashboard = () => {
                 <Link
                   to={routes.purchasetransaction}
                   className="btn btn-light btn-md mb-2">
-                  
+
                   View All
                 </Link>
               </div>
@@ -1079,12 +1100,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/icons/company-icon-11.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -1102,12 +1123,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/icons/company-icon-12.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -1125,12 +1146,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/icons/company-icon-13.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -1148,12 +1169,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/icons/company-icon-14.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -1171,12 +1192,12 @@ const SuperAdminDashboard = () => {
                     <Link
                       to="#"
                       className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                      
+
                       <img
                         src="src/assets/img/icons/company-icon-15.svg"
                         className="img-fluid w-auto h-auto"
                         alt="img" />
-                      
+
                     </Link>
                     <div className="ms-2 flex-fill">
                       <h6 className="fs-medium text-truncate mb-1">
@@ -1203,7 +1224,7 @@ const SuperAdminDashboard = () => {
                     to="#"
                     className="dropdown-toggle btn btn-white border btn-sm d-inline-flex align-items-center fs-13"
                     data-bs-toggle="dropdown">
-                    
+
                     Expired
                   </Link>
                   <div className="dropdown-menu dropdown-menu-end p-3">
@@ -1214,7 +1235,7 @@ const SuperAdminDashboard = () => {
                           className="dropdown-item d-block rounded-1"
                           data-bs-toggle="tab"
                           data-bs-target="#expired">
-                          
+
                           Expired
                         </Link>
                       </li>
@@ -1224,7 +1245,7 @@ const SuperAdminDashboard = () => {
                           className="dropdown-item d-block rounded-1"
                           data-bs-toggle="tab"
                           data-bs-target="#request">
-                          
+
                           Request
                         </Link>
                       </li>
@@ -1240,12 +1261,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/icons/company-icon-16.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1258,7 +1279,7 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-info text-decoration-underline d-block mb-1">
-                          
+
                           Send Reminder
                         </Link>
                       </div>
@@ -1268,12 +1289,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/icons/company-icon-14.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1286,7 +1307,7 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-info text-decoration-underline d-block mb-1">
-                          
+
                           Send Reminder
                         </Link>
                       </div>
@@ -1296,12 +1317,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/icons/company-icon-18.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1314,7 +1335,7 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-info text-decoration-underline d-block mb-1">
-                          
+
                           Send Reminder
                         </Link>
                       </div>
@@ -1324,12 +1345,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/company/company-07.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1342,7 +1363,7 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-info text-decoration-underline d-block mb-1">
-                          
+
                           Send Reminder
                         </Link>
                       </div>
@@ -1352,12 +1373,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar  bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/company/company-08.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1370,7 +1391,7 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-info text-decoration-underline d-block mb-1">
-                          
+
                           Send Reminder
                         </Link>
                       </div>
@@ -1382,12 +1403,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/icons/company-icon-16.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill overflow-hidden">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1402,13 +1423,13 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-success text-decoration-underline fs-13 fw-medium me-3">
-                          
+
                           Approve
                         </Link>
                         <Link
                           to="#"
                           className="link-danger text-decoration-underline fs-13 fw-medium">
-                          
+
                           Reject
                         </Link>
                       </div>
@@ -1418,12 +1439,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/icons/company-icon-14.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill overflow-hidden">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1438,13 +1459,13 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-success text-decoration-underline fs-13 fw-medium me-3">
-                          
+
                           Approve
                         </Link>
                         <Link
                           to="#"
                           className="link-danger text-decoration-underline fs-13 fw-medium">
-                          
+
                           Reject
                         </Link>
                       </div>
@@ -1454,12 +1475,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/icons/company-icon-18.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill overflow-hidden">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1474,13 +1495,13 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-success text-decoration-underline fs-13 fw-medium me-3">
-                          
+
                           Approve
                         </Link>
                         <Link
                           to="#"
                           className="link-danger text-decoration-underline fs-13 fw-medium">
-                          
+
                           Reject
                         </Link>
                       </div>
@@ -1490,12 +1511,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/company/company-07.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill overflow-hidden">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1510,13 +1531,13 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-success text-decoration-underline fs-13 fw-medium me-3">
-                          
+
                           Approve
                         </Link>
                         <Link
                           to="#"
                           className="link-danger text-decoration-underline fs-13 fw-medium">
-                          
+
                           Reject
                         </Link>
                       </div>
@@ -1526,12 +1547,12 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="avatar avatar-md bg-gray-100 rounded-circle flex-shrink-0">
-                          
+
                           <img
                             src="src/assets/img/company/company-08.svg"
                             className="img-fluid w-auto h-auto"
                             alt="img" />
-                          
+
                         </Link>
                         <div className="ms-2 flex-fill overflow-hidden">
                           <h6 className="fs-medium text-truncate mb-1">
@@ -1546,13 +1567,13 @@ const SuperAdminDashboard = () => {
                         <Link
                           to="#"
                           className="link-success text-decoration-underline fs-13 fw-medium me-3">
-                          
+
                           Approve
                         </Link>
                         <Link
                           to="#"
                           className="link-danger text-decoration-underline fs-13 fw-medium">
-                          
+
                           Reject
                         </Link>
                       </div>

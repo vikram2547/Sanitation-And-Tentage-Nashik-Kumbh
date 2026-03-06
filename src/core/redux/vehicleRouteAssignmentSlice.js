@@ -141,6 +141,10 @@ const vehicleRouteAssignmentSlice = createSlice({
         state.assignments.unshift(action.payload?.data);
         state.totalRecords += 1;
       })
+      .addCase(addVehicleRouteAssignment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
 
       /* ===== UPDATE ===== */
       .addCase(updateVehicleRouteAssignment.fulfilled, (state, action) => {
@@ -153,6 +157,10 @@ const vehicleRouteAssignmentSlice = createSlice({
             ? updated
             : v
         );
+      })
+      .addCase(updateVehicleRouteAssignment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
@@ -168,7 +176,11 @@ const vehicleRouteAssignmentSlice = createSlice({
         );
 
         state.totalRecords -= 1;
-      });
+      })
+      .addCase(deleteVehicleRouteAssignment.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
   },
 });
 

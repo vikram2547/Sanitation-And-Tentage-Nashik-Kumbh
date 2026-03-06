@@ -26,89 +26,87 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      console.log("Unauthorized - Token expired");
       localStorage.removeItem("token");
-      window.location.href = all_routes.signin; // change this if using route constant
+      window.location.href = all_routes.signin;
     }
     return Promise.reject(error);
   }
 );
 
 /* ================= GET ================= */
-export const getSanitationAssetsAllocation = createAsyncThunk(
-  "sanitationAssetsAllocation/getSanitationAssetsAllocation",
+export const getSanitationAssetsTagging = createAsyncThunk(
+  "sanitationAssetsTagging/getSanitationAssetsTagging",
   async ({ page = 1, per_page = 25 }, { rejectWithValue }) => {
     try {
-      // NOTE: API expects singular 'sanitation-asset-allocations' not plural
-      const res = await api.get("sanitation-asset-allocations", {
+      const res = await api.get("sanitation-asset-tagging", {
         params: { page, per_page },
       });
       return res.data;
     } catch (e) {
       return rejectWithValue(
         e.response?.data?.message ||
-          "Failed to fetch sanitation assets allocation"
+        "Failed to fetch sanitation assets tagging"
       );
     }
   }
 );
 
 /* ================= ADD ================= */
-export const addSanitationAssetAllocation = createAsyncThunk(
-  "sanitationAssetsAllocation/addSanitationAssetAllocation",
+export const addSanitationAssetTagging = createAsyncThunk(
+  "sanitationAssetsTagging/addSanitationAssetTagging",
   async (data, { rejectWithValue }) => {
     try {
-      const res = await api.post("sanitation-asset-allocations/new", data);
+      const res = await api.post("sanitation-asset-tagging/new", data);
       return res.data;
     } catch (e) {
       return rejectWithValue(
         e.response?.data?.message ||
-          "Failed to add sanitation asset allocation"
+        "Failed to add sanitation asset tagging"
       );
     }
   }
 );
 
 /* ================= UPDATE ================= */
-export const updateSanitationAssetAllocation = createAsyncThunk(
-  "sanitationAssetsAllocation/updateSanitationAssetAllocation",
+export const updateSanitationAssetTagging = createAsyncThunk(
+  "sanitationAssetsTagging/updateSanitationAssetTagging",
   async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `sanitation-asset-allocations/edit/${id}`,
+        `sanitation-asset-tagging/edit/${id}`,
         data
       );
       return res.data;
     } catch (e) {
       return rejectWithValue(
         e.response?.data?.message ||
-          "Failed to update sanitation asset allocation"
+        "Failed to update sanitation asset tagging"
       );
     }
   }
 );
 
 /* ================= DELETE ================= */
-export const deleteSanitationAssetAllocation = createAsyncThunk(
-  "sanitationAssetsAllocation/deleteSanitationAssetAllocation",
+export const deleteSanitationAssetTagging = createAsyncThunk(
+  "sanitationAssetsTagging/deleteSanitationAssetTagging",
   async (id, { rejectWithValue }) => {
     try {
-      const res = await api.post(`sanitation-asset-allocations/delete/${id}`);
+      const res = await api.post(`sanitation-asset-tagging/delete/${id}`);
       return id;
     } catch (e) {
       return rejectWithValue(
         e.response?.data?.message ||
-          "Failed to delete sanitation asset allocation"
+        "Failed to delete sanitation asset tagging"
       );
     }
   }
 );
 
 /* ================= SLICE ================= */
-const sanitationAssetAllocationSlice = createSlice({
-  name: "sanitationAssetsAllocation",
+const sanitationAssetTaggingSlice = createSlice({
+  name: "sanitationAssetsTagging",
   initialState: {
-    sanitationAssetsAllocation: [],
+    sanitationAssetsTagging: [],
     totalRecords: 0,
     loading: false,
     success: null,
@@ -123,84 +121,84 @@ const sanitationAssetAllocationSlice = createSlice({
   extraReducers: (builder) => {
     builder
       /* ===== GET ===== */
-      .addCase(getSanitationAssetsAllocation.pending, (state) => {
+      .addCase(getSanitationAssetsTagging.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(getSanitationAssetsAllocation.fulfilled, (state, action) => {
+      .addCase(getSanitationAssetsTagging.fulfilled, (state, action) => {
         state.loading = false;
-        state.sanitationAssetsAllocation =
-          action.payload?.data?.sanitation_asset_allocations || [];
+        state.sanitationAssetsTagging =
+          action.payload?.data?.sanitation_asset_tagging || [];
         state.totalRecords = action.payload?.data?.paging?.totalrecords || 0;
       })
-      .addCase(getSanitationAssetsAllocation.rejected, (state, action) => {
+      .addCase(getSanitationAssetsTagging.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== ADD ===== */
-      .addCase(addSanitationAssetAllocation.pending, (state) => {
+      .addCase(addSanitationAssetTagging.pending, (state) => {
         state.loading = true;
       })
-      .addCase(addSanitationAssetAllocation.fulfilled, (state, action) => {
+      .addCase(addSanitationAssetTagging.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = "Sanitation Asset Allocation created successfully";
+        state.success = "Sanitation Asset Tagging created successfully";
 
         if (action.payload?.data) {
-          state.sanitationAssetsAllocation.unshift(
+          state.sanitationAssetsTagging.unshift(
             action.payload.data
           );
           state.totalRecords += 1;
         }
       })
-      .addCase(addSanitationAssetAllocation.rejected, (state, action) => {
+      .addCase(addSanitationAssetTagging.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== UPDATE ===== */
-      .addCase(updateSanitationAssetAllocation.pending, (state) => {
+      .addCase(updateSanitationAssetTagging.pending, (state) => {
         state.loading = true;
       })
-      .addCase(updateSanitationAssetAllocation.fulfilled, (state, action) => {
+      .addCase(updateSanitationAssetTagging.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = "Sanitation Asset Allocation updated successfully";
+        state.success = "Sanitation Asset Tagging updated successfully";
 
         const updated = action.payload?.data;
         if (updated) {
-          state.sanitationAssetsAllocation = state.sanitationAssetsAllocation.map(
+          state.sanitationAssetsTagging = state.sanitationAssetsTagging.map(
             (item) =>
-              Number(item.allocation_id) === Number(updated.allocation_id)
+              Number(item.tagging_id) === Number(updated.tagging_id)
                 ? updated
                 : item
           );
         }
       })
-      .addCase(updateSanitationAssetAllocation.rejected, (state, action) => {
+      .addCase(updateSanitationAssetTagging.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
       /* ===== DELETE ===== */
-      .addCase(deleteSanitationAssetAllocation.pending, (state) => {
+      .addCase(deleteSanitationAssetTagging.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteSanitationAssetAllocation.fulfilled, (state, action) => {
+      .addCase(deleteSanitationAssetTagging.fulfilled, (state, action) => {
         state.loading = false;
-        state.success = "Sanitation Asset Allocation deleted successfully";
+        state.success = "Sanitation Asset Tagging deleted successfully";
 
         const deletedId = action.meta.arg;
-        state.sanitationAssetsAllocation = state.sanitationAssetsAllocation.filter(
-          (item) => Number(item.allocation_id) !== Number(deletedId)
+        state.sanitationAssetsTagging = state.sanitationAssetsTagging.filter(
+          (item) => Number(item.tagging_id) !== Number(deletedId)
         );
         state.totalRecords -= 1;
       })
-      .addCase(deleteSanitationAssetAllocation.rejected, (state, action) => {
+      .addCase(deleteSanitationAssetTagging.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { clearMessages } = sanitationAssetAllocationSlice.actions;
-export default sanitationAssetAllocationSlice.reducer;
+export const { clearMessages } = sanitationAssetTaggingSlice.actions;
+export default sanitationAssetTaggingSlice.reducer;
