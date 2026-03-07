@@ -594,7 +594,7 @@ const SuperAdminDashboard = () => {
         <div className="welcome-wrap mb-4">
           <div className=" d-flex align-items-center justify-content-between flex-wrap">
             <div className="mb-3">
-              <h2 className="mb-1 text-white">Welcome Admin</h2>
+              <h2 className="mb-1 text-white">{t("welcome_admin")}</h2>
               {/* <p className="text-light">
                 14 New Companies Subscribed Today !!!
               </p> */}
@@ -659,7 +659,8 @@ const SuperAdminDashboard = () => {
                   <i className="ti ti-check fs-24" />
                 </span>
                 <div className="ms-2">
-                  <p className="text-white mb-1">Registered Toilets</p>
+                  {/* <p className="text-white mb-1">Registered Toilets</p> */}
+                  <p className="text-white mb-1">{t("registered_toilets")}</p>
                   <div className="d-inline-flex align-items-center flex-wrap gap-2">
                     <h4 className="text-white">
                       {countsData?.registered_toilets ?? 0}
@@ -678,7 +679,8 @@ const SuperAdminDashboard = () => {
                   <i className="ti ti-activity fs-24" />
                 </span>
                 <div className="ms-2">
-                  <p className="text-white mb-1">Under Monitoring</p>
+                  <p className="text-white mb-1">{t("under_monitoring")}</p>
+                  {/* <p className="text-white mb-1">Under Monitoring</p> */}
                   <div className="d-inline-flex align-items-center flex-wrap gap-2">
                     <h4 className="text-white">
                       {countsData?.under_monitoring ?? 0}
@@ -697,7 +699,8 @@ const SuperAdminDashboard = () => {
                   <i className="ti ti-power fs-24" />
                 </span>
                 <div className="ms-2">
-                  <p className="text-white mb-1">Off Monitoring</p>
+                  {/* <p className="text-white mb-1">Off Monitoring</p> */}
+                  <p className="text-white mb-1">{t("off_monitoring")}</p>
                   <div className="d-inline-flex align-items-center flex-wrap gap-2">
                     <h4 className="text-white">
                       {countsData?.off_monitoring ?? 0}
@@ -725,7 +728,7 @@ const SuperAdminDashboard = () => {
 
                   {/* Registered */}
                   <div className="d-flex justify-content-between mb-1">
-                    <span className="fs-13 text-muted">Registered</span>
+                    <span className="fs-13 text-muted">{t("registered")}</span>
                     <span className="fw-semibold">
                       {item?.registered_toilets ?? 0}
                     </span>
@@ -733,7 +736,7 @@ const SuperAdminDashboard = () => {
 
                   {/* Under Monitoring */}
                   <div className="d-flex justify-content-between mb-1">
-                    <span className="fs-13 text-muted">Under Monitoring</span>
+                    <span className="fs-13 text-muted">{t("under_monitoring")}</span>
                     <span className="fw-semibold text-success">
                       {item?.under_monitoring ?? 0}
                     </span>
@@ -741,7 +744,7 @@ const SuperAdminDashboard = () => {
 
                   {/* Off Monitoring */}
                   <div className="d-flex justify-content-between">
-                    <span className="fs-13 text-muted">Off Monitoring</span>
+                    <span className="fs-13 text-muted">{t("off_monitoring")}</span>
                     <span className="fw-semibold text-danger">
                       {item?.off_monitoring ?? 0}
                     </span>

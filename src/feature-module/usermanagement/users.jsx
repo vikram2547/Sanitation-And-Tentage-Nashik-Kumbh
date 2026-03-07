@@ -13,13 +13,13 @@ import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
 import { clearMessages, deleteUser, getUsers } from "../../core/redux/usersSlice";
 import { Modal } from "bootstrap";
-
+import { useTranslation } from "react-i18next";
 
 
 const Users = () => {
 
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const { users, totalRecords, loading, error, success } = useSelector(
     (state) => state.users
   );
@@ -67,39 +67,39 @@ const Users = () => {
   // ============================
   const columns = [
     {
-      header: "User Name",
+      header: t("username"),
       field: "full_name",
       sortable: true,
     },
     {
-      header: "Phone",
+       header: t("phone"),
       field: "phone",
       sortable: true,
     },
     {
-      header: "Email",
+      header: t("email"),
       field: "email",
       sortable: true,
     },
     {
-      header: "Created On",
+      header: t("created_at"),
       field: "created_at",
       sortable: true,
     },
     {
-      header: "Status",
+      header: t("status"),
       field: "is_active",
       body: (rowData) => (
         <div>
           {Number(rowData.is_active) === 1 ? (
             <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-success fs-10">
               <i className="ti ti-point-filled me-1 fs-11"></i>
-              Active
+              {t("active")}
             </span>
           ) : (
             <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-danger fs-10">
               <i className="ti ti-point-filled me-1 fs-11"></i>
-              Inactive
+              {t("inactive")}
             </span>
           )}
         </div>
@@ -107,7 +107,7 @@ const Users = () => {
       sortable: true,
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       body: (rowData) => (
         <div className="action-table-data">
@@ -163,8 +163,8 @@ const Users = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>User List</h4>
-                <h6>Manage Your Users</h6>
+                <h4>{t("user_list")}</h4>
+                <h6>{t("manage_your_users")}</h6>
               </div>
             </div>
 
@@ -188,7 +188,7 @@ const Users = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add New User
+                {t("add_new_user")}
               </Link>
             </div>
           </div>
@@ -245,9 +245,9 @@ const Users = () => {
                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
-                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete User</h4>
+                <h4 className="fs-20 fw-bold mb-2 mt-1">{t("delete_user")}</h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete user?
+                  {t("Are_you_sure_you_want_to_delete_user?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -255,7 +255,7 @@ const Users = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -263,7 +263,7 @@ const Users = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

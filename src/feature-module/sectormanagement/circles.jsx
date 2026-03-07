@@ -9,11 +9,12 @@ import AddCircle from "../../core/modals/circlemanagement/addcircle";
 import EditCircle from "../../core/modals/circlemanagement/editcircle";
 import ViewCircle from "../../core/modals/circlemanagement/viewcircle";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 
 
 const Circles = () => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const { circles, totalRecords, loading, error, success } = useSelector(
         (state) => state.circles
     );
@@ -61,26 +62,26 @@ const Circles = () => {
     // ============================
     const columns = [
         {
-            header: "Circle Name",
+            header: t("circle_name"),
             field: "circle_name",
             sortable: true,
             body: (rowData) => rowData?.circle_name || "-"
         },
         {
-            header: "Circle Code",
+            header: t("circle_code"),
             field: "circle_code",
             sortable: true,
             body: (rowData) => rowData?.circle_code || "-"
         },
         {
-            header: "Created At",
+            header: t("created_at"),
             field: "created_at",
             sortable: true,
             body: (rowData) => rowData?.created_at || "-"
 
         },
         {
-            header: "Actions",
+            header: t("actions"),
             field: "actions",
             body: (rowData) => (
                 <div className="action-table-data">
@@ -138,8 +139,8 @@ const Circles = () => {
                     <div className="page-header">
                         <div className="add-item d-flex">
                             <div className="page-title">
-                                <h4>Circles List</h4>
-                                <h6>Manage Your Circles</h6>
+                                <h4>{t("circle_list")}</h4>
+                                <h6>{t("manage_your_circles")}</h6>
                             </div>
                         </div>
 
@@ -161,7 +162,7 @@ const Circles = () => {
                                 }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
-                                Add New Circle
+                                {t("add_new_circle")}
                             </Link>
                         </div>
                     </div>
@@ -217,9 +218,9 @@ const Circles = () => {
                                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                                     <i className="ti ti-trash fs-24 text-danger" />
                                 </span>
-                                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Circle</h4>
+                                <h4 className="fs-20 fw-bold mb-2 mt-1">{t("delete_circle")}</h4>
                                 <p className="mb-0 fs-16">
-                                    Are you sure you want to delete circle?
+                                    {t("Are_you_sure_you_want_to_delete_circle?")}
                                 </p>
                                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                                     <button
@@ -227,7 +228,7 @@ const Circles = () => {
                                         className="btn me-2 btn-secondary"
                                         data-bs-dismiss="modal"
                                     >
-                                        Cancel
+                                        {t("cancel")}
                                     </button>
                                     <button
                                         type="button"
@@ -235,7 +236,7 @@ const Circles = () => {
                                         data-bs-dismiss="modal"
                                         onClick={handleDelete}
                                     >
-                                        Yes Delete
+                                        {t("yes_delete")}
                                     </button>
                                 </div>
                             </div>

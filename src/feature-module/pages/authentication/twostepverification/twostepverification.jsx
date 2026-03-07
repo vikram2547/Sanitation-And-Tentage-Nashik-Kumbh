@@ -72,9 +72,9 @@ const Twostepverification = () => {
                       </Link>
                     </div>
                   </div>
-                  <div className="my-4 d-flex justify-content-center align-items-center copyright-text">
+                  {/* <div className="my-4 d-flex justify-content-center align-items-center copyright-text">
                     <p>Copyright © 2025 DreamsPOS</p>
-                  </div>
+                  </div> */}
                 </div>
               </form>
             </div>

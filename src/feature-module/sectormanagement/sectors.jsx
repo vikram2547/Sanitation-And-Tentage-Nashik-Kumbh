@@ -9,12 +9,12 @@ import AddSector from "../../core/modals/sectormanagement/addsector";
 import EditSector from "../../core/modals/sectormanagement/editsector";
 import ViewSector from "../../core/modals/sectormanagement/viewsector";
 import { Modal } from "bootstrap";
-
+import { useTranslation } from "react-i18next";
 
 
 const Sectors = () => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const { sectors, totalRecords, loading, error, success } = useSelector(
         (state) => state.sectors
     );
@@ -61,22 +61,22 @@ const Sectors = () => {
     // ============================
     const columns = [
         {
-            header: "Sector Name",
+            header: t("sector_name"),
             field: "sector_name",
             sortable: true,
         },
         {
-            header: "Sector Code",
+            header: t("sector_code"),
             field: "sector_code",
             sortable: true,
         },
         {
-            header: "Created At",
+            header: t("created_at"),
             field: "created_at",
             sortable: true,
         },
         {
-            header: "Actions",
+            header: t("actions"),
             field: "actions",
             body: (rowData) => (
                 <div className="action-table-data">
@@ -134,8 +134,8 @@ const Sectors = () => {
                     <div className="page-header">
                         <div className="add-item d-flex">
                             <div className="page-title">
-                                <h4>Sectors List</h4>
-                                <h6>Manage Your Sectors</h6>
+                                <h4>{t("sector_list")}</h4>
+                                <h6>{t("manage_your_sectors")}</h6>
                             </div>
                         </div>
 
@@ -157,7 +157,7 @@ const Sectors = () => {
                                 }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
-                                Add New Sector
+                                {t("add_new_sector")}
                             </Link>
                         </div>
                     </div>
@@ -213,9 +213,9 @@ const Sectors = () => {
                                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                                     <i className="ti ti-trash fs-24 text-danger" />
                                 </span>
-                                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Sector</h4>
+                                <h4 className="fs-20 fw-bold mb-2 mt-1">{t("delete_sector")}</h4>
                                 <p className="mb-0 fs-16">
-                                    Are you sure you want to delete sector?
+                                    {t("Are_you_sure_you_want_to_delete_sector?")}
                                 </p>
                                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                                     <button
@@ -223,7 +223,7 @@ const Sectors = () => {
                                         className="btn me-2 btn-secondary"
                                         data-bs-dismiss="modal"
                                     >
-                                        Cancel
+                                        {t("cancel")}
                                     </button>
                                     <button
                                         type="button"
@@ -231,7 +231,7 @@ const Sectors = () => {
                                         data-bs-dismiss="modal"
                                         onClick={handleDelete}
                                     >
-                                        Yes Delete
+                                        {t("yes_delete")}
                                     </button>
                                 </div>
                             </div>

@@ -8,11 +8,12 @@ import AddShift from "../../core/modals/hrm/addshift";
 import EditShift from "../../core/modals/hrm/editshift";
 import { deleteShift, getShifts } from "../../core/redux/shiftSlice";
 import ViewShift from "../../core/modals/hrm/viewshift";
+import { useTranslation } from "react-i18next";
 
 
 const Shift = () => {
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const { shifts, totalRecords, loading, error, success } = useSelector(
     (state) => state.shifts
   );
@@ -58,37 +59,37 @@ const Shift = () => {
   // ============================
   const columns = [
     {
-      header: "Shift Name",
+       header: t("shift_name"),
       field: "shift_name",
       sortable: true,
       body: (rowData) => rowData?.shift_name || "-"
     },
     {
-      header: "Start Time",
+       header: t("start_time"),
       field: "start_time",
       sortable: true,
       body: (rowData) => rowData?.start_time || "-"
     },
     {
-      header: "End Time",
+       header: t("end_time"),
       field: "end_time",
       sortable: true,
       body: (rowData) => rowData?.end_time || "-"
     },
     {
-      header: "Status",
+       header: t("status"),
       field: "is_active",
       body: (rowData) => (
         <div>
           {Number(rowData.is_active) === 1 ? (
             <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-success fs-10">
               <i className="ti ti-point-filled me-1 fs-11"></i>
-              Active
+              {t("active")}
             </span>
           ) : (
             <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-danger fs-10">
               <i className="ti ti-point-filled me-1 fs-11"></i>
-              Inactive
+              {t("inactive")}
             </span>
           )}
         </div>
@@ -96,7 +97,7 @@ const Shift = () => {
       sortable: true,
     },
     {
-      header: "Actions",
+       header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -149,8 +150,8 @@ const Shift = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Shifts List</h4>
-                <h6>Manage Your Shifts</h6>
+                <h4>{t("shifts_list")}</h4>
+                <h6>{t("manage_your_shifts")}</h6>
               </div>
             </div>
 
@@ -166,7 +167,7 @@ const Shift = () => {
                 data-bs-target="#add-shift"
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add New Shift
+                {t("add_new_shift")}
               </Link>
             </div>
           </div>
@@ -217,9 +218,9 @@ const Shift = () => {
                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
-                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Shift</h4>
+                <h4 className="fs-20 fw-bold mb-2 mt-1">{t("delete_shift")}</h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete shift?
+                  {t("Are_you_sure_you_want_to_delete_shift?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -227,7 +228,7 @@ const Shift = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -235,7 +236,7 @@ const Shift = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

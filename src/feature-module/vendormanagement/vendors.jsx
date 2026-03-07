@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
+import { useTranslation } from "react-i18next";
 
 import {
     clearMessages,
@@ -17,7 +18,7 @@ import { Modal } from "bootstrap";
 
 const Vendors = () => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const { vendors, totalRecords, loading, error, success } = useSelector(
         (state) => state.vendors
     );
@@ -64,44 +65,44 @@ const Vendors = () => {
     // ============================
     const columns = [
         {
-            header: "Vendor Code",
+            header: t("vendor_code"),
             field: "vendor_code",
             sortable: true,
         },
         {
-            header: "Contact Person",
+            header: t("contact_person"),
             field: "contact_person",
             sortable: true,
         },
         {
-            header: "Email",
+            header: t("email"),
             field: "contact_email",
             sortable: true,
         },
         {
-            header: "Phone",
+            header: t("phone"),
             field: "contact_phone",
             sortable: true,
         },
-         {
-            header: "Address",
+        {
+            header: t("address"),
             field: "address",
             sortable: true,
         },
         {
-            header: "Status",
+            header: t("status"),
             field: "status",
             body: (rowData) => (
                 <div>
                     {rowData.status === "ACTIVE" ? (
                         <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-success fs-10">
                             <i className="ti ti-point-filled me-1 fs-11"></i>
-                            Active
+                            {t("active")}
                         </span>
                     ) : (
                         <span className="d-inline-flex align-items-center p-1 pe-2 rounded-1 text-white bg-danger fs-10">
                             <i className="ti ti-point-filled me-1 fs-11"></i>
-                            Inactive
+                            {t("inactive")}
                         </span>
                     )}
                 </div>
@@ -109,7 +110,7 @@ const Vendors = () => {
             sortable: true,
         },
         {
-            header: "Actions",
+            header: t("actions"),
             field: "actions",
             body: (rowData) => (
                 <div className="action-table-data">
@@ -167,8 +168,8 @@ const Vendors = () => {
                     <div className="page-header">
                         <div className="add-item d-flex">
                             <div className="page-title">
-                                <h4>Vendor List</h4>
-                                <h6>Manage Your Vendors</h6>
+                                <h4>{t("vendor_list")}</h4>
+                                <h6>{t("manage_your_vendors")}</h6>
                             </div>
                         </div>
 
@@ -190,7 +191,7 @@ const Vendors = () => {
                                 }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
-                                Add New Vendor
+                                {t("add_new_vendor")}
                             </Link>
                         </div>
                     </div>
@@ -246,9 +247,9 @@ const Vendors = () => {
                                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                                     <i className="ti ti-trash fs-24 text-danger" />
                                 </span>
-                                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Vendor</h4>
+                                <h4 className="fs-20 fw-bold mb-2 mt-1">{t("delete_vendor")}</h4>
                                 <p className="mb-0 fs-16">
-                                    Are you sure you want to delete vendor?
+                                    {t("Are_you_sure_you_want_to_delete_vendor?")}
                                 </p>
                                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                                     <button
@@ -256,7 +257,7 @@ const Vendors = () => {
                                         className="btn me-2 btn-secondary"
                                         data-bs-dismiss="modal"
                                     >
-                                        Cancel
+                                        {t("cancel")}
                                     </button>
                                     <button
                                         type="button"
@@ -264,7 +265,7 @@ const Vendors = () => {
                                         data-bs-dismiss="modal"
                                         onClick={handleDelete}
                                     >
-                                        Yes Delete
+                                        {t("yes_delete")}
                                     </button>
                                 </div>
                             </div>

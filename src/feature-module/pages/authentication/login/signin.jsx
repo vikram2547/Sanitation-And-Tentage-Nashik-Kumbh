@@ -11,12 +11,16 @@ import {
 import { clearSigninState, signinUser } from "../../../../core/redux/signinSlice";
 
 
+
 const Signin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const route = all_routes;
 
+  const route = all_routes;
+  const [captcha, setCaptcha] = useState("");
+  const [captchaInput, setCaptchaInput] = useState("");
+  const [captchaAnswer, setCaptchaAnswer] = useState("");
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const [formData, setFormData] = useState({
     phone: "",
@@ -44,6 +48,13 @@ const Signin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (parseInt(captchaInput) !== captchaAnswer) {
+      alert("Invalid captcha. Please try again.");
+      generateCaptcha();
+      setCaptchaInput("");
+      return;
+    }
+
     try {
       const res = await dispatch(signinUser(formData)).unwrap();
 
@@ -51,15 +62,12 @@ const Signin = () => {
         const twoFactorRequired = res.data?.two_factor_required;
 
         if (twoFactorRequired === false) {
-          // ✅ Normal login → dashboard
           navigate(route.superadmindashboard);
         } else {
-          // ✅ 2FA required → forgot password / verification page
           navigate(route.forgotPassword);
         }
       }
     } catch (err) {
-      // ❌ Error already handled by redux (loginError)
       console.error("Login failed:", err);
     }
   };
@@ -71,6 +79,17 @@ const Signin = () => {
       dispatch(clearSigninState());
     };
   }, [dispatch]);
+
+  const generateCaptcha = () => {
+    const num1 = Math.floor(Math.random() * 10);
+    const num2 = Math.floor(Math.random() * 10);
+    setCaptcha(`${num1} + ${num2}`);
+    setCaptchaAnswer(num1 + num2);
+  };
+
+  useEffect(() => {
+    generateCaptcha();
+  }, []);
 
   return (
     <>
@@ -166,7 +185,40 @@ const Signin = () => {
                       {loginError}
                     </div>
                   )}
+                  {/* CAPTCHA */}
+                  <div className="mb-3">
+                    <label className="form-label">
+                      Solve Captcha <span className="text-danger">*</span>
+                    </label>
 
+                    <div className="d-flex gap-2">
+                      <div
+                        className="form-control text-center"
+                        style={{
+                          background: "#f1f1f1",
+                          fontWeight: "bold",
+                        }}
+                      >
+                        {captcha} = ?
+                      </div>
+                      <input
+                        type="text"
+                        className="form-control text-center"
+                        placeholder="Answer"
+                        value={captchaInput}
+                        onChange={(e) => setCaptchaInput(e.target.value)}
+                        required
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={generateCaptcha}
+                        title="Refresh Captcha"
+                      >
+                        ↻
+                      </button>
+                    </div>
+                  </div>
                   {/* SUBMIT BUTTON */}
                   <div className="form-login">
                     <button
@@ -187,10 +239,6 @@ const Signin = () => {
                         Create an account
                       </Link>
                     </h4>
-                  </div>
-
-                  <div className="my-4 d-flex justify-content-center align-items-center copyright-text">
-                    <p>Copyright © 2025 DreamsPOS</p>
                   </div>
                 </div>
               </form>
