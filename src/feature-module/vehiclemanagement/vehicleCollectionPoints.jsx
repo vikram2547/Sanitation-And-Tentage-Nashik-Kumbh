@@ -9,10 +9,13 @@ import { clearMessages, deleteVehicleCollectionPoint, getVehicleCollectionPoints
 import ViewCollectionPoints from "../../core/modals/vehiclemanagement/viewcollectionpoints";
 import AddCollectionPoint from "../../core/modals/vehiclemanagement/addcollectionpoint";
 import EditCollectionPoint from "../../core/modals/vehiclemanagement/editcollectionpoint";
+import { useTranslation } from "react-i18next";
 
 
 const VehicleCollectionPoints = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
 
   const { collectionPoints, loading, success, error } = useSelector(
     (state) => state.vehicleCollectionPoints
@@ -55,37 +58,37 @@ const VehicleCollectionPoints = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Point Code",
+      header: t("point_code"),
       field: "point_code",
       sortable: true,
       body: (rowData) => rowData?.point_code || null,
     },
     {
-      header: "Point Name",
+      header: t("point_name"),
       field: "point_name",
       sortable: true,
       body: (rowData) => rowData?.point_name || null,
     },
     {
-      header: "Latitude",
+      header: t("latitude"),
       field: "latitude",
       sortable: true,
       body: (rowData) => rowData?.latitude || null,
     },
     {
-      header: "Longitude",
+      header: t("longitude"),
       field: "longitude",
       sortable: true,
       body: (rowData) => rowData?.longitude || null,
     },
     {
-      header: "Point Type",
+      header: t("point_type"),
       field: "point_type",
       sortable: true,
       body: (rowData) => rowData?.point_type || null,
     },
     {
-            header: "Status",
+            header: t("status"),
             field: "status",
             body: (rowData) => (
                 <div>
@@ -105,7 +108,7 @@ const VehicleCollectionPoints = () => {
             sortable: true,
         },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -159,8 +162,8 @@ const VehicleCollectionPoints = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicle Collection Points</h4>
-                <h6>Manage Collection Points</h6>
+                <h4>{t("vehicle_collection_point_list")}</h4>
+                <h6>{t("manage_your_vehicle_collection_points")}</h6>
               </div>
             </div>
 
@@ -174,7 +177,7 @@ const VehicleCollectionPoints = () => {
                 data-bs-target="#add-collection-point-modal"
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Collection Point
+                {t("add_new_vehicle_collection_point")}
               </Link>
             </div>
             </ul>
@@ -228,10 +231,10 @@ const VehicleCollectionPoints = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Collection Point
+                  {t("delete_vehicle_collection_point")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this collection point?
+                  {t("Are_you_sure_you_want_to_delete_vehicle_collection_point?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -239,7 +242,7 @@ const VehicleCollectionPoints = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -247,7 +250,7 @@ const VehicleCollectionPoints = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

@@ -6,6 +6,7 @@ import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
 
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 import { clearMessages, deleteSanitationAssetAllocation, getSanitationAssetsAllocation } from "../../core/redux/sanitationAssetAllocationSlice";
 import AddSanitationAssetAllocation from "../../core/modals/assettypemanagement/addSanitationAssetAllocation";
 import EditSanitationAssetAllocation from "../../core/modals/assettypemanagement/editSanitationAssetAllocation";
@@ -13,6 +14,8 @@ import ViewSanitationAssetAllocation from "../../core/modals/assettypemanagement
 
 const SanitationAssetAllocation = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
  const {
     sanitationAssetsAllocation,
     totalRecords,
@@ -68,37 +71,37 @@ const SanitationAssetAllocation = () => {
   // ============================
   const columns = [
     {
-      header: "Allocation ID",
+      header: t("allocation_id"),
       field: "allocation_id",
       sortable: true,
       body: (rowData) => rowData?.allocation_id || "-",
     },
     {
-      header: "Asset ID",
+      header: t("asset_id"),
       field: "asset_id",
       sortable: true,
       body: (rowData) => rowData?.asset_id || "-",
     },
     {
-      header: "Swachhagrahi ID",
+      header: t("swachhagrahi_id"),
       field: "swachhagrahi_id",
       sortable: true,
       body: (rowData) => rowData?.swachhagrahi_id || "-",
     },
      {
-      header: "Allocated By",
+      header: t("allocated_by"),
       field: "allocated_by",
       sortable: true,
       body: (rowData) => rowData?.allocated_by || "-",
     },
      {
-      header: "Allocated Date",
+      header: t("allocated_date"),
       field: "allocation_date",
       sortable: true,
       body: (rowData) => rowData?.allocation_date || "-",
     },
     {
-      header: "Status",
+      header: t("status"),
       field: "status",
       body: (rowData) => (
         <div>
@@ -118,7 +121,7 @@ const SanitationAssetAllocation = () => {
       sortable: true,
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -182,8 +185,8 @@ const SanitationAssetAllocation = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Sanitation Assets Allocation</h4>
-                <h6>Manage Sanitation Assets Allocation</h6>
+                <h4>{t("sanitation_assets_allocation")}</h4>
+                <h6>{t("manage_your_sanitation_assets_allocation")}</h6>
               </div>
             </div>
 
@@ -205,7 +208,7 @@ const SanitationAssetAllocation = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Sanitation Asset Allocation
+                {t("add_sanitation_asset_allocation")}
               </Link>
             </div>
           </div>
@@ -265,10 +268,10 @@ const SanitationAssetAllocation = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Sanitation Asset Allocation
+                  {t("delete_sanitation_asset_allocation")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this sanitation asset allocation?
+                  {t("Are_you_sure_you_want_to_delete_sanitation_asset_allocation?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -276,7 +279,7 @@ const SanitationAssetAllocation = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -284,7 +287,7 @@ const SanitationAssetAllocation = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

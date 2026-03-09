@@ -10,10 +10,12 @@ import AddRoutePoints from "../../core/modals/vehiclemanagement/addroutepoints";
 import EditRoutePoints from "../../core/modals/vehiclemanagement/editroutepoints";
 import ViewRoutePoints from "../../core/modals/vehiclemanagement/viewroutepoints";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 
 
 const VehicleRoutePoints = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { routePoints, loading, success, error } = useSelector(
     (state) => state.vehicleRoutePoints
@@ -56,43 +58,43 @@ const VehicleRoutePoints = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Route Point ID",
+      header: t("route_point_id"),
       field: "route_point_id",
       sortable: true,
       body: (rowData) => rowData?.route_point_id || "-",
     },
     {
-      header: "Route ID",
+      header: t("route_id"),
       field: "route_id",
       sortable: true,
       body: (rowData) => rowData?.route_id || "-",
     },
     {
-      header: "Point ID",
+      header: t("point_id"),
       field: "point_id",
       sortable: true,
       body: (rowData) => rowData?.point_id || "-",
     },
     {
-      header: "Sequence No",
+      header: t("sequence_number"),
       field: "sequence_number",
       sortable: true,
       body: (rowData) => rowData?.sequence_number || "-",
     },
     {
-      header: "Arrival Time",
+      header: t("arrival_time"),
       field: "estimated_arrival_time",
       sortable: true,
       body: (rowData) => rowData?.estimated_arrival_time || "-",
     },
     {
-      header: "Stay Duration",
+      header: t("stay_duration"),
       field: "expected_stay_duration",
       sortable: true,
       body: (rowData) => rowData?.expected_stay_duration || "-",
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -153,8 +155,8 @@ const VehicleRoutePoints = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicle Route Points</h4>
-                <h6>Manage Route Points</h6>
+                <h4>{t("vehicle_route_point_list")}</h4>
+                <h6>{t("manage_your_vehicle_route_points")}</h6>
               </div>
             </div>
 
@@ -175,7 +177,7 @@ const VehicleRoutePoints = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Route point
+                {t("add_new_vehicle_route_point")}
               </Link>
             </div>
           </div>
@@ -227,10 +229,10 @@ const VehicleRoutePoints = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Route Point
+                 {t("delete_vehicle_route_point")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this route point?
+                  {t("Are_you_sure_you_want_to_delete_vehicle_route_point?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -238,7 +240,7 @@ const VehicleRoutePoints = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -246,7 +248,7 @@ const VehicleRoutePoints = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

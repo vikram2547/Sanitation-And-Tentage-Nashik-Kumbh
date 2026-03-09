@@ -10,10 +10,13 @@ import AddPerformanceMetrics from "../../core/modals/vehiclemanagement/addperfor
 import EditPerformanceMetrics from "../../core/modals/vehiclemanagement/editperformancemetrics";
 import ViewPerformanceMetrics from "../../core/modals/vehiclemanagement/viewperformancemetrics";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
+
 
 
 const VehiclePerformanceMetrics = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { metrics, loading, success, error } = useSelector(
     (state) => state.vehiclePerformanceMetrics
@@ -56,43 +59,43 @@ const VehiclePerformanceMetrics = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Metric ID",
+      header: t("point_id"),
       field: "metric_id",
       sortable: true,
       body: (rowData) => rowData?.metric_id || "-",
     },
     {
-      header: "Vehicle ID",
+      header: t("vehicle_id"),
       field: "vehicle_id",
       sortable: true,
       body: (rowData) => rowData?.vehicle_id || "-",
     },
     {
-      header: "Route ID",
+      header: t("route_id"),
       field: "route_id",
       sortable: true,
       body: (rowData) => rowData?.route_id || "-",
     },
     {
-      header: "Metric Date",
+      header: t("metric_date"),
       field: "metric_date",
       sortable: true,
       body: (rowData) => rowData?.metric_date || "-",
     },
     {
-      header: "Metric Type",
+      header: t("metric_type"),
       field: "metric_type",
       sortable: true,
       body: (rowData) => rowData?.metric_type || "-",
     },
     {
-      header: "Metric Value",
+      header: t("metric_value"),
       field: "metric_value",
       sortable: true,
       body: (rowData) => rowData?.metric_value || "-",
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -153,8 +156,8 @@ const VehiclePerformanceMetrics = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicle Performance Metrics</h4>
-                <h6>Manage Vehicle Performance</h6>
+                <h4>{t("vehicle_performance_metrics_list")}</h4>
+                <h6>{t("manage_your_vehicle_performance_metrics")}</h6>
               </div>
             </div>
 
@@ -175,7 +178,7 @@ const VehiclePerformanceMetrics = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Performance Metrics
+                {t("add_new_vehicle_performance_metric")}
               </Link>
             </div>
           </div>
@@ -227,10 +230,10 @@ const VehiclePerformanceMetrics = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Metric
+                 {t("delete_vehicle_performance_metrics")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this metric?
+                  {t("Are_you_sure_you_want_to_delete_vehicle_performance_metrics?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -238,7 +241,7 @@ const VehiclePerformanceMetrics = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -246,7 +249,7 @@ const VehiclePerformanceMetrics = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

@@ -8,10 +8,12 @@ import { Modal } from "bootstrap";
 import AddInspection from "../../core/modals/inspectionmanagement/addinspections";
 import ViewInspection from "../../core/modals/inspectionmanagement/viewinspection";
 import { clearMessages, deleteInspections, getInspections } from "../../core/redux/inspectionsSlice";
+import { useTranslation } from "react-i18next";
 
 
 const Inspections = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { inspections, totalRecords, loading, error, success } = useSelector(
         (state) => state.inspections
@@ -60,31 +62,31 @@ const Inspections = () => {
     // ============================
     const columns = [
         {
-            header: "Inspection ID",
+            header: t("inspection_id"),
             field: "inspection_id",
             sortable: true,
             body: (rowData) => rowData?.inspection_id || "-"
         },
         {
-            header: "Allocation ID",
+            header: t("allocation_id"),
             field: "allocation_id",
             sortable: true,
             body: (rowData) => rowData?.allocation_id || "-"
         },
         {
-            header: "Asset ID",
+            header: t("asset_id"),
             field: "asset_id",
             sortable: true,
             body: (rowData) => rowData?.asset_id || "-"
         },
         {
-            header: "Shift ID",
+            header: t("shift_id"),
             field: "shift_id",
             sortable: true,
             body: (rowData) => rowData?.shift_id || "-"
         },
         {
-            header: "Status",
+            header: t("status"),
             field: "incident_status",
             body: (rowData) => (
                 <div>
@@ -164,8 +166,8 @@ const Inspections = () => {
                     <div className="page-header">
                         <div className="add-item d-flex">
                             <div className="page-title">
-                                <h4>Inspection List</h4>
-                                <h6>Manage Your Inspections</h6>
+                                <h4>{t("inspection_list")}</h4>
+                                <h6>{t("manage_your_inspections")}</h6>
                             </div>
                         </div>
 
@@ -187,7 +189,7 @@ const Inspections = () => {
                                 }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
-                                Add New Inspection
+                               {t("add_new_inspection")}
                             </Link>
                         </div>
                     </div>
@@ -243,9 +245,9 @@ const Inspections = () => {
                                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                                     <i className="ti ti-trash fs-24 text-danger" />
                                 </span>
-                                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Inspection</h4>
+                                <h4 className="fs-20 fw-bold mb-2 mt-1">{t("delete_inspection")}</h4>
                                 <p className="mb-0 fs-16">
-                                    Are you sure you want to delete Inspection?
+                                    {t("Are_you_sure_you_want_to_delete_inspection?")}
                                 </p>
                                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                                     <button
@@ -253,7 +255,7 @@ const Inspections = () => {
                                         className="btn me-2 btn-secondary"
                                         data-bs-dismiss="modal"
                                     >
-                                        Cancel
+                                        {t("cancel")}
                                     </button>
                                     <button
                                         type="button"
@@ -261,7 +263,7 @@ const Inspections = () => {
                                         data-bs-dismiss="modal"
                                         onClick={handleDelete}
                                     >
-                                        Yes Delete
+                                        {t("yes_delete")}
                                     </button>
                                 </div>
                             </div>

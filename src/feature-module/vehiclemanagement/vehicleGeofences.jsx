@@ -10,10 +10,12 @@ import EditGeofences from "../../core/modals/vehiclemanagement/editgeofences";
 import ViewGeofences from "../../core/modals/vehiclemanagement/viewgeofences";
 import AddGeofences from "../../core/modals/vehiclemanagement/addgeofences";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 
 
 const VehicleGeofences = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { geofences, loading, success, error } = useSelector(
     (state) => state.vehicleGeofences
@@ -56,25 +58,25 @@ const VehicleGeofences = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Geofence ID",
+      header: t("geofence_id"),
       field: "geofence_id",
       sortable: true,
       body: (rowData) => rowData?.geofence_id || "-",
     },
     {
-      header: "Point ID",
+      header: t("point_id"),
       field: "point_id",
       sortable: true,
       body: (rowData) => rowData?.point_id || "-",
     },
     {
-      header: "Radius (Meters)",
+      header: t("radius_meter"),
       field: "radius_meters",
       sortable: true,
       body: (rowData) => rowData?.radius_meters || "-",
     },
     {
-      header: "Status",
+      header: t("status"),
       field: "status",
       body: (rowData) => (
         <div>
@@ -94,13 +96,13 @@ const VehicleGeofences = () => {
       sortable: true,
     },
     {
-      header: "Created At",
+      header: t("created_at"),
       field: "created_at",
       sortable: true,
       body: (rowData) => rowData?.created_at || "-",
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -161,8 +163,8 @@ const VehicleGeofences = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicle Geofences</h4>
-                <h6>Manage Vehicle Geofences</h6>
+                <h4>{t("vehicle_geofence_list")}</h4>
+                <h6>{t("manage_your_vehicle_geofences")}</h6>
               </div>
             </div>
 
@@ -183,7 +185,7 @@ const VehicleGeofences = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Geofence
+                {t("add_new_vehicle_geofence")}
               </Link>
             </div>
           </div>
@@ -235,10 +237,10 @@ const VehicleGeofences = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Geofence
+                  {t("delete_vehicle_geofence")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this geofence?
+                  {t("Are_you_sure_you_want_to_delete_vehicle_geofence?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -246,7 +248,7 @@ const VehicleGeofences = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -254,7 +256,7 @@ const VehicleGeofences = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

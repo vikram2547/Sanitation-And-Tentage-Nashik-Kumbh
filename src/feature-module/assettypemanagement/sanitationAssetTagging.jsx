@@ -6,12 +6,15 @@ import TooltipIcons from "../../components/tooltip-content/tooltipIcons";
 import PrimeDataTable from "../../components/data-table";
 
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 import AddSanitationAssetTagging from "../../core/modals/assettypemanagement/addSanitationAssetTagging";
 import { getSanitationAssetsTagging } from "../../core/redux/sanitationAssetTaggingSlice";
 
 
 const SanitationAssetTagging = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
  const {
     sanitationAssetsTagging,
     totalRecords,
@@ -67,49 +70,49 @@ const SanitationAssetTagging = () => {
   // ============================
   const columns = [
     {
-      header: "Asset Type ID",
+      header: t("asset_type_id"),
       field: "asset_type_id",
       sortable: true,
       body: (rowData) => rowData?.asset_type_id || "-",
     },
     {
-      header: "QR Code",
+      header: t("qr_code"),
       field: "qr_code",
       sortable: true,
       body: (rowData) => rowData?.qr_code || "-",
     },
     {
-      header: "Asset Name",
+      header: t("asset_name"),
       field: "asset_name",
       sortable: true,
       body: (rowData) => rowData?.asset_name || "-",
     },
      {
-      header: "Gender",
+      header: t("gender"),
       field: "gender",
       sortable: true,
       body: (rowData) => rowData?.gender || "-",
     },
      {
-      header: "Vendor ID",
+      header: t("vendor_id"),
       field: "vendor_id",
       sortable: true,
       body: (rowData) => rowData?.vendor_id || "-",
     },
     {
-      header: "Sector ID",
+      header: t("sector_id"),
       field: "sector_id",
       sortable: true,
       body: (rowData) => rowData?.sector_id || "-",
     },
     {
-      header: "Circle ID",
+      header: t("circle_id"),
       field: "circle_id",
       sortable: true,
       body: (rowData) => rowData?.circle_id || "-",
     },
     {
-      header: "Status",
+      header: t("status"),
       field: "status",
       body: (rowData) => (
         <div>
@@ -193,8 +196,8 @@ const SanitationAssetTagging = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Sanitation Assets Tagging</h4>
-                <h6>Manage Sanitation Assets Tagging</h6>
+                <h4>{t("sanitation_assets_tagging")}</h4>
+                <h6>{t("manage_your_sanitation_assets_tagging")}</h6>
               </div>
             </div>
 
@@ -216,7 +219,7 @@ const SanitationAssetTagging = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Sanitation Asset Tagging
+                {t("add_sanitation_asset_tagging")}
               </Link>
             </div>
           </div>

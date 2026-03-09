@@ -10,9 +10,12 @@ import AddRouteAssignment from "../../core/modals/vehiclemanagement/addrouteassi
 import EditRouteAssignment from "../../core/modals/vehiclemanagement/editrouteassignment";
 import ViewRouteAssignment from "../../core/modals/vehiclemanagement/viewrouteassignment";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
+
 
 const VehicleRouteAssignment = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { assignments, loading, success, error, totalRecords } = useSelector(
     (state) => state.vehicleRouteAssignments
@@ -55,43 +58,43 @@ const VehicleRouteAssignment = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Assignment ID",
+      header: t("assignment_id"),
       field: "assignment_id",
       sortable: true,
       body: (rowData) => rowData?.assignment_id || "-",
     },
     {
-      header: "Vehicle ID",
+      header: t("vehicle_id"),
       field: "vehicle_id",
       sortable: true,
       body: (rowData) => rowData?.vehicle_id || "-",
     },
     {
-      header: "Route ID",
+      header: t("route_id"),
       field: "route_id",
       sortable: true,
       body: (rowData) => rowData?.route_id || "-",
     },
     {
-      header: "Assignment Date",
+      header: t("assignment_date"),
       field: "assignment_date",
       sortable: true,
       body: (rowData) => rowData?.assignment_date || "-",
     },
     {
-      header: "Shift",
+      header: t("shift"),
       field: "shift",
       sortable: true,
       body: (rowData) => rowData?.shift || "-",
     },
     {
-      header: "Status",
+      header: t("assignment_status"),
       field: "assignment_status",
       sortable: true,
       body: (rowData) => rowData?.assignment_status || "-",
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -152,8 +155,8 @@ const VehicleRouteAssignment = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicle Route Assignments</h4>
-                <h6>Manage Route Assignments</h6>
+                <h4>{t("vehicle_route_assignment_list")}</h4>
+                <h6>{t("manage_your_vehicle_routes_assignments")}</h6>
               </div>
             </div>
 
@@ -174,7 +177,7 @@ const VehicleRouteAssignment = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Route Assignment
+                {t("add_new_vehicle_route_assignment")}
               </Link>
             </div>
           </div>
@@ -226,10 +229,10 @@ const VehicleRouteAssignment = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Assignment
+                  {t("delete_vehicle_route-assignment")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this assignment?
+                  {t("Are_you_sure_you_want_to_delete_vehicle_route_assignment?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -237,7 +240,7 @@ const VehicleRouteAssignment = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -245,7 +248,7 @@ const VehicleRouteAssignment = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

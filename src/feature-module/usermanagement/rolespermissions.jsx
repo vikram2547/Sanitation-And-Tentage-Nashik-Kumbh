@@ -9,9 +9,12 @@ import {
   getRolePermission,
   deleteRolePermission,
 } from "../../core/redux/rolespermissionSlice";
+import { useTranslation } from "react-i18next";
+
 
 const RolesPermissions = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { permissions = [], totalRecords, loading } = useSelector(
     (state) => state.rolespermission
@@ -35,15 +38,15 @@ const RolesPermissions = () => {
   /* ================= COLUMNS ================= */
   const columns = [
     {
-      header: "Permission ID",
+      header: t("permission_id"),
       field: "permission_id",
     },
     {
-      header: "Permission",
+      header: t("permission"),
       field: "permission",
     },
     {
-      header: "Create",
+      header: t("create"),
       body: (row) => (
         <i
           className={`ti ${row.can_create ? "ti-check text-success" : "ti-x text-danger"
@@ -52,7 +55,7 @@ const RolesPermissions = () => {
       ),
     },
     {
-      header: "View",
+      header: t("view"),
       body: (row) => (
         <i
           className={`ti ${row.can_view ? "ti-check text-success" : "ti-x text-danger"
@@ -61,7 +64,7 @@ const RolesPermissions = () => {
       ),
     },
     {
-      header: "Edit",
+      header: t("edit"),
       body: (row) => (
         <i
           className={`ti ${row.can_edit ? "ti-check text-success" : "ti-x text-danger"
@@ -70,7 +73,7 @@ const RolesPermissions = () => {
       ),
     },
     {
-      header: "Delete",
+      header: t("delete"),
       body: (row) => (
         <i
           className={`ti ${row.can_delete ? "ti-check text-success" : "ti-x text-danger"
@@ -79,7 +82,7 @@ const RolesPermissions = () => {
       ),
     },
     {
-      header: "Actions",
+      header: t("actions"),
       body: (rowData) => (
         <div className="action-table-data">
           <div className="edit-delete-action">
@@ -133,8 +136,8 @@ const RolesPermissions = () => {
         <div className="page-header">
           <div className="add-item d-flex">
             <div className="page-title">
-              <h4>Roles & Permission</h4>
-              <h6>Manage your roles</h6>
+              <h4>{t("role_and_permission")}</h4>
+              <h6>{t("manage_your_roles")}</h6>
             </div>
           </div>
 
@@ -146,7 +149,7 @@ const RolesPermissions = () => {
               className="btn btn-primary"
             >
               <i className="feather icon-plus-circle me-2" />
-              Add Role
+              {t("add_role")}
             </Link>
           </div>
         </div>
@@ -185,9 +188,9 @@ const RolesPermissions = () => {
                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
-                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Permission</h4>
+                <h4 className="fs-20 fw-bold mb-2 mt-1">{t("delete_permission")}</h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete permission?
+                 {t("Are_you_sure_you_want_to_delete_permission?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -195,7 +198,7 @@ const RolesPermissions = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -203,7 +206,7 @@ const RolesPermissions = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

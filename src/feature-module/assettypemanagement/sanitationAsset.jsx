@@ -15,9 +15,12 @@ import AddSanitationAsset from "../../core/modals/assettypemanagement/addSanitat
 import EditSanitationAsset from "../../core/modals/assettypemanagement/editSanitationAsset";
 import ViewSanitationAsset from "../../core/modals/assettypemanagement/viewSanitationAsset";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
+
 
 const SanitationAsset = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const {
     sanitationAssets,
@@ -74,25 +77,25 @@ const SanitationAsset = () => {
   // ============================
   const columns = [
     {
-      header: "QR Code",
+      header: t("qr_code"),
       field: "qr_code",
       sortable: true,
       body: (rowData) => rowData?.qr_code || "-",
     },
     {
-      header: "Asset Name",
+      header: t("asset_name"),
       field: "asset_name",
       sortable: true,
       body: (rowData) => rowData?.asset_name || "-",
     },
     {
-      header: "Gender",
+      header: t("gender"),
       field: "gender",
       sortable: true,
       body: (rowData) => rowData?.gender || "-",
     },
     {
-      header: "Status",
+      header: t("status"),
       field: "status",
       body: (rowData) => (
         <div>
@@ -112,7 +115,7 @@ const SanitationAsset = () => {
       sortable: true,
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -176,8 +179,8 @@ const SanitationAsset = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Sanitation Assets</h4>
-                <h6>Manage Sanitation Assets</h6>
+                <h4>{t("sanitation_assets")}</h4>
+                <h6>{t("manage_your_sanitation_assets")}</h6>
               </div>
             </div>
 
@@ -199,7 +202,7 @@ const SanitationAsset = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Sanitation Asset
+                {t("add_sanitation_asset")}
               </Link>
             </div>
           </div>
@@ -259,10 +262,10 @@ const SanitationAsset = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Sanitation Asset
+                  {t("delete_sanitation_asset")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this sanitation asset?
+                  {t("Are_you_sure_you_want_to_delete_sanitation_asset?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -270,7 +273,7 @@ const SanitationAsset = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -278,7 +281,7 @@ const SanitationAsset = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

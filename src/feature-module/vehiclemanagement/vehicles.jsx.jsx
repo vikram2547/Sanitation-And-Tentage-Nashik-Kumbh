@@ -10,10 +10,12 @@ import AddVehicle from "../../core/modals/vehiclemanagement/addvehicle";
 import EditVehicle from "../../core/modals/vehiclemanagement/editvehicle";
 import ViewVehicle from "../../core/modals/vehiclemanagement/viewvehicle";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 
 
 const Vehicles = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { vehicles, loading, success, error } = useSelector(
     (state) => state.vehicles
@@ -66,31 +68,31 @@ const Vehicles = () => {
   // ============================
   const columns = [
     {
-      header: "Name",
+      header: t("vehicle_name"),
       field: "vehicle_name",
       sortable: true,
       body: (rowData) => rowData?.vehicle_name || "-",
     },
     {
-      header: "Type",
+      header: t("vehicle_type"),
       field: "vehicle_type",
       sortable: true,
       body: (rowData) => rowData?.vehicle_type || "-",
     },
     {
-      header: "Number",
+      header: t("vehicle_number"),
       field: "vehicle_number",
       sortable: true,
       body: (rowData) => rowData?.vehicle_number || "-",
     },
     {
-      header: "Vendor",
+      header: t("vendor_id"),
       field: "vendor_id",
       sortable: true,
       body: (rowData) => rowData?.vendor_id || "-",
     },
     {
-      header: "Status",
+      header: t("status"),
       field: "status",
       body: (rowData) => (
         <div>
@@ -110,7 +112,7 @@ const Vehicles = () => {
       sortable: true,
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -171,8 +173,8 @@ const Vehicles = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicles</h4>
-                <h6>Manage Vehicles</h6>
+                <h4>{t("vehicles_list")}</h4>
+                <h6>{t("manage_your_vehicles")}</h6>
               </div>
             </div>
 
@@ -194,7 +196,7 @@ const Vehicles = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Vehicle
+                {t("add_new_vehicle")}
               </Link>
             </div>
           </div>
@@ -247,10 +249,10 @@ const Vehicles = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Vehicle
+                  {t("delete_vehicle")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this vehicle?
+                  {t("Are_you_sure_you_want_to_delete_vehicle?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -258,7 +260,7 @@ const Vehicles = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -266,7 +268,7 @@ const Vehicles = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

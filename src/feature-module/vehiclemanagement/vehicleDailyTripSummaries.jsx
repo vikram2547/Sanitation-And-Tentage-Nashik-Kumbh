@@ -10,11 +10,12 @@ import AddDailyTripSummaries from "../../core/modals/vehiclemanagement/adddailyt
 import EditDailyTripSummaries from "../../core/modals/vehiclemanagement/editdailytripsummaries";
 import ViewDailyTripSummaries from "../../core/modals/vehiclemanagement/viewdailytripsummaries";
 import { Modal } from "bootstrap";
-
+import { useTranslation } from "react-i18next";
 
 
 const VehicleDailyTripSummaries = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { trips, loading, success, error } = useSelector(
     (state) => state.vehicleDailyTripSummaries
@@ -57,53 +58,53 @@ const VehicleDailyTripSummaries = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Trip Date",
+      header: t("trip_date"),
       field: "trip_date",
       sortable: true,
       body: (row) => row?.trip_date || null,
     },
     {
-      header: "Vehicle ID",
+      header: t("vehicle_id"),
       field: "vehicle_id",
       sortable: true,
       body: (row) => row?.vehicle_id || null,
     },
     {
-      header: "Route ID",
+      header: t("route_id"),
       field: "route_id",
       sortable: true,
       body: (row) => row?.route_id || null,
     },
     {
-      header: "Start Time",
+      header: t("start_time"),
       field: "start_time",
       body: (row) => row?.start_time || null,
     },
     {
-      header: "End Time",
+      header: t("end_time"),
       field: "end_time",
       body: (row) => row?.end_time || null,
     },
     {
-      header: "Distance (km)",
+      header: t("distance"),
       field: "total_distance",
       sortable: true,
       body: (row) => row?.total_distance || null,
     },
     {
-      header: "Completion %",
+      header: t("completion"),
       field: "completion_percentage",
       sortable: true,
       body: (row) => `${row?.completion_percentage || 0}%`,
     },
     {
-      header: "Status",
+      header: t("status"),
       field: "trip_status",
       sortable: true,
       body: (row) => row?.trip_status || null,
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       body: (row) => (
         <div className="action-table-data">
@@ -163,8 +164,8 @@ const VehicleDailyTripSummaries = () => {
 
           <div className="page-header">
             <div className="page-title">
-              <h4>Vehicle Daily Trip Summaries</h4>
-              <h6>Vehicle Trip Performance</h6>
+              <h4>{t("vehicle_daily_trip_summaries_list")}</h4>
+              <h6>{t("manage_your_vehicle_daily_trip_summaries")}</h6>
             </div>
             <ul className="table-top-head">
               <TooltipIcons />
@@ -183,7 +184,7 @@ const VehicleDailyTripSummaries = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Daily Trip Summary
+                {t("add_new_vehicle_daily_trip_summary")}
               </Link>
             </div>
           </div>
@@ -228,20 +229,20 @@ const VehicleDailyTripSummaries = () => {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="content p-4 text-center">
-              <h4>Delete Trip Summary</h4>
-              <p>Are you sure you want to delete this trip?</p>
+              <h4>{t("delete_vehicle_daily_trip_summary")}</h4>
+              <p>{t("Are_you_sure_you_want_to_delete_vehicle_daily_trip_summary?")}</p>
               <button
                 className="btn btn-secondary me-2"
                 data-bs-dismiss="modal"
               >
-                Cancel
+                {t("cancel")}
               </button>
               <button
                 className="btn btn-danger"
                 data-bs-dismiss="modal"
                 onClick={handleDelete}
               >
-                Yes Delete
+                {t("yes_delete")}
               </button>
             </div>
           </div>

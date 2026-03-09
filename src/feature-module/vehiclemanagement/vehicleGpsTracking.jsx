@@ -10,9 +10,13 @@ import AddGpsTracking from "../../core/modals/vehiclemanagement/addgpstracking";
 import EditGpsTracking from "../../core/modals/vehiclemanagement/editgpstracking";
 import ViewGpsTracking from "../../core/modals/vehiclemanagement/viewgpstracking";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
+
 
 const VehicleGpsTracking = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
 
   const { tracking, loading, success, error } = useSelector(
     (state) => state.vehicleGpsTracking
@@ -55,49 +59,49 @@ const VehicleGpsTracking = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Vehicle ID",
+      header: t("vehicle_id"),
       field: "vehicle_id",
       sortable: true,
       body: (rowData) => rowData?.vehicle_id || "-",
     },
     {
-      header: "Assignment ID",
+      header: t("assignment_id"),
       field: "assignment_id",
       sortable: true,
       body: (rowData) => rowData?.assignment_id || "-",
     },
     {
-      header: "Latitude",
+      header: t("latitude"),
       field: "latitude",
       sortable: true,
       body: (rowData) => rowData?.latitude || "-",
     },
     {
-      header: "Longitude",
+      header: t("longitude"),
       field: "longitude",
       sortable: true,
       body: (rowData) => rowData?.longitude || "-",
     },
     {
-      header: "Speed",
+      header: t("speed"),
       field: "speed",
       sortable: true,
       body: (rowData) => rowData?.speed || "-",
     },
     {
-      header: "Ignition",
+      header: t("ignition"),
       field: "ignition_status",
       sortable: true,
       body: (rowData) => rowData?.ignition_status || "-",
     },
     {
-      header: "Timestamp",
+      header: t("timestamp"),
       field: "timestamp",
       sortable: true,
       body: (rowData) => rowData?.timestamp || "-",
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -158,8 +162,8 @@ const VehicleGpsTracking = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicle GPS Tracking</h4>
-                <h6>Manage Vehicle GPS Tracking</h6>
+                <h4>{t("vehicle_gps_tracking_list")}</h4>
+                <h6>{t("manage_your_vehicle_gps_trackings")}</h6>
               </div>
             </div>
 
@@ -180,7 +184,7 @@ const VehicleGpsTracking = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add GPS Tracking
+                {t("add_new_vehicle_gps_tracking")}
               </Link>
             </div>
           </div>
@@ -232,10 +236,10 @@ const VehicleGpsTracking = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete GPS Record
+                  {t("delete_vehicle_gps_tracking")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this GPS record?
+                  {t("Are_you_sure_you_want_to_delete_vehicle_gps_tracking?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -243,7 +247,7 @@ const VehicleGpsTracking = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -251,7 +255,7 @@ const VehicleGpsTracking = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

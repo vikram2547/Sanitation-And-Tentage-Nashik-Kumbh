@@ -10,11 +10,12 @@ import AddRoute from "../../core/modals/vehiclemanagement/addroute";
 import EditRoute from "../../core/modals/vehiclemanagement/editroute";
 import ViewRoute from "../../core/modals/vehiclemanagement/viewroute";
 import { Modal } from "bootstrap";
-
+import { useTranslation } from "react-i18next";
 
 
 const VehicleRoutes = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { vehicleRoutes, loading, success, error, totalRecords } =
     useSelector((state) => state.vehicleRoutes);
@@ -57,31 +58,31 @@ const VehicleRoutes = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Route ID",
+      header: t("route_id"),
       field: "route_id",
       sortable: true,
       body: (rowData) => rowData?.route_id || "-",
     },
     {
-      header: "Route Code",
+      header: t("route_code"),
       field: "route_code",
       sortable: true,
       body: (rowData) => rowData?.route_code || "-",
     },
     {
-      header: "Route Name",
+      header: t("route_name"),
       field: "route_name",
       sortable: true,
       body: (rowData) => rowData?.route_name || "-",
     },
     {
-      header: "Zone",
+      header: t("zone"),
       field: "zone",
       sortable: true,
       body: (rowData) => rowData?.zone || "-",
     },
     {
-      header: "Status",
+      header: t("status"),
       field: "status",
       body: (rowData) => (
         <div>
@@ -101,13 +102,13 @@ const VehicleRoutes = () => {
       sortable: true,
     },
     {
-      header: "Created At",
+      header: t("created_at"),
       field: "created_at",
       sortable: true,
       body: (rowData) => rowData?.created_at || "-",
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -168,8 +169,8 @@ const VehicleRoutes = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicle Routes</h4>
-                <h6>Manage Routes</h6>
+                <h4>{t("vehicle_routes_list")}</h4>
+                <h6>{t("manage_your_vehicle_routes")}</h6>
               </div>
             </div>
 
@@ -190,7 +191,7 @@ const VehicleRoutes = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Vehicle Route
+                {t("add_new_vehicle_route")}
               </Link>
             </div>
           </div>
@@ -242,10 +243,10 @@ const VehicleRoutes = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Route
+                  {t("delete_vehicle_route")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this route?
+                  {t("Are_you_sure_you_want_to_delete_vehicle_route?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -253,7 +254,7 @@ const VehicleRoutes = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -261,7 +262,7 @@ const VehicleRoutes = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

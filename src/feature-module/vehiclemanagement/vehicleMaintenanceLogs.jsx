@@ -10,10 +10,12 @@ import AddMaintenanceLogs from "../../core/modals/vehiclemanagement/addmaintenan
 import ViewMaintenanceLogs from "../../core/modals/vehiclemanagement/viewmaintenancelogs";
 import EditMaintenanceLogs from "../../core/modals/vehiclemanagement/editmaintenancelogs";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 
 
 const VehicleMaintenanceLogs = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { maintenanceLogs, loading, success, error } = useSelector(
     (state) => state.vehicleMaintenanceLogs
@@ -56,37 +58,37 @@ const VehicleMaintenanceLogs = () => {
   /* ================= TABLE COLUMNS ================= */
   const columns = [
     {
-      header: "Maintenance ID",
+      header: t("maintenance_id"),
       field: "maintenance_id",
       sortable: true,
       body: (rowData) => rowData?.maintenance_id || "-",
     },
     {
-      header: "Vehicle ID",
+      header: t("vehicle_id"),
       field: "vehicle_id",
       sortable: true,
       body: (rowData) => rowData?.vehicle_id || "-",
     },
     {
-      header: "Maintenance Date",
+      header: t("maintenance_date"),
       field: "maintenance_date",
       sortable: true,
       body: (rowData) => rowData?.maintenance_date || "-",
     },
     {
-      header: "Type",
+      header: t("maintenance_type"),
       field: "maintenance_type",
       sortable: true,
       body: (rowData) => rowData?.maintenance_type || "-",
     },
     {
-      header: "Cost",
+      header: t("cost"),
       field: "cost",
       sortable: true,
       body: (rowData) => rowData?.cost || "-",
     },
     {
-      header: "Actions",
+      header: t("actions"),
       field: "actions",
       sortable: false,
       body: (rowData) => (
@@ -147,8 +149,8 @@ const VehicleMaintenanceLogs = () => {
           <div className="page-header">
             <div className="add-item d-flex">
               <div className="page-title">
-                <h4>Vehicle Maintenance Logs</h4>
-                <h6>Manage Vehicle Maintenance</h6>
+                <h4>{t("vehicle_maintenance_logs_list")}</h4>
+                <h6>{t("manage_your_vehicle_maintenance_logs")}</h6>
               </div>
             </div>
 
@@ -169,7 +171,7 @@ const VehicleMaintenanceLogs = () => {
                 }}
               >
                 <i className="ti ti-circle-plus me-1"></i>
-                Add Maintenance Log
+                {t("add_new_vehicle_maintenance_log")}
               </Link>
             </div>
           </div>
@@ -221,10 +223,10 @@ const VehicleMaintenanceLogs = () => {
                   <i className="ti ti-trash fs-24 text-danger" />
                 </span>
                 <h4 className="fs-20 fw-bold mb-2 mt-1">
-                  Delete Maintenance Log
+                  {t("delete_vehicle_maintenance_log")}
                 </h4>
                 <p className="mb-0 fs-16">
-                  Are you sure you want to delete this maintenance log?
+                  {t("Are_you_sure_you_want_to_delete_vehicle_maintenance_log?")}
                 </p>
                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                   <button
@@ -232,7 +234,7 @@ const VehicleMaintenanceLogs = () => {
                     className="btn me-2 btn-secondary"
                     data-bs-dismiss="modal"
                   >
-                    Cancel
+                    {t("cancel")}
                   </button>
                   <button
                     type="button"
@@ -240,7 +242,7 @@ const VehicleMaintenanceLogs = () => {
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >
-                    Yes Delete
+                    {t("yes_delete")}
                   </button>
                 </div>
               </div>

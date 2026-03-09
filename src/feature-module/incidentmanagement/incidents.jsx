@@ -9,10 +9,11 @@ import { clearMessages, deleteIncidents, getIncidents } from "../../core/redux/i
 import AddIncident from "../../core/modals/incidentmanagement/addincidents";
 import EditIncident from "../../core/modals/incidentmanagement/editincident";
 import ViewIncident from "../../core/modals/incidentmanagement/viewincident";
-
+import { useTranslation } from "react-i18next";
 
 const Incidents = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { incidents, totalRecords, loading, error, success } = useSelector(
         (state) => state.incidents
@@ -61,31 +62,31 @@ const Incidents = () => {
     // ============================
     const columns = [
         {
-            header: "Incident ID",
+            header: t("incident_id"),
             field: "incident_id",
             sortable: true,
             body: (rowData) => rowData?.incident_id || "-"
         },
         {
-            header: "Incident Code",
+            header: t("incident_code"),
             field: "incident_code",
             sortable: true,
             body: (rowData) => rowData?.incident_code || "-"
         },
         {
-            header: "Description",
+            header: t("description"),
             field: "description",
             sortable: true,
             body: (rowData) => rowData?.description || "-"
         },
         {
-            header: "Severity",
+            header: t("severity"),
             field: "severity",
             sortable: true,
             body: (rowData) => rowData?.severity || "-"
         },
         {
-            header: "Status",
+            header: t("status"),
             field: "incident_status",
             body: (rowData) => (
                 <div>
@@ -105,7 +106,7 @@ const Incidents = () => {
             sortable: true,
         },
         {
-            header: "Actions",
+            header: t("actions"),
             field: "actions",
             sortable: false,
             body: (rowData) => (
@@ -165,8 +166,8 @@ const Incidents = () => {
                     <div className="page-header">
                         <div className="add-item d-flex">
                             <div className="page-title">
-                                <h4>Incidents List</h4>
-                                <h6>Manage Your Incidents</h6>
+                                <h4>{t("incidents_list")}</h4>
+                                <h6>{t("manage_your_incidents")}</h6>
                             </div>
                         </div>
 
@@ -188,7 +189,7 @@ const Incidents = () => {
                                 }}
                             >
                                 <i className="ti ti-circle-plus me-1"></i>
-                                Add New Incident
+                                {t("add_new_incident")}
                             </Link>
                         </div>
                     </div>
@@ -244,9 +245,9 @@ const Incidents = () => {
                                 <span className="rounded-circle d-inline-flex p-2 bg-danger-transparent mb-2">
                                     <i className="ti ti-trash fs-24 text-danger" />
                                 </span>
-                                <h4 className="fs-20 fw-bold mb-2 mt-1">Delete Incident</h4>
+                                <h4 className="fs-20 fw-bold mb-2 mt-1">{t("delete_incident")}</h4>
                                 <p className="mb-0 fs-16">
-                                    Are you sure you want to delete incident?
+                                    {t("Are_you_sure_you_want_to_delete_incident?")}
                                 </p>
                                 <div className="modal-footer-btn mt-3 d-flex justify-content-center">
                                     <button
@@ -254,7 +255,7 @@ const Incidents = () => {
                                         className="btn me-2 btn-secondary"
                                         data-bs-dismiss="modal"
                                     >
-                                        Cancel
+                                        {t("cancel")}
                                     </button>
                                     <button
                                         type="button"
@@ -262,7 +263,7 @@ const Incidents = () => {
                                         data-bs-dismiss="modal"
                                         onClick={handleDelete}
                                     >
-                                        Yes Delete
+                                        {t("yes_delete")}
                                     </button>
                                 </div>
                             </div>
