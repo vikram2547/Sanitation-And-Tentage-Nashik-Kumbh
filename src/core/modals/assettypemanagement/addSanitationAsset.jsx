@@ -5,9 +5,12 @@ import {
   addSanitationAsset,
   clearMessages,
 } from "../../redux/sanitationAssetSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddSanitationAsset = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { loading, success, error } = useSelector(
     (state) => state.sanitationAssets
@@ -92,7 +95,7 @@ const AddSanitationAsset = () => {
               {/* ================= HEADER ================= */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Sanitation Asset</h4>
+                  <h4>{t("add_sanitation_asset")}</h4>
                 </div>
                 <button
                   type="button"
@@ -111,7 +114,7 @@ const AddSanitationAsset = () => {
                 )}
                 {success && (
                   <div className="alert alert-success">
-                    Sanitation Asset created successfully
+                    {t("created_successfully")}
                   </div>
                 )}
 
@@ -120,7 +123,7 @@ const AddSanitationAsset = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>QR Code</label>
+                        <label>{t("qr_code")}</label>
                         <input
                           type="text"
                           name="qr_code"
@@ -134,7 +137,7 @@ const AddSanitationAsset = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Asset Name</label>
+                        <label>{t("asset_name")}</label>
                         <input
                           type="text"
                           name="asset_name"
@@ -148,7 +151,7 @@ const AddSanitationAsset = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Sector</label>
+                        <label>{t("sector")}</label>
                         <select
                           className="form-control"
                           name="sector_id"
@@ -168,7 +171,7 @@ const AddSanitationAsset = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Circle</label>
+                        <label>{t("circle")}</label>
                         <select
                           className="form-control"
                           name="circle_id"
@@ -188,7 +191,7 @@ const AddSanitationAsset = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Latitude</label>
+                        <label>{t("latitude")}</label>
                         <input
                           type="text"
                           name="latitude"
@@ -201,7 +204,7 @@ const AddSanitationAsset = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Longitude</label>
+                        <label>{t("longitude")}</label>
                         <input
                           type="text"
                           name="longitude"
@@ -221,14 +224,14 @@ const AddSanitationAsset = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
                     <button
                       type="submit"
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
 

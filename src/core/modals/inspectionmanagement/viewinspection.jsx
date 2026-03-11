@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewInspection = ({ selectedInspection }) => {
+    const { t } = useTranslation();
 
     return (
         <div className="modal fade" id="view-inspection-modal" tabIndex="-1">
@@ -8,7 +10,7 @@ const ViewInspection = ({ selectedInspection }) => {
                 <div className="modal-content">
 
                     <div className="modal-header">
-                        <h5 className="modal-title">Inspection Details</h5>
+                        <h5 className="modal-title">{t("inspection_details")}</h5>
                         <button
                             type="button"
                             className="close"
@@ -23,47 +25,47 @@ const ViewInspection = ({ selectedInspection }) => {
                         <div className="row">
 
                             <div className="col-md-6 mb-3">
-                                <strong>Allocation ID:</strong>
+                                <strong>{t("allocation_id")}:</strong>
                                 <div>{selectedInspection?.allocation_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Asset ID:</strong>
+                                <strong>{t("asset_id")}:</strong>
                                 <div>{selectedInspection?.asset_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Shift ID:</strong>
+                                <strong>{t("shift_id")}:</strong>
                                 <div>{selectedInspection?.shift_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Compliance Score:</strong>
+                                <strong>{t("compliance_score")}:</strong>
                                 <div>{selectedInspection?.compliance_score}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Latitude:</strong>
+                                <strong>{t("latitude")}:</strong>
                                 <div>{selectedInspection?.latitude}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>:Longitude:</strong>
+                                <strong>:{t("longitude")}:</strong>
                                 <div>{selectedInspection?.longitude}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Status:</strong>
+                                <strong>{t("status")}:</strong>
                                 <div>{selectedInspection?.overall_status}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Notes:</strong>
+                                <strong>{t("notes")}:</strong>
                                 <div>{selectedInspection?.notes || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Data:</strong>
+                                <strong>{t("data")}:</strong>
                                 <div>{selectedInspection?.questions_answers_data}</div>
                             </div>
 
@@ -76,7 +78,7 @@ const ViewInspection = ({ selectedInspection }) => {
                             className="btn btn-secondary"
                             data-bs-dismiss="modal"
                         >
-                            Close
+                            {t("cancel")}
                         </button>
                     </div>
 

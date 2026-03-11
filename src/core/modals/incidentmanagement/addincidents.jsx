@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addIncidents, clearMessages } from "../../redux/incidentsSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddIncident = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.incidents
@@ -100,7 +103,7 @@ const AddIncident = () => {
 
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Incident</h4>
+                  <h4>{t("add_new_incident")}</h4>
                 </div>
                 <button type="button" className="close" data-bs-dismiss="modal">
                   <span>×</span>
@@ -112,7 +115,7 @@ const AddIncident = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Incident created successfully
+                    {t("created_successfully")}
                   </div>
                 )}
 
@@ -122,7 +125,7 @@ const AddIncident = () => {
                     {/* ===== Inspection ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Inspection ID</label>
+                        <label>{t("inspection_id")}</label>
                         <input
                           type="number"
                           name="inspection_id"
@@ -136,7 +139,7 @@ const AddIncident = () => {
                     {/* ===== Asset ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Asset ID</label>
+                        <label>{t("asset_id")}</label>
                         <input
                           type="number"
                           name="asset_id"
@@ -150,7 +153,7 @@ const AddIncident = () => {
                     {/* ===== Question ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Question ID</label>
+                        <label>{t("question_id")}</label>
                         <input
                           type="number"
                           name="question_id"
@@ -164,7 +167,7 @@ const AddIncident = () => {
                     {/* ===== Vendor ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor ID</label>
+                        <label>{t("vendor_id")}</label>
                         <input
                           type="number"
                           name="vendor_id"
@@ -178,7 +181,7 @@ const AddIncident = () => {
                     {/* ===== Response ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Response ID</label>
+                        <label>{t("response_id")}</label>
                         <input
                           type="number"
                           name="response_id"
@@ -192,7 +195,7 @@ const AddIncident = () => {
                     {/* ===== Severity ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Severity</label>
+                        <label>{t("severity")}</label>
                         <select
                           name="severity"
                           value={formData.severity}
@@ -211,7 +214,7 @@ const AddIncident = () => {
                     {/* ===== Description ===== */}
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Description</label>
+                        <label>{t("description")}</label>
                         <input
                           type="text"
                           name="description"
@@ -232,7 +235,7 @@ const AddIncident = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -240,7 +243,7 @@ const AddIncident = () => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
                 </form>

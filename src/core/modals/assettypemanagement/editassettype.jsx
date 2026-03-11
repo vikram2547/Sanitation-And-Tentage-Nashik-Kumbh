@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { updateAssetType, clearMessages } from "../../redux/assettypeSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditAssetType = ({ selectedAssetType }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.assetTypes
@@ -102,7 +105,7 @@ const EditAssetType = ({ selectedAssetType }) => {
               {/* ===== Header ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Asset Type</h4>
+                  <h4>{t("edit_asset_type")}</h4>
                 </div>
 
                 <button
@@ -123,7 +126,7 @@ const EditAssetType = ({ selectedAssetType }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Asset Type updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -132,7 +135,7 @@ const EditAssetType = ({ selectedAssetType }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Type</label>
+                        <label>{t("add")}</label>
                         <input
                           type="text"
                           name="type"
@@ -145,7 +148,7 @@ const EditAssetType = ({ selectedAssetType }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Name</label>
+                        <label>{t("name")}</label>
                         <input
                           type="text"
                           name="name"
@@ -159,7 +162,7 @@ const EditAssetType = ({ selectedAssetType }) => {
 
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Description</label>
+                        <label>{t("description")}</label>
                         <textarea
                           name="description"
                           value={formData.description}
@@ -179,7 +182,7 @@ const EditAssetType = ({ selectedAssetType }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -187,7 +190,7 @@ const EditAssetType = ({ selectedAssetType }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
 
                   </div>

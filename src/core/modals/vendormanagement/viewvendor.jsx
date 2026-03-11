@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+
 
 const ViewVendor = ({ selectedVendor }) => {
+  const { t } = useTranslation();
 
   return (
     <div className="modal fade" id="view-vendor-modal">
@@ -8,7 +11,7 @@ const ViewVendor = ({ selectedVendor }) => {
         <div className="modal-content">
 
           <div className="modal-header">
-            <h5 className="modal-title">Vendor Details</h5>
+            <h5 className="modal-title">{t("vendor_details")}</h5>
             <button
               type="button"
               className="close"
@@ -23,39 +26,39 @@ const ViewVendor = ({ selectedVendor }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Vendor ID:</strong>
+                <strong>{t("vendor_id")}:</strong>
                 <div>
                   {selectedVendor?.vendor_id || selectedVendor?.id}
                 </div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vendor Name:</strong>
+                <strong>{t("vendor_name")}:</strong>
                 <div>{selectedVendor?.vendor_name}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vendor Code:</strong>
+                <strong>{t("vendor_code")}:</strong>
                 <div>{selectedVendor?.vendor_code}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Contact Person:</strong>
+                <strong>{t("contact_person")}:</strong>
                 <div>{selectedVendor?.contact_person}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Contact Email:</strong>
+                <strong>{t("email")}:</strong>
                 <div>{selectedVendor?.contact_email}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Contact Phone:</strong>
+                <strong>{t("phone")}:</strong>
                 <div>{selectedVendor?.contact_phone}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>
                   {selectedVendor?.status === "ACTIVE"
                     ? "Active"
@@ -64,22 +67,22 @@ const ViewVendor = ({ selectedVendor }) => {
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Address:</strong>
+                <strong>{t("address")}:</strong>
                 <div>{selectedVendor?.address}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>User ID:</strong>
+                <strong>{t("user_id")}:</strong>
                 <div>{selectedVendor?.user_id || 0}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Created At:</strong>
+                <strong>{t("created_at")}:</strong>
                 <div>{selectedVendor?.created_at}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Updated At:</strong>
+                <strong>{t("updated_at")}:</strong>
                 <div>{selectedVendor?.updated_at}</div>
               </div>
 
@@ -93,7 +96,7 @@ const ViewVendor = ({ selectedVendor }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("close")}
             </button>
           </div>
 

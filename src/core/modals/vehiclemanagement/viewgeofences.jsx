@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewGeofences = ({ selectedGeofence }) => {
+const { t } = useTranslation();
 
   return (
     <div className="modal fade" id="view-geofence-modal">
@@ -9,7 +11,7 @@ const ViewGeofences = ({ selectedGeofence }) => {
 
           {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Geofence Details</h5>
+            <h5 className="modal-title">{t("geofence_details")}</h5>
             <button
               type="button"
               className="close"
@@ -24,22 +26,22 @@ const ViewGeofences = ({ selectedGeofence }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Geofence ID:</strong>
+                <strong>{t("geofence_id")}:</strong>
                 <div>{selectedGeofence?.geofence_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Point ID:</strong>
+                <strong>{t("point_id")}:</strong>
                 <div>{selectedGeofence?.point_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Radius (Meters):</strong>
+                <strong>{t("radius_meters")}:</strong>
                 <div>{selectedGeofence?.radius_meters}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>
                   {selectedGeofence?.is_active === "1"
                     ? "Active"
@@ -48,7 +50,7 @@ const ViewGeofences = ({ selectedGeofence }) => {
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Created At:</strong>
+                <strong>{t("created_at")}:</strong>
                 <div>{selectedGeofence?.created_at}</div>
               </div>
 
@@ -62,7 +64,7 @@ const ViewGeofences = ({ selectedGeofence }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

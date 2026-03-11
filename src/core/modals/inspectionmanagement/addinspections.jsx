@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addInspections } from "../../redux/inspectionsSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddInspection = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { success, error, loading } = useSelector(
         (state) => state.inspections
@@ -108,7 +111,7 @@ const AddInspection = () => {
 
                             <div className="modal-header border-0 custom-modal-header">
                                 <div className="page-title">
-                                    <h4>Add Inspection</h4>
+                                    <h4>{t("add_new_inspection")}</h4>
                                 </div>
                                 <button type="button" className="close" data-bs-dismiss="modal">
                                     <span>×</span>
@@ -120,7 +123,7 @@ const AddInspection = () => {
                                 {error && <div className="alert alert-danger">{error}</div>}
                                 {success && (
                                     <div className="alert alert-success">
-                                        Inspection created successfully
+                                        {t("created_successfully")}
                                     </div>
                                 )}
 
@@ -129,7 +132,7 @@ const AddInspection = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Allocation ID</label>
+                                                <label>{t("allocation_id")}</label>
                                                 <input
                                                     type="number"
                                                     name="allocation_id"
@@ -142,7 +145,7 @@ const AddInspection = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Asset ID</label>
+                                                <label>{t("asset_id")}</label>
                                                 <input
                                                     type="number"
                                                     name="asset_id"
@@ -155,7 +158,7 @@ const AddInspection = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Shift ID</label>
+                                                <label>{t("shift_id")}</label>
                                                 <input
                                                     type="number"
                                                     name="shift_id"
@@ -168,7 +171,7 @@ const AddInspection = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Compliance Score</label>
+                                                <label>{t("compliance_score")}</label>
                                                 <input
                                                     type="number"
                                                     name="compliance_score"
@@ -181,7 +184,7 @@ const AddInspection = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Latitude</label>
+                                                <label>{t("latitude")}</label>
                                                 <input
                                                     type="number"
                                                     name="latitude"
@@ -194,7 +197,7 @@ const AddInspection = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Longitude</label>
+                                                <label>{t("longitude")}</label>
                                                 <input
                                                     type="number"
                                                     name="longitude"
@@ -207,7 +210,7 @@ const AddInspection = () => {
 
                                         <div className="col-lg-12">
                                             <div className="input-blocks">
-                                                <label>Notes</label>
+                                                <label>{t("notes")}</label>
                                                 <input
                                                     type="text"
                                                     name="notes"
@@ -220,7 +223,7 @@ const AddInspection = () => {
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="input-blocks">
-                                                <label>Status</label>
+                                                <label>{t("status")}</label>
                                                 <input
                                                     type="text"
                                                     name="overall_status"
@@ -233,7 +236,7 @@ const AddInspection = () => {
                                         </div>
                                         <div className="col-lg-12">
                                             <div className="input-blocks">
-                                                <label>Question Answer Data</label>
+                                                <label>{t("questions_answers_data")}</label>
                                                 <input
                                                     type="text"
                                                     name="questions_answers_data"
@@ -252,7 +255,7 @@ const AddInspection = () => {
                                             className="btn btn-cancel me-2"
                                             data-bs-dismiss="modal"
                                         >
-                                            Cancel
+                                            {t("cancel")}
                                         </button>
 
                                         <button
@@ -260,7 +263,7 @@ const AddInspection = () => {
                                             className="btn btn-submit"
                                             disabled={loading}
                                         >
-                                            {loading ? "Adding..." : "Submit"}
+                                            {loading ? t("adding") : t("submit")}
                                         </button>
                                     </div>
                                 </form>

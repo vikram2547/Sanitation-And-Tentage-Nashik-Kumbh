@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addVehicleRoutePoint, clearMessages } from "../../redux/vehicleRoutePointsSlice";
+import { useTranslation } from "react-i18next";
+
 
 
 const AddRoutePoints = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleRoutePoints
@@ -81,7 +84,7 @@ const AddRoutePoints = () => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Route Point</h4>
+                  <h4>{t("add_new_vehicle_route_point")}</h4>
                 </div>
                 <button
                   type="button"
@@ -98,7 +101,7 @@ const AddRoutePoints = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Route point added successfully
+                    {t("created_successfully")}
                   </div>
                 )}
 
@@ -107,7 +110,7 @@ const AddRoutePoints = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Route ID</label>
+                        <label>{t("route_id")}</label>
                         <input
                           type="number"
                           name="route_id"
@@ -121,7 +124,7 @@ const AddRoutePoints = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Point ID</label>
+                        <label>{t("point_id")}</label>
                         <input
                           type="number"
                           name="point_id"
@@ -135,7 +138,7 @@ const AddRoutePoints = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Sequence Number</label>
+                        <label>{t("sequence_number")}</label>
                         <input
                           type="number"
                           name="sequence_number"
@@ -149,7 +152,7 @@ const AddRoutePoints = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Estimated Arrival Time</label>
+                        <label>{t("estimated_arrival_time")}</label>
                         <input
                           type="time"
                           name="estimated_arrival_time"
@@ -163,7 +166,7 @@ const AddRoutePoints = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Expected Stay Duration</label>
+                        <label>{t("expected_stay_duration")}</label>
                         <input
                           type="time"
                           name="expected_stay_duration"
@@ -184,14 +187,14 @@ const AddRoutePoints = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
                     <button
                       type="submit"
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
                 </form>

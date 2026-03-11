@@ -130,7 +130,11 @@ const vehicleGeofenceSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicleGeofence.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehicleGeofence.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle geofence created successfully";
         if (action.payload?.data) {
           state.geofences.unshift(action.payload.data);
@@ -143,7 +147,12 @@ const vehicleGeofenceSlice = createSlice({
         state.error = action.payload;
       })
       /* ===== UPDATE ===== */
+      .addCase(updateVehicleGeofence.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehicleGeofence.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle geofence updated successfully";
         const updated = action.payload?.data;
         if (!updated) return;
@@ -159,7 +168,12 @@ const vehicleGeofenceSlice = createSlice({
         state.error = action.payload;
       })
       /* ===== DELETE ===== */
+      .addCase(deleteVehicleGeofence.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteVehicleGeofence.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle geofence deleted successfully";
         const deletedId = action.meta.arg;
 

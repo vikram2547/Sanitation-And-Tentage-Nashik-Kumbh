@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { updateIncidents, clearMessages } from "../../redux/incidentsSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditIncident = ({ selectedIncident }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.incidents
@@ -102,7 +105,7 @@ const EditIncident = ({ selectedIncident }) => {
 
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Incident</h4>
+                  <h4>{t("edit_incident")}</h4>
                 </div>
                 <button
                   type="button"
@@ -121,7 +124,7 @@ const EditIncident = ({ selectedIncident }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Incident updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -131,7 +134,7 @@ const EditIncident = ({ selectedIncident }) => {
                     {/* ===== Inspection ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Inspection ID</label>
+                        <label>{t("inspection_id")}</label>
                         <input
                           type="number"
                           name="inspection_id"
@@ -145,7 +148,7 @@ const EditIncident = ({ selectedIncident }) => {
                     {/* ===== Asset ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Asset ID</label>
+                        <label>{t("asset_id")}</label>
                         <input
                           type="number"
                           name="asset_id"
@@ -159,7 +162,7 @@ const EditIncident = ({ selectedIncident }) => {
                     {/* ===== Question ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Question ID</label>
+                        <label>{t("question_id")}</label>
                         <input
                           type="number"
                           name="question_id"
@@ -173,7 +176,7 @@ const EditIncident = ({ selectedIncident }) => {
                     {/* ===== Vendor ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor ID</label>
+                        <label>{t("vendor_id")}</label>
                         <input
                           type="number"
                           name="vendor_id"
@@ -187,7 +190,7 @@ const EditIncident = ({ selectedIncident }) => {
                     {/* ===== Response ID ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Response ID</label>
+                        <label>{t("response_id")}</label>
                         <input
                           type="number"
                           name="response_id"
@@ -201,7 +204,7 @@ const EditIncident = ({ selectedIncident }) => {
                     {/* ===== Severity ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Severity</label>
+                        <label>{t("severity")}</label>
                         <select
                           name="severity"
                           value={formData.severity}
@@ -220,7 +223,7 @@ const EditIncident = ({ selectedIncident }) => {
                     {/* ===== Description ===== */}
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Description</label>
+                        <label>{t("description")}</label>
                         <input
                           type="text"
                           name="description"
@@ -240,7 +243,7 @@ const EditIncident = ({ selectedIncident }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -248,7 +251,7 @@ const EditIncident = ({ selectedIncident }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
                 </form>

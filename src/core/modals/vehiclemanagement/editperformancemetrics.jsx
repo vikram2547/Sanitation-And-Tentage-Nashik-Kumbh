@@ -5,9 +5,13 @@ import {
   clearMessages,
   updateVehiclePerformanceMetric,
 } from "../../redux/vehiclePerformanceMetricSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditPerformanceMetrics = ({ selectedMetric }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const { success, error, loading } = useSelector(
     (state) => state.vehiclePerformanceMetrics
   );
@@ -20,48 +24,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
     metric_date: "",
   });
 
-  /* ================= PREFILL FORM AND SHOW MODAL ================= */
-  useEffect(() => {
-    if (!selectedMetric) return;
-
-    setFormData({
-      vehicle_id: selectedMetric.vehicle_id || "",
-      route_id: selectedMetric.route_id || "",
-      metric_type: selectedMetric.metric_type || "DISTANCE",
-      metric_value: selectedMetric.metric_value || "",
-      metric_date: selectedMetric.metric_date || "",
-    });
-
-    // ✅ SHOW MODAL
-    const modalEl = document.getElementById("edit-metric-modal");
-    if (!modalEl) return;
-
-    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl, {
-      backdrop: "static",
-    });
-    modalInstance.show();
-  }, [selectedMetric]);
-
-  /* ================= HANDLE CHANGE ================= */
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  /* ================= SUBMIT ================= */
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!selectedMetric?.metric_id) return;
-
-    dispatch(
-      updateVehiclePerformanceMetric({
-        metric_id: selectedMetric.metric_id,
-        data: formData,
-      })
-    );
-  };
-
-  /* ================= CLOSE MODAL ON SUCCESS ================= */
+   /* ================= CLOSE MODAL ON SUCCESS ================= */
   useEffect(() => {
     if (!success) return;
 
@@ -85,6 +48,47 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
     modalInstance.hide();
   }, [success, dispatch]);
 
+  /* ================= PREFILL FORM AND SHOW MODAL ================= */
+   useEffect(() => {
+    if (selectedMetric) {
+      setFormData({
+      vehicle_id: selectedMetric.vehicle_id || "",
+      route_id: selectedMetric.route_id || "",
+      metric_type: selectedMetric.metric_type || "DISTANCE",
+      metric_value: selectedMetric.metric_value || "",
+      metric_date: selectedMetric.metric_date || "",
+      });
+    }
+  }, [selectedMetric]);
+  
+
+  /* ================= HANDLE CHANGE ================= */
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  /* ================= SUBMIT ================= */
+const handleSubmit = async (e) => {
+      e.preventDefault();
+
+      const metricId = selectedMetric?.metric_id || selectedMetric?.id;
+
+      if (!metricId) {
+        console.log("No Metric ID found");
+        return;
+      }
+
+      const resultAction = await dispatch(
+        updateVehiclePerformanceMetric({
+          id: metricId,
+          data: formData,
+        })
+      );
+    };
+
+ 
+
   /* ================= RENDER MODAL ================= */
   return (
     <div className="modal fade" id="edit-metric-modal" tabIndex="-1">
@@ -96,7 +100,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Performance Metric</h4>
+                  <h4>{t("edit_performance_metric")}</h4>
                 </div>
                 <button type="button" className="close" data-bs-dismiss="modal">
                   <span>×</span>
@@ -108,7 +112,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Performance metric updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -117,7 +121,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>VEHICLE ID</label>
+                        <label>{t("vehicle_id")}</label>
                         <input
                           type="text"
                           name="vehicle_id"
@@ -131,7 +135,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>ROUTE ID</label>
+                        <label>{t("route_id")}</label>
                         <input
                           type="text"
                           name="route_id"
@@ -145,7 +149,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>METRIC TYPE</label>
+                        <label>{t("metric_type")}</label>
                         <input
                           type="text"
                           name="metric_type"
@@ -159,7 +163,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>METRIC VALUE</label>
+                        <label>{t("metric_value")}</label>
                         <input
                           type="text"
                           name="metric_value"
@@ -173,7 +177,7 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>METRIC DATE</label>
+                        <label>{t("metric_date")}</label>
                         <input
                           type="date"
                           name="metric_date"
@@ -193,14 +197,14 @@ const EditPerformanceMetrics = ({ selectedMetric }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
                     <button
                       type="submit"
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
                 </form>

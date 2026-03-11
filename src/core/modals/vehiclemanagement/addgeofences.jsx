@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addVehicleGeofence, clearMessages } from "../../redux/vehicleGeofenceSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddGeofences = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleGeofences
@@ -67,7 +71,7 @@ const AddGeofences = () => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Geofence</h4>
+                  <h4>{t("add_new_vehicle_geofence")}</h4>
                 </div>
                 <button
                   type="button"
@@ -84,7 +88,7 @@ const AddGeofences = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Geofence created successfully
+                    {t("created_successfully")}
                   </div>
                 )}
 
@@ -93,7 +97,7 @@ const AddGeofences = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Point ID</label>
+                        <label>{t("point_id")}</label>
                         <input
                           type="number"
                           name="point_id"
@@ -107,7 +111,7 @@ const AddGeofences = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Radius (Meters)</label>
+                        <label>{t("radius")} ({t("meters")})</label>
                         <input
                           type="number"
                           name="radius_meters"
@@ -121,7 +125,7 @@ const AddGeofences = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Status</label>
+                        <label>{t("status")}</label>
                         <select
                           name="is_active"
                           value={formData.is_active}
@@ -143,7 +147,7 @@ const AddGeofences = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -151,7 +155,7 @@ const AddGeofences = () => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
                 </form>

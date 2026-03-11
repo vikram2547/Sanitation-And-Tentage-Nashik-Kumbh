@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewRoute = ({ selectedRoute }) => {
+const { t } = useTranslation();
 
   return (
     <div className="modal fade" id="view-route-modal">
@@ -9,7 +11,7 @@ const ViewRoute = ({ selectedRoute }) => {
 
           {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Route Details</h5>
+            <h5 className="modal-title">{t("route_details")}</h5>
             <button
               type="button"
               className="close"
@@ -24,32 +26,32 @@ const ViewRoute = ({ selectedRoute }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Route ID:</strong>
+                <strong>{t("route_id")}:</strong>
                 <div>{selectedRoute?.route_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Route Code:</strong>
+                <strong>{t("route_code")}:</strong>
                 <div>{selectedRoute?.route_code}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Route Name:</strong>
+                <strong>{t("route_name")}:</strong>
                 <div>{selectedRoute?.route_name}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Zone:</strong>
+                <strong>{t("zone")}:</strong>
                 <div>{selectedRoute?.zone}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>{selectedRoute?.status}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Created At:</strong>
+                <strong>{t("created_at")}:</strong>
                 <div>{selectedRoute?.created_at}</div>
               </div>
 
@@ -63,7 +65,7 @@ const ViewRoute = ({ selectedRoute }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

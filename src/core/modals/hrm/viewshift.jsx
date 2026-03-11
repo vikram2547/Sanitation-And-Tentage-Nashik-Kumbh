@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+
 
 const ViewShift = ({ selectedShift }) => {
+  const { t } = useTranslation();
 
   const activeStatus = (value) =>
     value === 1 || value === "1" ? "Active" : "Inactive";
@@ -12,7 +15,7 @@ const ViewShift = ({ selectedShift }) => {
 
           {/* ================= HEADER ================= */}
           <div className="modal-header">
-            <h5 className="modal-title">Shift Details</h5>
+            <h5 className="modal-title">{t("shift_details")}</h5>
             <button
               type="button"
               className="close"
@@ -28,32 +31,32 @@ const ViewShift = ({ selectedShift }) => {
 
               {/* Shift ID */}
               <div className="col-md-6 mb-3">
-                <strong>Shift ID:</strong>
+                <strong>{t("shift_id")}:</strong>
                 <div>{selectedShift?.shift_id || selectedShift?.id || "-"}</div>
               </div>
 
               {/* Shift Name */}
               <div className="col-md-6 mb-3">
-                <strong>Shift Name:</strong>
+                <strong>{t("shift_name")}:</strong>
                 <div>{selectedShift?.shift_name || "-"}</div>
               </div>
 
               {/* Start Time */}
               <div className="col-md-6 mb-3">
-                <strong>Start Time:</strong>
+                <strong>{t("start_time")}:</strong>
                 <div>{selectedShift?.start_time || "-"}</div>
               </div>
 
               {/* End Time */}
               <div className="col-md-6 mb-3">
-                <strong>End Time:</strong>
+                <strong>{t("end_time")}:</strong>
                 <div>{selectedShift?.end_time || "-"}</div>
               </div>
 
               {/* Break Duration (Optional) */}
               {selectedShift?.break_duration !== undefined && (
                 <div className="col-md-6 mb-3">
-                  <strong>Break Duration (Minutes):</strong>
+                  <strong>{t("break_duration")}:</strong>
                   <div>{selectedShift?.break_duration}</div>
                 </div>
               )}
@@ -61,21 +64,21 @@ const ViewShift = ({ selectedShift }) => {
               {/* Grace Time (Optional) */}
               {selectedShift?.grace_time !== undefined && (
                 <div className="col-md-6 mb-3">
-                  <strong>Grace Time (Minutes):</strong>
+                  <strong>{t("grace_time")}:</strong>
                   <div>{selectedShift?.grace_time}</div>
                 </div>
               )}
 
               {/* Status */}
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>{activeStatus(selectedShift?.is_active)}</div>
               </div>
 
               {/* Created At (Optional) */}
               {selectedShift?.created_at && (
                 <div className="col-md-6 mb-3">
-                  <strong>Created At:</strong>
+                  <strong>{t("created_at")}:</strong>
                   <div>{selectedShift?.created_at}</div>
                 </div>
               )}
@@ -90,7 +93,7 @@ const ViewShift = ({ selectedShift }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("close")}
             </button>
           </div>
 

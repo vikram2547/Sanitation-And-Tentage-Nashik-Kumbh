@@ -1,6 +1,10 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+
 
 const ViewAssetType = ({ selectedAssetType }) => {
+    const { t } = useTranslation();
+  
   return (
     <div
       className="modal fade"
@@ -12,7 +16,7 @@ const ViewAssetType = ({ selectedAssetType }) => {
 
           {/* ===== Modal Header ===== */}
           <div className="modal-header">
-            <h5 className="modal-title">Asset Type Details</h5>
+            <h5 className="modal-title">{t("asset_type_details")}</h5>
             <button
               type="button"
               className="close"
@@ -27,27 +31,27 @@ const ViewAssetType = ({ selectedAssetType }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Asset Type ID:</strong>
+                <strong>{t("asset_type_id")}:</strong>
                 <div>{selectedAssetType?.asset_type_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Type:</strong>
+                <strong>{t("asset_type")}:</strong>
                 <div>{selectedAssetType?.type || "-"}</div>
               </div>
 
               <div className="col-md-12 mb-3">
-                <strong>Name:</strong>
+                <strong>{t("asset_name")}:</strong>
                 <div>{selectedAssetType?.name}</div>
               </div>
 
               <div className="col-md-12 mb-3">
-                <strong>Description:</strong>
+                <strong>{t("description")}:</strong>
                 <div>{selectedAssetType?.description || "-"}</div>
               </div>
 
               <div className="col-md-12 mb-3">
-                <strong>Questions:</strong>
+                <strong>{t("questions")}:</strong>
                 <div>
                   {Array.isArray(selectedAssetType?.questions)
                     ? selectedAssetType.questions.join(", ")
@@ -56,7 +60,7 @@ const ViewAssetType = ({ selectedAssetType }) => {
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>
                   {selectedAssetType?.status === "1"
                     ? "Active"
@@ -74,7 +78,7 @@ const ViewAssetType = ({ selectedAssetType }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("close")}
             </button>
           </div>
 

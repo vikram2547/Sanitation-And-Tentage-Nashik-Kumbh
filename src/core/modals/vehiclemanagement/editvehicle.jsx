@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { updateVehicle, clearMessages } from "../../redux/vehicleSlice";
+import { useTranslation } from "react-i18next";
 
 const EditVehicle = ({ selectedVehicle }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector((state) => state.vehicles);
 
@@ -93,7 +95,7 @@ const EditVehicle = ({ selectedVehicle }) => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Vehicle</h4>
+                  <h4>{t("edit_vehicle")}</h4>
                 </div>
 
                 <button
@@ -112,7 +114,7 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Vehicle updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -121,7 +123,7 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Name</label>
+                        <label>{t("vehicle_name")}</label>
                         <input
                           type="text"
                           name="vehicle_name"
@@ -135,21 +137,27 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Type</label>
-                        <input
-                          type="text"
+                        <label>{t("vehicle_type")}</label>
+                        <select
                           name="vehicle_type"
                           value={formData.vehicle_type}
                           onChange={handleChange}
                           className="form-control"
                           required
-                        />
+                        >
+                          <option value="">Select Vehicle Type</option>
+                          <option value="Compactor">Compactor</option>
+                          <option value="Dumper">Dumper</option>
+                          <option value="Loader">Loader</option>
+                          <option value="Mini-truck">Mini-Truck</option>
+                          <option value="Tipper">Tipper</option>
+                        </select>
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle Number</label>
+                        <label>{t("vehicle_number")}</label>
                         <input
                           type="text"
                           name="vehicle_number"
@@ -162,7 +170,7 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>RC Number</label>
+                        <label>{t("rc_number")}</label>
                         <input
                           type="text"
                           name="rc_number"
@@ -175,7 +183,7 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor ID</label>
+                        <label>{t("vendor_id")}</label>
                         <input
                           type="text"
                           name="vendor_id"
@@ -188,7 +196,7 @@ const EditVehicle = ({ selectedVehicle }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Status</label>
+                        <label>{t("status")}</label>
                         <select
                           className="form-control"
                           name="status"

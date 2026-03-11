@@ -12,7 +12,7 @@ import {
 
 const Register = () => {
   const dispatch = useDispatch();
-  const { loading, registrationStatus, registrationError } =
+  const { loading, registrationStatus, registrationError, success } =
     useSelector(state => state.register);
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
@@ -65,13 +65,11 @@ const Register = () => {
   const route = all_routes;
 
   useEffect(() => {
-    if (!hasSubmitted) return;
 
-    if (registrationStatus) {
-      setMessage("Registration successful!");
+    if (success) {
+      setMessage(success);
       setMessageType("success");
 
-      // reset form
       setFormData({
         full_name: "",
         email: "",
@@ -79,9 +77,6 @@ const Register = () => {
         password: "",
       });
 
-      setHasSubmitted(false);
-
-      // auto-hide success message + clear redux
       setTimeout(() => {
         setMessage(null);
         setMessageType("");
@@ -92,16 +87,15 @@ const Register = () => {
     if (registrationError) {
       setMessage(registrationError);
       setMessageType("error");
-      setHasSubmitted(false);
 
-      // 🔥 AUTO HIDE ERROR MESSAGE
       setTimeout(() => {
         setMessage(null);
         setMessageType("");
-        dispatch(clearSignupState()); 
+        dispatch(clearSignupState());
       }, 3000);
     }
-  }, [registrationStatus, registrationError, hasSubmitted, dispatch]);
+
+  }, [success, registrationError, dispatch]);
 
 
   return (

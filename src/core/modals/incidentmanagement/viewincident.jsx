@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewIncident = ({ selectedIncident }) => {
+    const { t } = useTranslation();
 
     return (
         <div className="modal fade" id="view-incident-modal" tabIndex="-1">
@@ -8,7 +10,7 @@ const ViewIncident = ({ selectedIncident }) => {
                 <div className="modal-content">
 
                     <div className="modal-header">
-                        <h5 className="modal-title">Incident Details</h5>
+                        <h5 className="modal-title">{t("incident_details")}</h5>
                         <button
                             type="button"
                             className="close"
@@ -23,87 +25,87 @@ const ViewIncident = ({ selectedIncident }) => {
                         <div className="row">
 
                             <div className="col-md-6 mb-3">
-                                <strong>Incident ID:</strong>
+                                <strong>{t("incident_id")}:</strong>
                                 <div>{selectedIncident?.incident_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Incident Code:</strong>
+                                <strong>{t("incident_code")}:</strong>
                                 <div>{selectedIncident?.incident_code}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Inspection ID:</strong>
+                                <strong>{t("inspection_id")}:</strong>
                                 <div>{selectedIncident?.inspection_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Response ID:</strong>
+                                <strong>{t("response_id")}:</strong>
                                 <div>{selectedIncident?.response_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Asset ID:</strong>
+                                <strong>{t("asset_id")}:</strong>
                                 <div>{selectedIncident?.asset_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Question ID:</strong>
+                                <strong>{t("question_id")}:</strong>
                                 <div>{selectedIncident?.question_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Reported By:</strong>
+                                <strong>{t("reported_by")}:</strong>
                                 <div>{selectedIncident?.reported_by}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Resolved By:</strong>
+                                <strong>{t("resolved_by")}:</strong>
                                 <div>{selectedIncident?.resolved_by || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Vendor ID:</strong>
+                                <strong>{t("vendor_id")}:</strong>
                                 <div>{selectedIncident?.vendor_id}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Severity:</strong>
+                                <strong>{t("severity")}:</strong>
                                 <div>{selectedIncident?.severity}</div>
                             </div>
 
                             <div className="col-md-12 mb-3">
-                                <strong>Description:</strong>
+                                <strong>{t("description")}:</strong>
                                 <div>{selectedIncident?.description}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Incident Status:</strong>
+                                <strong>{t("status")}:</strong>
                                 <div>{selectedIncident?.incident_status}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Due Date:</strong>
+                                <strong>{t("due_date")}:</strong>
                                 <div>{selectedIncident?.due_date || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Resolved Date:</strong>
+                                <strong>{t("resolved_date")}:</strong>
                                 <div>{selectedIncident?.resolved_date || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Closed Date:</strong>
+                                <strong>{t("closed_date")}:</strong>
                                 <div>{selectedIncident?.closed_date || "-"}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Created At:</strong>
+                                <strong>{t("created_at")}:</strong>
                                 <div>{selectedIncident?.created_at}</div>
                             </div>
 
                             <div className="col-md-6 mb-3">
-                                <strong>Updated At:</strong>
+                                <strong>{t("updated_at")}:</strong>
                                 <div>{selectedIncident?.updated_at}</div>
                             </div>
 
@@ -116,7 +118,7 @@ const ViewIncident = ({ selectedIncident }) => {
                             className="btn btn-secondary"
                             data-bs-dismiss="modal"
                         >
-                            Close
+                            {t("cancel")}
                         </button>
                     </div>
 

@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addQuestion, clearMessages } from "../../redux/questionSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddQuestion = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.questions
@@ -35,9 +38,18 @@ const AddQuestion = () => {
   };
 
   /* ================= SUBMIT ================= */
-  const handleSubmit = (e) => {
+  const handleSubmit = async  (e) => {
     e.preventDefault();
-    dispatch(addQuestion(formData));
+
+     await dispatch(addQuestion(formData));
+
+     if (createVendor.fulfilled.match(resultAction)) {
+      // Close modal
+      const modal = window.bootstrap.Modal.getInstance(
+        document.getElementById("add-vendor")
+      );
+      modal?.hide();
+    }
   };
 
   /* ================= SUCCESS FLOW ================= */
@@ -70,14 +82,15 @@ const AddQuestion = () => {
 
   /* ================= AUTO CLEAR MESSAGE ================= */
   useEffect(() => {
-    if (!success && !error) return;
+     if (success || error) return;
+ 
+     const timer = setTimeout(() => {
+       dispatch(clearMessages());
+     }, 3000);
+ 
+     return () => clearTimeout(timer);
+   }, [success, error, dispatch]);
 
-    const timer = setTimeout(() => {
-      dispatch(clearMessages());
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [success, error, dispatch]);
 
   return (
     <div className="modal fade" id="add-question" tabIndex="-1">
@@ -88,7 +101,7 @@ const AddQuestion = () => {
 
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Question</h4>
+                  <h4>{t("add_new_questions")}</h4>
                 </div>
                 <button type="button" className="close" data-bs-dismiss="modal">
                   <span>×</span>
@@ -100,7 +113,7 @@ const AddQuestion = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Question created successfully
+                    {t("created_successfully")}
                   </div>
                 )}
 
@@ -110,7 +123,7 @@ const AddQuestion = () => {
                     {/* ===== Question Text ===== */}
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Question</label>
+                        <label>{t("question")}</label>
                         <input
                           type="text"
                           name="question_text"
@@ -126,7 +139,7 @@ const AddQuestion = () => {
                     {/* ===== Question Type ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Question Type</label>
+                        <label>{t("question_type")}</label>
                         <select
                           name="question_type"
                           value={formData.question_type}
@@ -142,7 +155,7 @@ const AddQuestion = () => {
                     {/* ===== Expected Answer ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Expected Answer</label>
+                        <label>{t("expected_answer")}</label>
                         <select
                           name="expected_answer"
                           value={formData.expected_answer}
@@ -159,7 +172,7 @@ const AddQuestion = () => {
                     {/* ===== Severity ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Severity</label>
+                        <label>{t("severity")}</label>
                         <select
                           name="severity"
                           value={formData.severity}
@@ -178,7 +191,7 @@ const AddQuestion = () => {
                     {/* ===== Sequence ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Sequence</label>
+                        <label>{t("sequence")}</label>
                         <input
                           type="number"
                           name="sequence"
@@ -197,7 +210,7 @@ const AddQuestion = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                     {t("cancel")}
                     </button>
 
                     <button
@@ -205,7 +218,7 @@ const AddQuestion = () => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
                 </form>

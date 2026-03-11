@@ -1,13 +1,15 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewCircle = ({ selectedCircle }) => {
+  const { t } = useTranslation();
   return (
     <div className="modal fade" id="view-circle-modal">
       <div className="modal-dialog modal-dialog-centered modal-md">
         <div className="modal-content">
 
           <div className="modal-header">
-            <h5 className="modal-title">Circle Details</h5>
+            <h5 className="modal-title">{t("circle_details")}</h5>
             <button
               type="button"
               className="close"
@@ -21,19 +23,19 @@ const ViewCircle = ({ selectedCircle }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Circle ID:</strong>
+                <strong>{t("circle_id")}:</strong>
                 <div>
                   {selectedCircle?.circle_id || selectedCircle?.id}
                 </div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Circle Name:</strong>
+                <strong>{t("circle_name")}:</strong>
                 <div>{selectedCircle?.circle_name}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Circle Code:</strong>
+                <strong>{t("circle_code")}:</strong>
                 <div>{selectedCircle?.circle_code}</div>
               </div>
 
@@ -46,7 +48,7 @@ const ViewCircle = ({ selectedCircle }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

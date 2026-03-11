@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, createUser } from "../../redux/usersSlice";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 
 
 const AddUsers = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector((state) => state.users);
 
@@ -120,7 +122,7 @@ const AddUsers = () => {
               <div className="content">
                 <div className="modal-header border-0 custom-modal-header">
                   <div className="page-title">
-                    <h4>Add User</h4>
+                    <h4>{t("add_new_user")}</h4>
                   </div>
                   <button
                     type="button"
@@ -147,7 +149,7 @@ const AddUsers = () => {
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>User Name</label>
+                          <label>{t("user_name")}</label>
                           <input
                             type="text"
                             name="full_name"
@@ -160,7 +162,7 @@ const AddUsers = () => {
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>Phone</label>
+                          <label>{t("phone")}</label>
                           <input
                             type="text"
                             name="phone"
@@ -173,7 +175,7 @@ const AddUsers = () => {
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>Email</label>
+                          <label>{t("email")}</label>
                           <input
                             type="email"
                             name="email"
@@ -186,7 +188,7 @@ const AddUsers = () => {
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>Password</label>
+                          <label>{t("password")}</label>
                           <div className="pass-group">
                             <input
                               type={showPassword ? "text" : "password"}
@@ -212,7 +214,7 @@ const AddUsers = () => {
                         className="btn btn-cancel me-2"
                         data-bs-dismiss="modal"
                       >
-                        Cancel
+                        {t("cancel")}
                       </button>
 
                       <button
@@ -220,7 +222,7 @@ const AddUsers = () => {
                         className="btn btn-submit"
                         disabled={loading}
                       >
-                        {loading ? "Adding..." : "Submit"}
+                        {loading ? t("adding") : t("submit")}
                       </button>
                     </div>
 

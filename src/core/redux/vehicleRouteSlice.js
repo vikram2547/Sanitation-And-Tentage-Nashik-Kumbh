@@ -118,6 +118,7 @@ const vehicleRouteSlice = createSlice({
       })
       .addCase(getVehicleRoutes.fulfilled, (state, action) => {
         state.loading = false;
+        
         state.vehicleRoutes = action.payload?.data?.routes || [];
         state.totalRecords = action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -127,7 +128,11 @@ const vehicleRouteSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicleRoute.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehicleRoute.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle route created successfully";
         state.vehicleRoutes.unshift(action.payload?.data);
         state.totalRecords += 1;
@@ -137,7 +142,12 @@ const vehicleRouteSlice = createSlice({
         state.error = action.payload;
       })
       /* ===== UPDATE ===== */
+      .addCase(updateVehicleRoute.pending, (state) => {
+              state.loading = true;
+              state.error = null;
+            })
       .addCase(updateVehicleRoute.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle route updated successfully";
 
         const updated = action.payload?.data;
@@ -151,7 +161,12 @@ const vehicleRouteSlice = createSlice({
         state.error = action.payload;
       })
       /* ===== DELETE ===== */
+      .addCase(deleteVehicleRoute.pending, (state) => {
+              state.loading = true;
+              state.error = null;
+            })
       .addCase(deleteVehicleRoute.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle route deleted successfully";
 
         const deletedId = action.meta.arg;

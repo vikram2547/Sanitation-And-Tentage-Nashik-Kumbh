@@ -2,10 +2,13 @@
   import { useDispatch, useSelector } from "react-redux";
   import { Modal } from "bootstrap";
   import { clearMessages, updateSector } from "../../redux/sectorSlice";
+  import { useTranslation } from "react-i18next";
+
 
 
   const EditSector = ({ selectedSector }) => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const { success, error, loading } = useSelector((state) => state.sectors);
 
     const [formData, setFormData] = useState({
@@ -63,7 +66,7 @@
       const sectorId = selectedSector?.sector_id || selectedSector?.id;
 
       if (!sectorId) {
-        console.log("No User ID found");
+        console.log("No Sector ID found");
         return;
       }
 
@@ -83,7 +86,7 @@
               <div className="content">
                 <div className="modal-header border-0 custom-modal-header">
                   <div className="page-title">
-                    <h4>Edit Sector</h4>
+                    <h4>{t("edit_sector")}</h4>
                   </div>
                   <button
                     type="button"
@@ -105,7 +108,7 @@
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>Sector Name</label>
+                          <label>{t("sector_name")}</label>
                           <input
                             type="text"
                             name="sector_name"
@@ -118,7 +121,7 @@
 
                       <div className="col-lg-6">
                         <div className="input-blocks">
-                          <label>Sector Code</label>
+                          <label>{t("sector_code")}</label>
                           <input
                             type="text"
                             name="sector_code"
@@ -136,7 +139,7 @@
                         className="btn btn-cancel me-2"
                         data-bs-dismiss="modal"
                       >
-                        Cancel
+                        {t("cancel")}
                       </button>
 
                       <button
@@ -144,7 +147,7 @@
                         className="btn btn-submit"
                         disabled={loading}
                       >
-                        {loading ? "Updating..." : "Update"}
+                        {loading ? t("updating") : t("update")}
                       </button>
                     </div>
                   </form>

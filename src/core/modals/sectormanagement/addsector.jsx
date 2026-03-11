@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addSector, clearMessages } from "../../redux/sectorSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddSector = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+
 
     const { success, error, loading } = useSelector(
         (state) => state.sectors
@@ -87,7 +91,7 @@ const AddSector = () => {
 
                             <div className="modal-header border-0 custom-modal-header">
                                 <div className="page-title">
-                                    <h4>Add Sector</h4>
+                                    <h4>{t("add_new_sector")}</h4>
                                 </div>
                                 <button
                                     type="button"
@@ -106,7 +110,7 @@ const AddSector = () => {
 
                                 {success && (
                                     <div className="alert alert-success">
-                                        Sector created successfully
+                                        {t("created_successfully")}
                                     </div>
                                 )}
 
@@ -115,7 +119,7 @@ const AddSector = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Sector Name</label>
+                                                <label>{t("sector_name")}</label>
                                                 <input
                                                     type="text"
                                                     name="sector_name"
@@ -128,7 +132,7 @@ const AddSector = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Sector Code</label>
+                                                <label>{t("sector_code")}</label>
                                                 <input
                                                     type="text"
                                                     name="sector_code"
@@ -146,7 +150,7 @@ const AddSector = () => {
                                             className="btn btn-cancel me-2"
                                             data-bs-dismiss="modal"
                                         >
-                                            Cancel
+                                            {t("cancel")}
                                         </button>
 
                                         <button
@@ -154,7 +158,7 @@ const AddSector = () => {
                                             className="btn btn-submit"
                                             disabled={loading}
                                         >
-                                            {loading ? "Adding..." : "Submit"}
+                                            {loading ? t("adding") : t("submit")}
                                         </button>
                                     </div>
 

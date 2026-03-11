@@ -135,7 +135,11 @@ const vehicleRouteAssignmentSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicleRouteAssignment.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehicleRouteAssignment.fulfilled, (state, action) => {
+        state.loading = false;
         state.success =
           "Vehicle route assignment created successfully";
         state.assignments.unshift(action.payload?.data);
@@ -147,7 +151,12 @@ const vehicleRouteAssignmentSlice = createSlice({
       })
 
       /* ===== UPDATE ===== */
+      .addCase(updateVehicleRouteAssignment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehicleRouteAssignment.fulfilled, (state, action) => {
+        state.loading = false;
         state.success =
           "Vehicle route assignment updated successfully";
         const updated = action.payload?.data;
@@ -164,7 +173,12 @@ const vehicleRouteAssignmentSlice = createSlice({
       })
 
       /* ===== DELETE ===== */
+      .addCase(deleteVehicleRouteAssignment.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteVehicleRouteAssignment.fulfilled, (state, action) => {
+        state.loading = false;
         state.success =
           "Vehicle route assignment deleted successfully";
 

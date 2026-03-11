@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewCollectionPoints = ({ selectedPoint }) => {
+const { t } = useTranslation();
 
   return (
     <div className="modal fade" id="view-collection-point-modal">
@@ -9,7 +11,7 @@ const ViewCollectionPoints = ({ selectedPoint }) => {
 
           {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Collection Point Details</h5>
+            <h5 className="modal-title">{t("collection_point_details")}</h5>
             <button
               type="button"
               className="close"
@@ -24,57 +26,57 @@ const ViewCollectionPoints = ({ selectedPoint }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Point Code:</strong>
+                <strong>{t("point_code")}:</strong>
                 <div>{selectedPoint?.point_code}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Point Name:</strong>
+                <strong>{t("point_name")}:</strong>
                 <div>{selectedPoint?.point_name}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Latitude:</strong>
+                <strong>{t("latitude")}:</strong>
                 <div>{selectedPoint?.latitude}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Longitude:</strong>
+                <strong>{t("longitude")}:</strong>
                 <div>{selectedPoint?.longitude}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Address:</strong>
+                <strong>{t("address")}:</strong>
                 <div>{selectedPoint?.address || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Ward Number:</strong>
+                <strong>{t("ward_number")}:</strong>
                 <div>{selectedPoint?.ward_number || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Zone:</strong>
+                <strong>{t("zone")}:</strong>
                 <div>{selectedPoint?.zone || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Point Type:</strong>
+                <strong>{t("point_type")}:</strong>
                 <div>{selectedPoint?.point_type}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Expected Collection Time:</strong>
+                <strong>{t("expected_collection_time")}:</strong>
                 <div>{selectedPoint?.expected_collection_time}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Collection Frequency:</strong>
+                <strong>{t("collection_frequency")}:</strong>
                 <div>{selectedPoint?.collection_frequency}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>{selectedPoint?.status}</div>
               </div>
 
@@ -88,7 +90,7 @@ const ViewCollectionPoints = ({ selectedPoint }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

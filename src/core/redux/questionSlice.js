@@ -150,7 +150,9 @@ const questionSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
+      .addCase(addQuestion.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addQuestion.fulfilled, (state) => {
         state.loading = false;
         state.success = "Question created successfully";
@@ -159,7 +161,10 @@ const questionSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-
+      .addCase(updateQuestion.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateQuestion.fulfilled, (state) => {
         state.loading = false;
         state.success = "Question updated successfully";
@@ -168,6 +173,11 @@ const questionSlice = createSlice({
       .addCase(updateQuestion.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(deleteQuestion.pending, (state) => {
+        state.loading = true;
+        state.error = null;
       })
 
       .addCase(deleteQuestion.fulfilled, (state, action) => {

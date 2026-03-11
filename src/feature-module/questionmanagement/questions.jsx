@@ -31,9 +31,9 @@ const Questions = () => {
     // ============================
     // FETCH QUESTIONS
     // ============================
-    useEffect(() => {
-        dispatch(getQuestions({ page: currentPage, per_page: rows }));
-    }, [dispatch, currentPage, rows]);
+     useEffect(() => {
+            dispatch(getQuestions({ page: currentPage, per_page: rows }));
+        }, [dispatch, currentPage, rows]);
 
     // ============================
     // AUTO CLEAR SUCCESS / ERROR

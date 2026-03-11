@@ -132,7 +132,11 @@ const vehicleSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicle.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehicle.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle created successfully";
         state.vehicles.unshift(action.payload?.data);
         state.totalRecords += 1;
@@ -144,7 +148,12 @@ const vehicleSlice = createSlice({
       })
 
       /* ===== UPDATE ===== */
+      .addCase(updateVehicle.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehicle.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle updated successfully";
 
         const updated = action.payload?.data;
@@ -160,7 +169,12 @@ const vehicleSlice = createSlice({
       })
 
       /* ===== DELETE ===== */
+      .addCase(deleteVehicle.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteVehicle.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle deleted successfully";
 
         const deletedId = action.meta.arg;

@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { updateQuestion, clearMessages } from "../../redux/questionSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditQuestion = ({ selectedQuestion }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.questions
@@ -21,16 +24,17 @@ const EditQuestion = ({ selectedQuestion }) => {
 
   /* ================= PREFILL DATA ================= */
   useEffect(() => {
-    if (!selectedQuestion) return;
+    if (selectedQuestion) {
+      setFormData({
+        question_text: selectedQuestion.question_text || "",
+        question_type: selectedQuestion.question_type || "",
+        expected_answer: selectedQuestion.expected_answer || "",
+        severity: selectedQuestion.severity || "",
+        sequence: selectedQuestion.sequence ?? 1,
+        is_active: selectedQuestion.is_active ?? 1,
+      });
+    }
 
-    setFormData({
-      question_text: selectedQuestion.question_text || "",
-      question_type: selectedQuestion.question_type || "",
-      expected_answer: selectedQuestion.expected_answer || "",
-      severity: selectedQuestion.severity || "",
-      sequence: selectedQuestion.sequence ?? 1,
-      is_active: selectedQuestion.is_active ?? 1,
-    });
   }, [selectedQuestion]);
 
   /* ================= HANDLE CHANGE ================= */
@@ -95,7 +99,7 @@ const EditQuestion = ({ selectedQuestion }) => {
 
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Question</h4>
+                  <h4>{t("edit_question")}</h4>
                 </div>
                 <button
                   type="button"
@@ -114,7 +118,7 @@ const EditQuestion = ({ selectedQuestion }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Question updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -123,7 +127,7 @@ const EditQuestion = ({ selectedQuestion }) => {
 
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Question</label>
+                        <label>{t("question")}</label>
                         <input
                           type="text"
                           name="question_text"
@@ -137,7 +141,7 @@ const EditQuestion = ({ selectedQuestion }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Question Type</label>
+                        <label>{t("question_type")}</label>
                         <select
                           type="text"
                           name="question_type"
@@ -146,14 +150,14 @@ const EditQuestion = ({ selectedQuestion }) => {
                           className="form-control"
                           required
                         >
-                          <option value="YES_NO">Yes / No</option>
+                          <option value="YES_NO">Yes/No</option>
                         </select>
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Expected Answer</label>
+                        <label>{t("expected_answer")}</label>
                         <select
                           type='text'
                           name="expected_answer"
@@ -170,7 +174,7 @@ const EditQuestion = ({ selectedQuestion }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Severity</label>
+                        <label>{t("severity")}</label>
                         <select
                           name="severity"
                           value={formData.severity}
@@ -194,7 +198,7 @@ const EditQuestion = ({ selectedQuestion }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -202,7 +206,7 @@ const EditQuestion = ({ selectedQuestion }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
                 </form>

@@ -146,7 +146,11 @@ const vehicleCollectionPointSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicleCollectionPoint.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehicleCollectionPoint.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle collection point created successfully";
         state.collectionPoints.unshift(action.payload?.data);
         state.totalRecords += 1;
@@ -158,7 +162,12 @@ const vehicleCollectionPointSlice = createSlice({
       })
 
       /* ===== UPDATE ===== */
+      .addCase(updateVehicleCollectionPoint.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehicleCollectionPoint.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle collection point updated successfully";
 
         const updated = action.payload?.data;
@@ -176,7 +185,12 @@ const vehicleCollectionPointSlice = createSlice({
       })
 
       /* ===== DELETE ===== */
+      .addCase(deleteVehicleCollectionPoint.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteVehicleCollectionPoint.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle collection point deleted successfully";
 
         const deletedId = action.meta.arg;

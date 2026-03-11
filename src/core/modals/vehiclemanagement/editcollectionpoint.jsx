@@ -5,9 +5,12 @@ import {
   clearMessages,
   updateVehicleCollectionPoint,
 } from "../../redux/vehicleCollectionPointSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditCollectionPoint = ({ selectedPoint }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleCollectionPoints
@@ -105,7 +108,7 @@ const EditCollectionPoint = ({ selectedPoint }) => {
               {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Collection Point</h4>
+                  <h4>{t("edit_collection_point")}</h4>
                 </div>
                 <button
                   type="button"
@@ -125,7 +128,7 @@ const EditCollectionPoint = ({ selectedPoint }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Collection Point updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -138,7 +141,7 @@ const EditCollectionPoint = ({ selectedPoint }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -146,7 +149,7 @@ const EditCollectionPoint = ({ selectedPoint }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
 

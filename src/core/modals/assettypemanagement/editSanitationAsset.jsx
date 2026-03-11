@@ -5,9 +5,12 @@ import {
   updateSanitationAsset,
   clearMessages,
 } from "../../redux/sanitationAssetSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditSanitationAsset = ({ selectedAsset }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { loading, success, error } = useSelector(
     (state) => state.sanitationAssets
@@ -112,7 +115,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
               {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Sanitation Asset</h4>
+                  <h4>{t("edit_sanitation_asset")}</h4>
                 </div>
 
                 <button
@@ -133,7 +136,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Sanitation Asset updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -142,7 +145,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>QR Code</label>
+                        <label>{t("qr_code")}</label>
                         <input
                           type="text"
                           name="qr_code"
@@ -156,7 +159,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Asset Name</label>
+                        <label>{t("asset_name")}</label>
                         <input
                           type="text"
                           name="asset_name"
@@ -170,7 +173,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Sector</label>
+                        <label>{t("sector")}</label>
                         <select
                           className="form-control"
                           name="sector_id"
@@ -178,7 +181,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
                           onChange={handleChange}
                           required
                         >
-                          <option value="">Select Sector</option>
+                          <option value="">Selector Sector</option>
                           {sectors?.map((s) => (
                             <option key={s.sector_id} value={s.sector_id}>
                               {s.sector_name}
@@ -190,7 +193,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Circle</label>
+                        <label>{t("circle")}</label>
                         <select
                           className="form-control"
                           name="circle_id"
@@ -217,7 +220,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -225,7 +228,7 @@ const EditSanitationAsset = ({ selectedAsset }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
 
                   </div>

@@ -32,10 +32,12 @@ const VehicleGpsTracking = () => {
 
   /* ================= FETCH ================= */
   useEffect(() => {
+    dispatch(clearMessages());
     dispatch(getVehicleGpsTracking({ page: currentPage, per_page: rows }));
   }, [dispatch, currentPage, rows]);
 
   /* ================= AUTO CLEAR ================= */
+ 
   useEffect(() => {
     if (success || error) {
       const timer = setTimeout(() => {

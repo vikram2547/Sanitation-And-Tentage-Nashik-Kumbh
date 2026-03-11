@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+
 
 const ViewSanitationAssetAllocation = ({ selectedAsset }) => {
+  const { t } = useTranslation();
 
   return (
     <div
@@ -13,7 +16,7 @@ const ViewSanitationAssetAllocation = ({ selectedAsset }) => {
 
           {/* ===== Modal Header ===== */}
           <div className="modal-header">
-            <h5 className="modal-title">Sanitation Asset Allocation Details</h5>
+            <h5 className="modal-title">{t("sanitation_asset_allocation_details")}</h5>
             <button
               type="button"
               className="close"
@@ -28,27 +31,27 @@ const ViewSanitationAssetAllocation = ({ selectedAsset }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Asset ID:</strong>
+                <strong>{t("asset_id")}:</strong>
                 <div>{selectedAsset?.asset_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Swachhagrahi ID:</strong>
+                <strong>{t("swachhagrahi_id")}:</strong>
                 <div>{selectedAsset?.swachhagrahi_id || "-"}</div>
               </div>
 
               <div className="col-md-12 mb-3">
-                <strong>Shift ID:</strong>
+                <strong>{t("shift_id")}:</strong>
                 <div>{selectedAsset?.shift_id || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Allocation Date:</strong>
+                <strong>{t("allocation_date")}:</strong>
                 <div>{selectedAsset?.allocation_date || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>
                   {selectedAsset?.status === "ACTIVE" ? "Active" : "Inactive"}
                 </div>
@@ -63,7 +66,7 @@ const ViewSanitationAssetAllocation = ({ selectedAsset }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

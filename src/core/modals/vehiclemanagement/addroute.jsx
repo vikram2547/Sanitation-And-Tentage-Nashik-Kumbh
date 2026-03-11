@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addVehicleRoute, clearMessages } from "../../redux/vehicleRouteSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddRoute = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleRoutes
@@ -69,7 +72,7 @@ const AddRoute = () => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Route</h4>
+                  <h4>{t("add_new_vehicle_route")}</h4>
                 </div>
                 <button
                   type="button"
@@ -95,7 +98,7 @@ const AddRoute = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Route Code</label>
+                        <label>{t("route_code")}</label>
                         <input
                           type="text"
                           name="route_code"
@@ -109,7 +112,7 @@ const AddRoute = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Route Name</label>
+                        <label>{t("route_name")}</label>
                         <input
                           type="text"
                           name="route_name"
@@ -123,7 +126,7 @@ const AddRoute = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Zone</label>
+                        <label>{t("zone")}</label>
                         <select
                           name="zone"
                           value={formData.zone}
@@ -142,7 +145,7 @@ const AddRoute = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Status</label>
+                        <label>{t("status")}</label>
                         <select
                           name="status"
                           value={formData.status}
@@ -164,7 +167,7 @@ const AddRoute = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -172,7 +175,7 @@ const AddRoute = () => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
                 </form>

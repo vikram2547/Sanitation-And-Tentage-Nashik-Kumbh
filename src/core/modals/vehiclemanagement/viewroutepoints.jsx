@@ -1,7 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewRoutePoints = ({ selectedRoutePoint }) => {
-
+ const { t } = useTranslation();
+ 
   return (
     <div className="modal fade" id="view-route-point-modal">
       <div className="modal-dialog modal-dialog-centered modal-md">
@@ -9,7 +11,7 @@ const ViewRoutePoints = ({ selectedRoutePoint }) => {
 
           {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Route Point Details</h5>
+            <h5 className="modal-title">{t("route_points_details")}</h5>
             <button
               type="button"
               className="close"
@@ -24,32 +26,32 @@ const ViewRoutePoints = ({ selectedRoutePoint }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Route Point ID:</strong>
+                <strong>{t("route_point_id")}:</strong>
                 <div>{selectedRoutePoint?.route_point_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Route ID:</strong>
+                <strong>{t("route_id")}:</strong>
                 <div>{selectedRoutePoint?.route_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Point ID:</strong>
+                <strong>{t("point_id")}:</strong>
                 <div>{selectedRoutePoint?.point_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Sequence Number:</strong>
+                <strong>{t("sequence_number")}:</strong>
                 <div>{selectedRoutePoint?.sequence_number}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Estimated Arrival Time:</strong>
+                <strong>{t("estimated_arrival_time")}:</strong>
                 <div>{selectedRoutePoint?.estimated_arrival_time}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Expected Stay Duration:</strong>
+                <strong>{t("expected_stay_duration")}:</strong>
                 <div>{selectedRoutePoint?.expected_stay_duration}</div>
               </div>
 
@@ -63,7 +65,7 @@ const ViewRoutePoints = ({ selectedRoutePoint }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

@@ -2,9 +2,13 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, updateVendor } from "../../redux/vendorsSlice";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
+
 
 const EditVendor = ({ selectedVendor }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  
   const { success, error, loading } = useSelector(
     (state) => state.vendors
   );
@@ -95,7 +99,7 @@ const EditVendor = ({ selectedVendor }) => {
             <div className="content">
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Vendor</h4>
+                  <h4>{t("edit_vendor")}</h4>
                 </div>
                 <button
                   type="button"
@@ -118,9 +122,9 @@ const EditVendor = ({ selectedVendor }) => {
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    <div className="col-lg-6">
+                    {/* <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor Name</label>
+                        <label>{t("vendor_name")}</label>
                         <input
                           type="text"
                           name="vendor_name"
@@ -129,11 +133,11 @@ const EditVendor = ({ selectedVendor }) => {
                           className="form-control"
                         />
                       </div>
-                    </div>
+                    </div> */}
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vendor Code</label>
+                        <label>{t("vendor_code")}</label>
                         <input
                           type="text"
                           name="vendor_code"
@@ -146,7 +150,7 @@ const EditVendor = ({ selectedVendor }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Contact Person</label>
+                        <label>{t("contact_person")}</label>
                         <input
                           type="text"
                           name="contact_person"
@@ -159,7 +163,7 @@ const EditVendor = ({ selectedVendor }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Contact Email</label>
+                        <label>{t("email")}</label>
                         <input
                           type="email"
                           name="contact_email"
@@ -172,7 +176,7 @@ const EditVendor = ({ selectedVendor }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Contact Phone</label>
+                        <label>{t("phone")}</label>
                         <input
                           type="text"
                           name="contact_phone"
@@ -185,7 +189,7 @@ const EditVendor = ({ selectedVendor }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Status</label>
+                        <label>{t("status")}</label>
                         <select
                           name="status"
                           value={formData.status}
@@ -200,7 +204,7 @@ const EditVendor = ({ selectedVendor }) => {
 
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Address</label>
+                        <label>{t("address")}</label>
                         <textarea
                           name="address"
                           value={formData.address}
@@ -218,7 +222,7 @@ const EditVendor = ({ selectedVendor }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -226,7 +230,7 @@ const EditVendor = ({ selectedVendor }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
 

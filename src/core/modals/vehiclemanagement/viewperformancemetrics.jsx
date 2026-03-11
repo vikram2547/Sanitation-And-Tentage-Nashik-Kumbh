@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewPerformanceMetrics = ({ selectedMetric }) => {
+const { t } = useTranslation();
 
   return (
     <div className="modal fade" id="view-metric-modal">
@@ -9,7 +11,7 @@ const ViewPerformanceMetrics = ({ selectedMetric }) => {
 
           {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Performance Metric Details</h5>
+            <h5 className="modal-title">{t("performance_metrics_details")}</h5>
             <button
               type="button"
               className="close"
@@ -24,32 +26,32 @@ const ViewPerformanceMetrics = ({ selectedMetric }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Metric ID:</strong>
+                <strong>{t("metric_id")}:</strong>
                 <div>{selectedMetric?.metric_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle ID:</strong>
+                <strong>{t("vehicle_id")}:</strong>
                 <div>{selectedMetric?.vehicle_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Route ID:</strong>
+                <strong>{t("route_id")}:</strong>
                 <div>{selectedMetric?.route_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Metric Date:</strong>
+                <strong>{t("metric_date")}:</strong>
                 <div>{selectedMetric?.metric_date}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Metric Type:</strong>
+                <strong>{t("metric_type")}:</strong>
                 <div>{selectedMetric?.metric_type}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Metric Value:</strong>
+                <strong>{t("metric_value")}:</strong>
                 <div>{selectedMetric?.metric_value}</div>
               </div>
 
@@ -63,7 +65,7 @@ const ViewPerformanceMetrics = ({ selectedMetric }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

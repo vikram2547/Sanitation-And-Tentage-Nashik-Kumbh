@@ -1,7 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewMaintenanceLogs = ({ selectedLog }) => {
-
+const { t } = useTranslation();
   return (
     <div className="modal fade" id="view-maintenance-modal">
       <div className="modal-dialog modal-dialog-centered modal-md">
@@ -9,7 +10,7 @@ const ViewMaintenanceLogs = ({ selectedLog }) => {
 
           {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Maintenance Log Details</h5>
+            <h5 className="modal-title">{t("maintenance_log_details")}</h5>
             <button
               type="button"
               className="close"
@@ -24,42 +25,42 @@ const ViewMaintenanceLogs = ({ selectedLog }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Maintenance ID:</strong>
+                <strong>{t("maintenance_id")}:</strong>
                 <div>{selectedLog?.maintenance_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle ID:</strong>
+                <strong>{t("vehicle_id")}:</strong>
                 <div>{selectedLog?.vehicle_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Maintenance Date:</strong>
+                <strong>{t("maintenance_date")}:</strong>
                 <div>{selectedLog?.maintenance_date}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Maintenance Type:</strong>
+                <strong>{t("maintenance_type")}:</strong>
                 <div>{selectedLog?.maintenance_type}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Description:</strong>
+                <strong>{t("description")}:</strong>
                 <div>{selectedLog?.description || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Cost:</strong>
+                <strong>{t("cost")}:</strong>
                 <div>{selectedLog?.cost}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Next Maintenance Date:</strong>
+                <strong>{t("next_maintenance_date")}:</strong>
                 <div>{selectedLog?.next_maintenance_date}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vendor ID:</strong>
+                <strong>{t("vendor_id")}:</strong>
                 <div>{selectedLog?.vendor_id}</div>
               </div>
 
@@ -73,7 +74,7 @@ const ViewMaintenanceLogs = ({ selectedLog }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

@@ -122,8 +122,6 @@ const vehicleGpsTrackingSlice = createSlice({
         state.tracking = action.payload?.data?.tracking || [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
-
-        state.success = action.payload?.message || null;
       })
       .addCase(getVehicleGpsTracking.rejected, (state, action) => {
         state.loading = false;
@@ -131,7 +129,12 @@ const vehicleGpsTrackingSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicleGpsTracking.pending, (state) => {
+        state.loading = true;
+      })
+
       .addCase(addVehicleGpsTracking.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle GPS tracking created successfully";
         if (action.payload?.data) {
           state.tracking.unshift(action.payload.data);
@@ -144,7 +147,12 @@ const vehicleGpsTrackingSlice = createSlice({
         state.error = action.payload;
       })
       /* ===== UPDATE ===== */
+      .addCase(updateVehicleGpsTracking.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehicleGpsTracking.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle GPS tracking updated successfully";
         const updated = action.payload?.data;
 
@@ -160,7 +168,12 @@ const vehicleGpsTrackingSlice = createSlice({
       })
 
       /* ===== DELETE ===== */
+      .addCase(deleteVehicleGpsTracking.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteVehicleGpsTracking.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle GPS tracking deleted successfully";
         const deletedId = action.payload;
 

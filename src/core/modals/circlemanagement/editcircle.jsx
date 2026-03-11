@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { updateCircle, clearMessages } from "../../redux/circleSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditCircle = ({ selectedCircle }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.circles
@@ -94,7 +97,7 @@ const EditCircle = ({ selectedCircle }) => {
             <div className="content">
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Circle</h4>
+                  <h4>{t("edit_circle")}</h4>
                 </div>
                 <button
                   type="button"
@@ -121,7 +124,7 @@ const EditCircle = ({ selectedCircle }) => {
                     {/* ===== Sector Dropdown ===== */}
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Sector</label>
+                        <label>{t("sector")}</label>
                         <select
                           name="sector_id"
                           value={formData.sector_id}
@@ -147,7 +150,7 @@ const EditCircle = ({ selectedCircle }) => {
                     {/* ===== Circle Name ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Circle Name</label>
+                        <label>{t("circle_name")}</label>
                         <input
                           type="text"
                           name="circle_name"
@@ -162,7 +165,7 @@ const EditCircle = ({ selectedCircle }) => {
                     {/* ===== Circle Code ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Circle Code</label>
+                        <label>{t("circle_code")}</label>
                         <input
                           type="text"
                           name="circle_code"
@@ -182,7 +185,7 @@ const EditCircle = ({ selectedCircle }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -190,7 +193,7 @@ const EditCircle = ({ selectedCircle }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
                 </form>

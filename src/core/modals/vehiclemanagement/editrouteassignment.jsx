@@ -5,9 +5,12 @@ import {
   clearMessages,
   updateVehicleRouteAssignment,
 } from "../../redux/vehicleRouteAssignmentSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditRouteAssignment = ({ selectedAssignment }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleRouteAssignments
@@ -112,7 +115,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
               {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Route Assignment</h4>
+                  <h4>{t("edit_vehicle_route_assignment")}</h4>
                 </div>
 
                 <button
@@ -133,7 +136,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Route assignment updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -142,7 +145,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Vehicle ID</label>
+                        <label>{t("vehicle_id")}</label>
                         <input
                           type="number"
                           name="vehicle_id"
@@ -156,7 +159,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Route ID</label>
+                        <label>{t("route_id")}</label>
                         <input
                           type="number"
                           name="route_id"
@@ -170,7 +173,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Assignment Date</label>
+                        <label>{t("assignment_date")}</label>
                         <input
                           type="date"
                           name="assignment_date"
@@ -184,7 +187,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Driver ID</label>
+                        <label>{t("driver_id")}</label>
                         <input
                           type="number"
                           name="driver_id"
@@ -198,7 +201,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Shift</label>
+                        <label>{t("shift")}</label>
                         <select
                           name="shift"
                           value={formData.shift}
@@ -207,16 +210,16 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
                           required
                         >
                           <option value="">Select Shift</option>
-                          <option value="MORNING">Morning</option>
-                          <option value="EVENING">Evening</option>
-                          <option value="NIGHT">Night</option>
+                          <option value="Morning">Morning</option>
+                          <option value="Evening">Evening</option>
+                          <option value="Night">Night</option>
                         </select>
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Status</label>
+                        <label>{t("status")}</label>
                         <select
                           name="assignment_status"
                           value={formData.assignment_status}
@@ -224,15 +227,15 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
                           className="form-control"
                           required
                         >
-                          <option value="SCHEDULED">Scheduled</option>
-                          <option value="COMPLETED">Completed</option>
+                          <option value="Sheduled">Sheduled</option>
+                          <option value="Completed">Completed</option>
                         </select>
                       </div>
                     </div>
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Planned Start Time</label>
+                        <label>{t("start_time")}</label>
                         <input
                           type="time"
                           name="planned_start_time"
@@ -246,7 +249,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Planned End Time</label>
+                        <label>{t("end_time")}</label>
                         <input
                           type="time"
                           name="planned_end_time"
@@ -267,7 +270,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -275,7 +278,7 @@ const EditRouteAssignment = ({ selectedAssignment }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
 
                   </div>

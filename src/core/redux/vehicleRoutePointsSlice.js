@@ -131,7 +131,11 @@ const vehicleRoutePointsSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicleRoutePoint.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehicleRoutePoint.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle route point created successfully";
         state.routePoints.unshift(action.payload?.data);
         state.totalRecords += 1;
@@ -142,7 +146,12 @@ const vehicleRoutePointsSlice = createSlice({
         state.error = action.payload;
       })
       /* ===== UPDATE ===== */
+      .addCase(updateVehicleRoutePoint.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehicleRoutePoint.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle route point updated successfully";
 
         const updated = action.payload?.data;
@@ -157,6 +166,10 @@ const vehicleRoutePointsSlice = createSlice({
       })
 
       /* ===== DELETE ===== */
+      .addCase(deleteVehicleRoutePoint.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteVehicleRoutePoint.fulfilled, (state, action) => {
         state.success = "Vehicle route point deleted successfully";
 

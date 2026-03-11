@@ -5,9 +5,13 @@ import {
   clearMessages,
   updateVehicleMaintenanceLog,
 } from "../../redux/vehicleMaintenanceLogSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditMaintenanceLogs = ({ selectedLog }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const { success, error, loading } = useSelector(
     (state) => state.vehicleMaintenanceLogs
   );
@@ -24,26 +28,17 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
 
   /* ================= PREFILL FORM ================= */
   useEffect(() => {
-    if (!selectedLog) return;
-
-    setFormData({
-      vehicle_id: selectedLog.vehicle_id ?? "",
-      vendor_id: selectedLog.vendor_id ?? "",
-      maintenance_type: selectedLog.maintenance_type ?? "",
-      cost: selectedLog.cost ?? "",
-      maintenance_date: selectedLog.maintenance_date ?? "",
-      next_maintenance_date: selectedLog.next_maintenance_date ?? "",
-      description: selectedLog.description ?? "",
-    });
-
-    // ✅ SHOW MODAL MANUALLY
-    const modalEl = document.getElementById("edit-maintenance-log");
-    if (!modalEl) return;
-
-    const modalInstance = Modal.getInstance(modalEl) || new Modal(modalEl, {
-      backdrop: "static",
-    });
-    modalInstance.show();
+    if (selectedLog) {
+      setFormData({
+        vehicle_id: selectedLog.vehicle_id ?? "",
+        vendor_id: selectedLog.vendor_id ?? "",
+        maintenance_type: selectedLog.maintenance_type ?? "",
+        cost: selectedLog.cost ?? "",
+        maintenance_date: selectedLog.maintenance_date ?? "",
+        next_maintenance_date: selectedLog.next_maintenance_date ?? "",
+        description: selectedLog.description ?? "",
+      });
+    }
   }, [selectedLog]);
 
   /* ================= HANDLE CHANGE ================= */
@@ -53,27 +48,23 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
   };
 
   /* ================= SUBMIT ================= */
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!selectedLog?.id) return;
-
-    const payload = {
-      vehicle_id: Number(formData.vehicle_id),
-      vendor_id: Number(formData.vendor_id),
-      maintenance_type: formData.maintenance_type,
-      cost: Number(formData.cost),
-      maintenance_date: formData.maintenance_date,
-      next_maintenance_date: formData.next_maintenance_date,
-      description: formData.description,
-    };
-
-    dispatch(
-      updateVehicleMaintenanceLog({
-        maintenance_id: selectedLog.maintenance_id,
-        data: payload,
-      })
-    );
-  };
+  const handleSubmit = async (e) => {
+        e.preventDefault();
+  
+        const maintenanceId = selectedLog?.maintenance_id || selectedLog?.id;
+  
+        if (!maintenanceId) {
+          console.log("No Maintenance ID found");
+          return;
+        }
+  
+        const resultAction = await dispatch(
+          updateVehicleMaintenanceLog({
+            id: maintenanceId,
+            data: formData,
+          })
+        );
+      };
 
   /* ================= CLOSE ON SUCCESS ================= */
   useEffect(() => {
@@ -109,7 +100,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
 
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
-                <h5 className="modal-title">Edit Maintenance Log</h5>
+                <h5 className="modal-title">{t("edit_maintenance_log")}</h5>
                 <button
                   type="button"
                   className="close"
@@ -125,7 +116,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Maintenance log updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -133,7 +124,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                   <div className="row">
 
                     <div className="col-lg-6">
-                      <label>Vehicle ID</label>
+                      <label>{t("vehicle_id")}</label>
                       <input
                         type="number"
                         name="vehicle_id"
@@ -145,7 +136,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                     </div>
 
                     <div className="col-lg-6">
-                      <label>Vendor ID</label>
+                      <label>{t("vendor_id")}</label>
                       <input
                         type="number"
                         name="vendor_id"
@@ -156,7 +147,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                     </div>
 
                     <div className="col-lg-6 mt-2">
-                      <label>Maintenance Type</label>
+                      <label>{t("maintenance_type")}</label>
                       <select
                         name="maintenance_type"
                         value={formData.maintenance_type}
@@ -173,7 +164,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                     </div>
 
                     <div className="col-lg-6 mt-2">
-                      <label>Cost</label>
+                      <label>{t("cost")}</label>
                       <input
                         type="number"
                         step="0.01"
@@ -186,7 +177,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                     </div>
 
                     <div className="col-lg-6 mt-2">
-                      <label>Maintenance Date</label>
+                      <label>{t("maintenance_date")}</label>
                       <input
                         type="date"
                         name="maintenance_date"
@@ -198,7 +189,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                     </div>
 
                     <div className="col-lg-6 mt-2">
-                      <label>Next Maintenance Date</label>
+                      <label>{t("next_maintenance_date")}</label>
                       <input
                         type="date"
                         name="next_maintenance_date"
@@ -209,7 +200,7 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                     </div>
 
                     <div className="col-lg-12 mt-2">
-                      <label>Description</label>
+                      <label>{t("description")}</label>
                       <textarea
                         name="description"
                         value={formData.description}
@@ -226,14 +217,14 @@ const EditMaintenanceLogs = ({ selectedLog }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
                     <button
                       type="submit"
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
                 </form>

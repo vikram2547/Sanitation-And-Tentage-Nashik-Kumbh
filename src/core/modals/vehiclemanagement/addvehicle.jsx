@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addVehicle, clearMessages } from "../../redux/vehicleSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddVehicle = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { success, error, loading } = useSelector(
         (state) => state.vehicles
@@ -88,7 +91,7 @@ const AddVehicle = () => {
                             {/* ================= HEADER ================= */}
                             <div className="modal-header border-0 custom-modal-header">
                                 <div className="page-title">
-                                    <h4>Add Vehicle</h4>
+                                    <h4>{t("add_new_vehicle")}</h4>
                                 </div>
                                 <button
                                     type="button"
@@ -105,7 +108,7 @@ const AddVehicle = () => {
                                 {error && <div className="alert alert-danger">{error}</div>}
                                 {success && (
                                     <div className="alert alert-success">
-                                        Vehicle created successfully
+                                        {t("created_successfully")}
                                     </div>
                                 )}
 
@@ -114,7 +117,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Vehicle Name</label>
+                                                <label>{t("vehicle_name")}</label>
                                                 <input
                                                     type="text"
                                                     name="vehicle_name"
@@ -129,7 +132,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Vehicle Type</label>
+                                                <label>{t("vehicle_type")}</label>
                                                 <select
                                                     name="vehicle_type"
                                                     value={formData.vehicle_type}
@@ -141,7 +144,7 @@ const AddVehicle = () => {
                                                     <option value="Compactor">Compactor</option>
                                                     <option value="Dumper">Dumper</option>
                                                     <option value="Loader">Loader</option>
-                                                    <option value="Mini-truck">Mini-truck</option>
+                                                    <option value="Mini-truck">Mini-Truck</option>
                                                     <option value="Tipper">Tipper</option>
                                                 </select>
                                             </div>
@@ -150,7 +153,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Vehicle Number</label>
+                                                <label>{t("vehicle_number")}</label>
                                                 <input
                                                     type="text"
                                                     name="vehicle_number"
@@ -165,7 +168,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>RC Number</label>
+                                                <label>{t("rc_number")}</label>
                                                 <input
                                                     type="text"
                                                     name="rc_number"
@@ -180,7 +183,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Vendor ID</label>
+                                                <label>{t("vendor_id")}</label>
                                                 <input
                                                     type="number"
                                                     name="vendor_id"
@@ -195,7 +198,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>IMEI Number</label>
+                                                <label>{t("imei_number")}</label>
                                                 <input
                                                     type="text"
                                                     name="imei_number"
@@ -209,7 +212,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Chassis Number</label>
+                                                <label>{t("chassis_number")}</label>
                                                 <input
                                                     type="text"
                                                     name="chassis_number"
@@ -223,7 +226,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>GPS Device ID</label>
+                                                <label>{t("gps_device_id")}</label>
                                                 <input
                                                     type="text"
                                                     name="gps_device_id"
@@ -237,7 +240,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Registration Date</label>
+                                                <label>{t("registration_date")}</label>
                                                 <input
                                                     type="date"
                                                     name="registration_date"
@@ -250,7 +253,7 @@ const AddVehicle = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Status</label>
+                                                <label>{t("status")}</label>
                                                 <select
                                                     name="status"
                                                     value={formData.status}
@@ -272,7 +275,7 @@ const AddVehicle = () => {
                                             className="btn btn-cancel me-2"
                                             data-bs-dismiss="modal"
                                         >
-                                            Cancel
+                                            {t("cancel")}
                                         </button>
 
                                         <button
@@ -280,7 +283,7 @@ const AddVehicle = () => {
                                             className="btn btn-submit"
                                             disabled={loading}
                                         >
-                                            {loading ? "Adding..." : "Submit"}
+                                            {loading ? t("adding") : t("submit")}
                                         </button>
                                     </div>
                                 </form>

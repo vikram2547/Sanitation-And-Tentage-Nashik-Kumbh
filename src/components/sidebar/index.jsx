@@ -3,8 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import { SidebarData } from "../../core/json/siderbar_data";
 import { useSelector } from "react-redux";
 import { all_routes } from "../../routes/all_routes";
+import { useTranslation } from "react-i18next";
 import {
-  customer15,
   logo,
   logoSmall,
   logoSmallWhite,
@@ -13,57 +13,58 @@ import {
 
 const Sidebar = () => {
   const route = all_routes;
-  const Location = useLocation();
+  const location = useLocation();
+  const { t, i18n } = useTranslation();
+  const sidebarData = SidebarData;
 
-  /* ================= STATE ================= */
 
   const [subOpen, setSubopen] = useState("");
   const [subsidebar, setSubsidebar] = useState("");
   const [toggle, SetToggle] = useState(false);
 
-  /* ================= REDUX ================= */
-
   const expandMenus = useSelector(
     (state) => state.themeSetting?.expandMenus
   );
+
   const dataLayout = useSelector(
     (state) => state.themeSetting?.dataLayout
   );
 
-  /* ================= HELPERS ================= */
-
   const getAllLinks = (item) => {
     const links = [];
     if (item?.link) links.push(item.link);
+
     if (item?.submenuItems?.length) {
       item.submenuItems.forEach((sub) => {
         links.push(...getAllLinks(sub));
       });
     }
+
     return links;
   };
 
   const isItemActive = (item) =>
-    getAllLinks(item).includes(Location.pathname);
+    getAllLinks(item).includes(location.pathname);
 
   const shouldMenuBeOpen = (item) => {
     if (isItemActive(item)) return true;
+
     if (item?.submenuItems?.length) {
       return item.submenuItems.some(shouldMenuBeOpen);
     }
+
     return false;
   };
-
-  /* ================= AUTO OPEN ACTIVE ================= */
 
   useEffect(() => {
     let openTitle = "";
     let openSub = "";
 
-    SidebarData?.forEach((main) => {
+    sidebarData?.forEach((main) => {
       main?.submenuItems?.forEach((title) => {
         if (shouldMenuBeOpen(title)) {
           openTitle = title?.label;
+
           title?.submenuItems?.forEach((item) => {
             if (shouldMenuBeOpen(item)) {
               openSub = item?.label;
@@ -75,9 +76,7 @@ const Sidebar = () => {
 
     setSubopen(openTitle);
     setSubsidebar(openSub);
-  }, [Location.pathname]);
-
-  /* ================= TOGGLES ================= */
+  }, [location.pathname,i18n.language]);
 
   const toggleSidebar = (title) => {
     setSubopen((prev) => (prev === title ? "" : title));
@@ -100,8 +99,6 @@ const Sidebar = () => {
     document.body.classList.add("expand-menu");
   };
 
-  /* ================= LINK RENDER ================= */
-
   const renderLinkProps = (item) =>
     item?.external
       ? {
@@ -112,8 +109,6 @@ const Sidebar = () => {
       : {
           to: item.link || "#",
         };
-
-  /* ================= RENDER ================= */
 
   return (
     <div>
@@ -127,49 +122,53 @@ const Sidebar = () => {
         onMouseLeave={expandMenu}
         onMouseOver={expandMenuOpen}
       >
-        <>
-          {/* LOGO */}
-          <div className="sidebar-logo">
-            <Link to={route.newdashboard} className="logo logo-normal">
-              <img src={logo} alt="Img" />
-            </Link>
-            <Link to={route.newdashboard} className="logo logo-white">
-              <img src={logoWhite} alt="Img" />
-            </Link>
-            <Link to={route.newdashboard} className="logo-small">
-              <img src={logoSmall} alt="Img" />
-            </Link>
-            <Link to={route.newdashboard} className="logo-small-white">
-              <img src={logoSmallWhite} alt="Img" />
-            </Link>
+        <div className="sidebar-logo">
+          <Link to={route.newdashboard} className="logo logo-normal">
+            <img src={logo} alt="logo" />
+          </Link>
 
-            <Link id="toggle_btn" to="#" onClick={handlesidebar}>
-              <i className="feather icon-chevrons-left feather-16" />
-            </Link>
-          </div>
-        </>
+          <Link to={route.newdashboard} className="logo logo-white">
+            <img src={logoWhite} alt="logo" />
+          </Link>
+
+          <Link to={route.newdashboard} className="logo-small">
+            <img src={logoSmall} alt="logo" />
+          </Link>
+
+          <Link to={route.newdashboard} className="logo-small-white">
+            <img src={logoSmallWhite} alt="logo" />
+          </Link>
+
+          <Link id="toggle_btn" to="#" onClick={handlesidebar}>
+            <i className="feather icon-chevrons-left feather-16" />
+          </Link>
+        </div>
 
         <div data-simplebar="">
           <div className="sidebar-inner">
             <div id="sidebar-menu" className="sidebar-menu">
               <ul>
-                {SidebarData?.map((mainLabel, index) => (
+                {sidebarData?.map((mainLabel, index) => (
                   <li className="submenu-open" key={index}>
-                    <h6 className="submenu-hdr">{mainLabel?.label}</h6>
+                    <h6 className="submenu-hdr">
+                      {t(mainLabel?.label)}
+                    </h6>
 
                     <ul>
                       {mainLabel?.submenuItems?.map((title, i) => {
                         const isTitleActive = isItemActive(title);
                         const isTitleOpen = subOpen === title?.label;
 
-                        const TitleTag = title?.external ? "a" : Link;
+                        const TitleTag = title?.external
+                          ? "a"
+                          : Link;
 
                         return (
                           <li
                             key={i}
                             className={`submenu ${
                               !title?.submenu &&
-                              Location.pathname === title?.link
+                              location.pathname === title?.link
                                 ? "custom-active-hassubroute-false"
                                 : ""
                             }`}
@@ -180,14 +179,19 @@ const Sidebar = () => {
                                 !title?.external &&
                                 toggleSidebar(title?.label)
                               }
-                              className={`${isTitleOpen ? "subdrop" : ""} ${
+                              className={`${
+                                isTitleOpen ? "subdrop" : ""
+                              } ${
                                 isTitleActive ? "active" : ""
                               }`}
                             >
-                              <i className={`ti ti-${title.icon} me-2`} />
-                              <span className="custom-active-span">
-                                {title?.label}
+                              <i
+                                className={`ti ti-${title.icon} me-2`}
+                              />
+                              <span>
+                                {t(title?.label)}
                               </span>
+
                               {title?.submenu && (
                                 <span className="menu-arrow" />
                               )}
@@ -196,71 +200,96 @@ const Sidebar = () => {
                             <ul
                               style={{
                                 display:
-                                  subOpen === title?.label ? "block" : "none",
+                                  subOpen === title?.label
+                                    ? "block"
+                                    : "none",
                               }}
                             >
-                              {title?.submenuItems?.map((item, j) => {
-                                const isItemOpen =
-                                  subsidebar === item?.label;
-                                const isItemActiveState =
-                                  isItemActive(item);
+                              {title?.submenuItems?.map(
+                                (item, j) => {
+                                  const isItemOpen =
+                                    subsidebar === item?.label;
 
-                                const ItemTag = item?.external ? "a" : Link;
+                                  const isItemActiveState =
+                                    isItemActive(item);
 
-                                return (
-                                  <li
-                                    className="submenu submenu-two"
-                                    key={j}
-                                  >
-                                    <ItemTag
-                                      {...renderLinkProps(item)}
-                                      onClick={() =>
-                                        !item?.external &&
-                                        toggleSubsidebar(item?.label)
-                                      }
-                                      className={`${isItemActiveState ? "active" : ""} ${
-                                        isItemOpen ? "subdrop" : ""
-                                      }`}
+                                  const ItemTag = item?.external
+                                    ? "a"
+                                    : Link;
+
+                                  return (
+                                    <li
+                                      className="submenu submenu-two"
+                                      key={j}
                                     >
-                                      {item?.label}
-                                      {item?.submenu && (
-                                        <span className="menu-arrow inside-submenu" />
-                                      )}
-                                    </ItemTag>
-
-                                    <ul
-                                      style={{
-                                        display: isItemOpen
-                                          ? "block"
-                                          : "none",
-                                      }}
-                                    >
-                                      {item?.submenuItems?.map(
-                                        (child, k) => {
-                                          const ChildTag = child?.external
-                                            ? "a"
-                                            : Link;
-
-                                          return (
-                                            <li key={k}>
-                                              <ChildTag
-                                                {...renderLinkProps(child)}
-                                                className={
-                                                  isItemActive(child)
-                                                    ? "active"
-                                                    : ""
-                                                }
-                                              >
-                                                {child?.label}
-                                              </ChildTag>
-                                            </li>
-                                          );
+                                      <ItemTag
+                                        {...renderLinkProps(
+                                          item
+                                        )}
+                                        onClick={() =>
+                                          !item?.external &&
+                                          toggleSubsidebar(
+                                            item?.label
+                                          )
                                         }
-                                      )}
-                                    </ul>
-                                  </li>
-                                );
-                              })}
+                                        className={`${
+                                          isItemActiveState
+                                            ? "active"
+                                            : ""
+                                        } ${
+                                          isItemOpen
+                                            ? "subdrop"
+                                            : ""
+                                        }`}
+                                      >
+                                        {t(item?.label)}
+
+                                        {item?.submenu && (
+                                          <span className="menu-arrow inside-submenu" />
+                                        )}
+                                      </ItemTag>
+
+                                      <ul
+                                        style={{
+                                          display: isItemOpen
+                                            ? "block"
+                                            : "none",
+                                        }}
+                                      >
+                                        {item?.submenuItems?.map(
+                                          (child, k) => {
+                                            const ChildTag =
+                                              child?.external
+                                                ? "a"
+                                                : Link;
+
+                                            return (
+                                              <li key={k}>
+                                                <ChildTag
+                                                  {...renderLinkProps(
+                                                    child
+                                                  )}
+                                                  className={
+                                                    isItemActive(
+                                                      child
+                                                    )
+                                                      ? "active"
+                                                      : ""
+                                                  }
+                                                >
+                                                  {t(
+                                                    child?.label
+                                                  )}
+                                                </ChildTag>
+                                              </li>
+                                            );
+                                          }
+                                        )}
+                                      </ul>
+                                    </li>
+                                  );
+                                }
+                              )}
                             </ul>
                           </li>
                         );

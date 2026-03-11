@@ -155,7 +155,11 @@ const vehicleDailyTripSummarySlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicleDailyTripSummary.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehicleDailyTripSummary.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle daily trip summary created successfully";
 
         if (action.payload?.data) {
@@ -169,7 +173,12 @@ const vehicleDailyTripSummarySlice = createSlice({
         state.error = action.payload;
       })
       /* ===== UPDATE ===== */
+      .addCase(updateVehicleDailyTripSummary.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehicleDailyTripSummary.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle daily trip summary updated successfully";
 
         const updated = action.payload?.data;
@@ -190,7 +199,12 @@ const vehicleDailyTripSummarySlice = createSlice({
       })
 
       /* ===== DELETE ===== */
+      .addCase(deleteVehicleDailyTripSummary.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteVehicleDailyTripSummary.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle daily trip summary deleted successfully";
 
         const deletedId = action.meta.arg;

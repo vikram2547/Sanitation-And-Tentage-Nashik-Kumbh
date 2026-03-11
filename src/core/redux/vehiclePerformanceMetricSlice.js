@@ -64,7 +64,9 @@ export const addVehiclePerformanceMetric = createAsyncThunk(
       );
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to add performance metrics"
+      );
     }
   }
 );
@@ -72,15 +74,17 @@ export const addVehiclePerformanceMetric = createAsyncThunk(
 /* ================= UPDATE ================= */
 export const updateVehiclePerformanceMetric = createAsyncThunk(
   "vehiclePerformanceMetrics/updateVehiclePerformanceMetric",
-  async ({ metric_id, data }, { rejectWithValue }) => {
+  async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `vehicle-performance-metrics/edit/${metric_id}`,
+        `vehicle-performance-metrics/edit/${id}`,
         data
       );
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update performance metrics"
+      );
     }
   }
 );
@@ -95,7 +99,9 @@ export const deleteVehiclePerformanceMetric = createAsyncThunk(
       );
       return metric_id;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to delete performance metrics"
+      );
     }
   }
 );
@@ -121,10 +127,13 @@ const vehiclePerformanceMetricSlice = createSlice({
       /* ===== GET ===== */
       .addCase(getVehiclePerformanceMetrics.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(getVehiclePerformanceMetrics.fulfilled, (state, action) => {
         state.loading = false;
-        state.metrics = action.payload?.data?.metrics || [];
+        state.metrics = Array.isArray(action.payload?.data?.metrics)
+          ? action.payload.data.metrics
+          : [];
         state.totalRecords =
           action.payload?.data?.paging?.totalrecords || 0;
       })
@@ -134,37 +143,61 @@ const vehiclePerformanceMetricSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehiclePerformanceMetric.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehiclePerformanceMetric.fulfilled, (state, action) => {
+        state.loading = false;
         state.success =
           "Vehicle performance metric created successfully";
-        state.metrics.unshift(action.payload?.data);
-        state.totalRecords += 1;
+
+        if (action.payload?.data) {
+          state.metrics.unshift(action.payload.data);
+          state.totalRecords += 1;
+        }
       })
       .addCase(addVehiclePerformanceMetric.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
       /* ===== UPDATE ===== */
+      .addCase(updateVehiclePerformanceMetric.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehiclePerformanceMetric.fulfilled, (state, action) => {
+        state.loading = false;
         state.success =
-          "Vehicle performance metric updated successfully";
+          action.payload?.message || "Vehicle performance metric updated successfully";
+
         const updated = action.payload?.data;
-        state.metrics = state.metrics.map((v) =>
-          v.performance_metric_id === updated.performance_metric_id
-            ? updated
-            : v
-        );
+
+        if (updated) {
+          const index = state.metrics.findIndex(
+            (v) => v.metric_id === updated.metric_id
+          );
+          if (index !== -1) {
+            state.metrics[index] = updated;
+          }
+        }
       })
       .addCase(updateVehiclePerformanceMetric.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
-
+      
       /* ===== DELETE ===== */
+      .addCase(deleteVehiclePerformanceMetric.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(deleteVehiclePerformanceMetric.fulfilled, (state, action) => {
+        state.loading = false;
         state.success =
           "Vehicle performance metric deleted successfully";
+
         const deletedId = action.meta.arg;
+
         state.metrics = state.metrics.filter(
           (v) =>
             Number(v.performance_metric_id) !== Number(deletedId)

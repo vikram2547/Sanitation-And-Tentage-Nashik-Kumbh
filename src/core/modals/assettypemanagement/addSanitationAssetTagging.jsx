@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addSanitationAssetTagging } from "../../redux/sanitationAssetTaggingSlice";
+import { useTranslation } from "react-i18next";
 
 
 const AddSanitationAssetTagging = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+    
 
     const { loading, success, error } = useSelector(
         (state) => state.sanitationAssetsTagging
@@ -100,7 +103,7 @@ const AddSanitationAssetTagging = () => {
                             {/* ================= HEADER ================= */}
                             <div className="modal-header border-0 custom-modal-header">
                                 <div className="page-title">
-                                    <h4>Add Sanitation Asset Tagging</h4>
+                                    <h4>{t("add_sanitation_asset_tagging")}</h4>
                                 </div>
                                 <button
                                     type="button"
@@ -119,7 +122,7 @@ const AddSanitationAssetTagging = () => {
                                 )}
                                 {success && (
                                     <div className="alert alert-success">
-                                        Sanitation Asset Tagging created successfully
+                                        {t("created_successfully")}
                                     </div>
                                 )}
 
@@ -128,7 +131,7 @@ const AddSanitationAssetTagging = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Asset Type ID</label>
+                                                <label>{t("asset_type_id")}</label>
                                                 <input
                                                     type="text"
                                                     name="asset_type_id"
@@ -142,7 +145,7 @@ const AddSanitationAssetTagging = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>QR Code</label>
+                                                <label>{t("qr_code")}</label>
                                                 <input
                                                     type="text"
                                                     name="qr_code"
@@ -156,7 +159,7 @@ const AddSanitationAssetTagging = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Asset Name</label>
+                                                <label>{t("asset_name")}</label>
                                                 <input
                                                     type="text"
                                                     name="asset_name"
@@ -169,7 +172,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Gender</label>
+                                                <label>{t("gender")}</label>
                                                 <input
                                                     type="text"
                                                     name="gender"
@@ -182,7 +185,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Description</label>
+                                                <label>{t("description")}</label>
                                                 <input
                                                     type="text"
                                                     name="description"
@@ -195,7 +198,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Vendor ID</label>
+                                                <label>{t("vendor_id")}</label>
                                                 <input
                                                     type="text"
                                                     name="vendor_id"
@@ -208,7 +211,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Vendor Asset Code</label>
+                                                <label>{t("vendor_asset_code")}</label>
                                                 <input
                                                     type="text"
                                                     name="vendor_asset_code"
@@ -221,7 +224,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Sector ID</label>
+                                                <label>{t("sector_id")}</label>
                                                 <input
                                                     type="text"
                                                     name="sector_id"
@@ -234,7 +237,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Circle ID</label>
+                                                <label>{t("circle_id")}</label>
                                                 <input
                                                     type="text"
                                                     name="circle_id"
@@ -247,7 +250,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Latitude</label>
+                                                <label>{t("latitude")}</label>
                                                 <input
                                                     type="text"
                                                     name="latitude"
@@ -260,7 +263,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Longitude</label>
+                                                <label>{t("longitude")}</label>
                                                 <input
                                                     type="text"
                                                     name="longitude"
@@ -273,7 +276,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Photo</label>
+                                                <label>{t("photo")}</label>
                                                 <input
                                                     type="file"
                                                     name="photo"
@@ -286,7 +289,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Created By</label>
+                                                <label>{t("created_by")}</label>
                                                 <input
                                                     type="text"
                                                     name="created_by"
@@ -299,7 +302,7 @@ const AddSanitationAssetTagging = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Status</label>
+                                                <label>{t("status")}</label>
                                                 <select
                                                     name="status"
                                                     value={formData.status}
@@ -320,14 +323,14 @@ const AddSanitationAssetTagging = () => {
                                             className="btn btn-cancel me-2"
                                             data-bs-dismiss="modal"
                                         >
-                                            Cancel
+                                            {t("cancel")}
                                         </button>
                                         <button
                                             type="submit"
                                             className="btn btn-submit"
                                             disabled={loading}
                                         >
-                                            {loading ? "Adding..." : "Submit"}
+                                            {loading ? t("adding") : t("submit")}
                                         </button>
                                     </div>
 

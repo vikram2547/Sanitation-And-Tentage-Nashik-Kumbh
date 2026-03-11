@@ -2,10 +2,13 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearMessages, updateUser } from "../../redux/usersSlice";
 import { Modal } from "bootstrap";
+import { useTranslation } from "react-i18next";
 
 
 const EditUser = ({ selectedUser }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+  
   const { success, error, loading } = useSelector((state) => state.users);
 
   const [formData, setFormData] = useState({
@@ -90,7 +93,7 @@ const EditUser = ({ selectedUser }) => {
             <div className="content">
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit User</h4>
+                  <h4>{t("edit_user")}</h4>
                 </div>
                 <button
                   type="button"
@@ -112,7 +115,7 @@ const EditUser = ({ selectedUser }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>User Name</label>
+                        <label>{t("user_name")}</label>
                         <input
                           type="text"
                           name="full_name"
@@ -125,7 +128,7 @@ const EditUser = ({ selectedUser }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Phone</label>
+                        <label>{t("phone")}</label>
                         <input
                           type="text"
                           name="phone"
@@ -138,7 +141,7 @@ const EditUser = ({ selectedUser }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Email</label>
+                        <label>{t("email")}</label>
                         <input
                           type="email"
                           name="email"
@@ -157,7 +160,7 @@ const EditUser = ({ selectedUser }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -165,7 +168,7 @@ const EditUser = ({ selectedUser }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
                 </form>

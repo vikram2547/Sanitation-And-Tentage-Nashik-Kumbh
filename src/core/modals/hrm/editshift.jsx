@@ -2,9 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { updateShift, clearMessages } from "../../redux/shiftSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditShift = ({ selectedShift }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.shifts
@@ -90,7 +93,7 @@ const EditShift = ({ selectedShift }) => {
 
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Shift</h4>
+                  <h4>{t("edit_shift")}</h4>
                 </div>
                 <button
                   type="button"
@@ -109,7 +112,7 @@ const EditShift = ({ selectedShift }) => {
 
                 {success && (
                   <div className="alert alert-success">
-                    Shift updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
@@ -119,7 +122,7 @@ const EditShift = ({ selectedShift }) => {
                     {/* ===== Shift Name ===== */}
                     <div className="col-lg-12">
                       <div className="input-blocks">
-                        <label>Shift Name</label>
+                        <label>{t("shift_name")}</label>
                         <input
                           type="text"
                           name="shift_name"
@@ -134,7 +137,7 @@ const EditShift = ({ selectedShift }) => {
                     {/* ===== Start Time ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Start Time</label>
+                        <label>{t("start_time")}</label>
                         <input
                           type="time"
                           name="start_time"
@@ -149,7 +152,7 @@ const EditShift = ({ selectedShift }) => {
                     {/* ===== End Time ===== */}
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>End Time</label>
+                        <label>{t("end_time")}</label>
                         <input
                           type="time"
                           name="end_time"
@@ -169,7 +172,7 @@ const EditShift = ({ selectedShift }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -177,7 +180,7 @@ const EditShift = ({ selectedShift }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
                 </form>

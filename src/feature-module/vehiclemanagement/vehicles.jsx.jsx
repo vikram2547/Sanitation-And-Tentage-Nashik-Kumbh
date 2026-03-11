@@ -39,6 +39,10 @@ const Vehicles = () => {
   // AUTO CLEAR SUCCESS / ERROR
   // ============================
   useEffect(() => {
+    dispatch(clearMessages());
+  }, [dispatch]);
+
+  useEffect(() => {
     if (success || error) {
       const timer = setTimeout(() => {
         dispatch(clearMessages());

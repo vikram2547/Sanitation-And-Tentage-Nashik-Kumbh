@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewSanitationAsset = ({ selectedAsset }) => {
+  const { t } = useTranslation();
 
   return (
     <div
@@ -13,7 +15,7 @@ const ViewSanitationAsset = ({ selectedAsset }) => {
 
           {/* ===== Modal Header ===== */}
           <div className="modal-header">
-            <h5 className="modal-title">Sanitation Asset Details</h5>
+            <h5 className="modal-title">{t("sanitation_asset_details")}</h5>
             <button
               type="button"
               className="close"
@@ -28,49 +30,49 @@ const ViewSanitationAsset = ({ selectedAsset }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Asset ID:</strong>
+                <strong>{t("sanitation_asset_id")}:</strong>
                 <div>{selectedAsset?.sanitation_asset_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>QR Code:</strong>
+                <strong>{t("qr_code")}:</strong>
                 <div>{selectedAsset?.qr_code || "-"}</div>
               </div>
 
               <div className="col-md-12 mb-3">
-                <strong>Asset Name:</strong>
+                <strong>{t("asset_name")}:</strong>
                 <div>{selectedAsset?.asset_name || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Gender:</strong>
+                <strong>{t("gender")}:</strong>
                 <div>{selectedAsset?.gender || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>
                   {selectedAsset?.status === "ACTIVE" ? "Active" : "Inactive"}
                 </div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Sector:</strong>
+                <strong>{t("sector")}:</strong>
                 <div>{selectedAsset?.sector_name || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Circle:</strong>
+                <strong>{t("circle")}:</strong>
                 <div>{selectedAsset?.circle_name || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Latitude:</strong>
+                <strong>{t("latitude")}:</strong>
                 <div>{selectedAsset?.latitude || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Longitude:</strong>
+                <strong>{t("longitude")}:</strong>
                 <div>{selectedAsset?.longitude || "-"}</div>
               </div>
 
@@ -84,7 +86,7 @@ const ViewSanitationAsset = ({ selectedAsset }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("close")}
             </button>
           </div>
 

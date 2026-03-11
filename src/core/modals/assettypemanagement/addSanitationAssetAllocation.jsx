@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addSanitationAssetAllocation, clearMessages } from "../../redux/sanitationAssetAllocationSlice";
+import { useTranslation } from "react-i18next";
 
 
 const AddSanitationAssetAllocation = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { loading, success, error } = useSelector(
         (state) => state.sanitationAssetsAllocation
@@ -70,7 +72,7 @@ const AddSanitationAssetAllocation = () => {
                             {/* ================= HEADER ================= */}
                             <div className="modal-header border-0 custom-modal-header">
                                 <div className="page-title">
-                                    <h4>Add Sanitation Asset Allocation</h4>
+                                    <h4>{t("add_sanitation_asset_allocation")}</h4>
                                 </div>
                                 <button
                                     type="button"
@@ -89,7 +91,7 @@ const AddSanitationAssetAllocation = () => {
                                 )}
                                 {success && (
                                     <div className="alert alert-success">
-                                        Sanitation Asset Allocation created successfully
+                                        {t("created_successfully")}
                                     </div>
                                 )}
 
@@ -98,7 +100,7 @@ const AddSanitationAssetAllocation = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Asset ID</label>
+                                                <label>{t("asset_id")}</label>
                                                 <input
                                                     type="text"
                                                     name="asset_id"
@@ -112,7 +114,7 @@ const AddSanitationAssetAllocation = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Swachhagrahi ID</label>
+                                                <label>{t("swachhagrahi_id")}</label>
                                                 <input
                                                     type="text"
                                                     name="swachhagrahi_id"
@@ -126,7 +128,7 @@ const AddSanitationAssetAllocation = () => {
 
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Shift ID</label>
+                                                <label>{t("shift_id")}</label>
                                                 <input
                                                     type="text"
                                                     name="shift_id"
@@ -139,7 +141,7 @@ const AddSanitationAssetAllocation = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Allocation Date</label>
+                                                <label>{t("allocation_date")}</label>
                                                 <input
                                                     type="date"
                                                     name="allocation_date"
@@ -152,7 +154,7 @@ const AddSanitationAssetAllocation = () => {
                                         </div>
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Status</label>
+                                                <label>{t("status")}</label>
                                                 <select
                                                     name="status"
                                                     value={formData.status}
@@ -173,14 +175,14 @@ const AddSanitationAssetAllocation = () => {
                                             className="btn btn-cancel me-2"
                                             data-bs-dismiss="modal"
                                         >
-                                            Cancel
+                                            {t("cancel")}
                                         </button>
                                         <button
                                             type="submit"
                                             className="btn btn-submit"
                                             disabled={loading}
                                         >
-                                            {loading ? "Adding..." : "Submit"}
+                                            {loading ? t("adding") : t("submit")}
                                         </button>
                                     </div>
 

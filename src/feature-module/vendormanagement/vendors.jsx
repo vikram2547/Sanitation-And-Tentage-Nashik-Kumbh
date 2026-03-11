@@ -19,6 +19,7 @@ import { Modal } from "bootstrap";
 const Vendors = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    
     const { vendors, totalRecords, loading, error, success } = useSelector(
         (state) => state.vendors
     );

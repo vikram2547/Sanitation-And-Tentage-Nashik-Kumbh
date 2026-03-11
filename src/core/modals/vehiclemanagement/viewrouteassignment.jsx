@@ -1,6 +1,9 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
+
 
 const ViewRouteAssignment = ({ selectedAssignment }) => {
+ const { t } = useTranslation();
 
   return (
     <div className="modal fade" id="view-assignment-modal">
@@ -9,7 +12,7 @@ const ViewRouteAssignment = ({ selectedAssignment }) => {
 
           {/* HEADER */}
           <div className="modal-header">
-            <h5 className="modal-title">Assignment Details</h5>
+            <h5 className="modal-title">{t("route_assignment_details")}</h5>
             <button
               type="button"
               className="close"
@@ -24,47 +27,47 @@ const ViewRouteAssignment = ({ selectedAssignment }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Assignment ID:</strong>
+                <strong>{t("assignment_id")}:</strong>
                 <div>{selectedAssignment?.assignment_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle ID:</strong>
+                <strong>{t("vehicle_id")}:</strong>
                 <div>{selectedAssignment?.vehicle_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Route ID:</strong>
+                <strong>{t("route_id")}:</strong>
                 <div>{selectedAssignment?.route_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Assignment Date:</strong>
+                <strong>{t("assignment_date")}:</strong>
                 <div>{selectedAssignment?.assignment_date}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Driver ID:</strong>
+                <strong>{t("driver_id")}:</strong>
                 <div>{selectedAssignment?.driver_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Shift:</strong>
+                <strong>{t("shift")}:</strong>
                 <div>{selectedAssignment?.shift}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Planned Start Time:</strong>
+                <strong>{t("start_time")}:</strong>
                 <div>{selectedAssignment?.planned_start_time}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Planned End Time:</strong>
+                <strong>{t("end_time")}:</strong>
                 <div>{selectedAssignment?.planned_end_time}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>{selectedAssignment?.assignment_status}</div>
               </div>
 
@@ -78,7 +81,7 @@ const ViewRouteAssignment = ({ selectedAssignment }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

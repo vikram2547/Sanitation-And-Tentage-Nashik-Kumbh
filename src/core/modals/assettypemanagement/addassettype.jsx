@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { addAssetType, clearMessages } from "../../redux/assettypeSlice";
+import { useTranslation } from "react-i18next";
 
 const AddAssetType = () => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { success, error, loading } = useSelector(
         (state) => state.assetTypes
@@ -108,7 +110,7 @@ const AddAssetType = () => {
                             {/* ================= HEADER ================= */}
                             <div className="modal-header border-0 custom-modal-header">
                                 <div className="page-title">
-                                    <h4>Add Asset Type</h4>
+                                    <h4>{t("add_new_asset_type")}</h4>
                                 </div>
                                 <button
                                     type="button"
@@ -125,7 +127,7 @@ const AddAssetType = () => {
                                 {error && <div className="alert alert-danger">{error}</div>}
                                 {success && (
                                     <div className="alert alert-success">
-                                        Asset Type created successfully
+                                        {t("created_successfully")}
                                     </div>
                                 )}
 
@@ -135,7 +137,7 @@ const AddAssetType = () => {
                                         {/* ===== TYPE ===== */}
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Asset Type</label>
+                                                <label>{t("asset_type")}</label>
                                                 <select
                                                     className="form-control"
                                                     name="type"
@@ -159,7 +161,7 @@ const AddAssetType = () => {
                                         {/* ===== NAME ===== */}
                                         <div className="col-lg-6">
                                             <div className="input-blocks">
-                                                <label>Asset Type Name</label>
+                                                <label>{t("asset_type_name")}</label>
                                                 <input
                                                     type="text"
                                                     name="name"
@@ -175,7 +177,7 @@ const AddAssetType = () => {
                                         {/* ===== DESCRIPTION ===== */}
                                         <div className="col-lg-12">
                                             <div className="input-blocks">
-                                                <label>Description</label>
+                                                <label>{t("description")}</label>
                                                 <textarea
                                                     name="description"
                                                     value={formData.description}
@@ -191,7 +193,7 @@ const AddAssetType = () => {
                                         {/* ===== QUESTIONS (MULTI SELECT) ===== */}
                                         <div className="col-lg-12">
                                             <div className="input-blocks">
-                                                <label>Questions</label>
+                                                <label>{t("questions")}</label>
                                                 <select
                                                     multiple
                                                     className="form-control"
@@ -224,7 +226,7 @@ const AddAssetType = () => {
                                             className="btn btn-cancel me-2"
                                             data-bs-dismiss="modal"
                                         >
-                                            Cancel
+                                            {t("cancel")}
                                         </button>
 
                                         <button
@@ -232,7 +234,7 @@ const AddAssetType = () => {
                                             className="btn btn-submit"
                                             disabled={loading}
                                         >
-                                            {loading ? "Adding..." : "Submit"}
+                                            {loading ? t("adding") : t("submit")}
                                         </button>
                                     </div>
                                 </form>

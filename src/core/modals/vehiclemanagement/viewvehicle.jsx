@@ -1,6 +1,8 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 const ViewVehicle = ({ selectedVehicle }) => {
+  const { t } = useTranslation();
 
   return (
     <div
@@ -12,7 +14,7 @@ const ViewVehicle = ({ selectedVehicle }) => {
 
           {/* ===== Modal Header ===== */}
           <div className="modal-header">
-            <h5 className="modal-title">Vehicle Details</h5>
+            <h5 className="modal-title">{t("vehicle_details")}</h5>
             <button
               type="button"
               className="close"
@@ -27,37 +29,37 @@ const ViewVehicle = ({ selectedVehicle }) => {
             <div className="row">
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle ID:</strong>
+                <strong>{t("vehicle_id")}:</strong>
                 <div>{selectedVehicle?.vehicle_id}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Name:</strong>
+                <strong>{t("vehicle_name")}:</strong>
                 <div>{selectedVehicle?.vehicle_name || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Type:</strong>
+                <strong>{t("vehicle_type")}:</strong>
                 <div>{selectedVehicle?.vehicle_type || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vehicle Number:</strong>
+                <strong>{t("vehicle_number")}:</strong>
                 <div>{selectedVehicle?.vehicle_number || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>RC Number:</strong>
+                <strong>{t("rc_number")}:</strong>
                 <div>{selectedVehicle?.rc_number || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Vendor ID:</strong>
+                <strong>{t("vendor_id")}:</strong>
                 <div>{selectedVehicle?.vendor_id || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">
-                <strong>Status:</strong>
+                <strong>{t("status")}:</strong>
                 <div>
                   {selectedVehicle?.status === "Active" ||
                     selectedVehicle?.status === "1"
@@ -76,7 +78,7 @@ const ViewVehicle = ({ selectedVehicle }) => {
               className="btn btn-secondary"
               data-bs-dismiss="modal"
             >
-              Close
+              {t("cancel")}
             </button>
           </div>
 

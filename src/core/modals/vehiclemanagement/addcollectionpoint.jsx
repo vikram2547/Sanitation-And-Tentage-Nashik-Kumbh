@@ -5,9 +5,12 @@ import {
   addVehicleCollectionPoint,
   clearMessages,
 } from "../../redux/vehicleCollectionPointSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddCollectionPoint = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleCollectionPoints
@@ -113,7 +116,7 @@ const AddCollectionPoint = () => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Collection Point</h4>
+                  <h4>{t("add_new_vehicle_collection_point")}</h4>
                 </div>
                 <button
                   type="button"
@@ -130,7 +133,7 @@ const AddCollectionPoint = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Collection Point created successfully
+                    {t("created_successfully")}
                   </div>
                 )}
 
@@ -139,7 +142,7 @@ const AddCollectionPoint = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Point Code</label>
+                        <label>{t("point_code")}</label>
                         <input
                           type="text"
                           name="point_code"
@@ -153,7 +156,7 @@ const AddCollectionPoint = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Point Name</label>
+                        <label>{t("point_name")}</label>
                         <input
                           type="text"
                           name="point_name"
@@ -167,7 +170,7 @@ const AddCollectionPoint = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Latitude</label>
+                        <label>{t("latitude")}</label>
                         <input
                           type="text"
                           name="latitude"
@@ -181,7 +184,7 @@ const AddCollectionPoint = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Longitude</label>
+                        <label>{t("longitude")}</label>
                         <input
                           type="text"
                           name="longitude"
@@ -195,7 +198,7 @@ const AddCollectionPoint = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Expected Collection Time</label>
+                        <label>{t("expected_collection_time")}</label>
                         <input
                           type="time"
                           name="expected_collection_time"
@@ -209,7 +212,7 @@ const AddCollectionPoint = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Collection Frequency</label>
+                        <label>{t("collection_frequency")}</label>
                         <select
                           name="collection_frequency"
                           value={formData.collection_frequency}
@@ -224,7 +227,7 @@ const AddCollectionPoint = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Point Type</label>
+                        <label>{t("point_type")}</label>
                         <select
                           name="point_type"
                           value={formData.point_type}
@@ -239,7 +242,7 @@ const AddCollectionPoint = () => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Status</label>
+                        <label>{t("status")}</label>
                         <select
                           name="status"
                           value={formData.status}
@@ -261,7 +264,7 @@ const AddCollectionPoint = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -269,7 +272,7 @@ const AddCollectionPoint = () => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
                 </form>

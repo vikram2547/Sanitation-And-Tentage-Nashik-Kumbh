@@ -5,9 +5,12 @@ import {
   addVehicleMaintenanceLog,
   clearMessages,
 } from "../../redux/vehicleMaintenanceLogSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddMaintenanceLogs = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleMaintenanceLogs
@@ -70,6 +73,14 @@ const AddMaintenanceLogs = () => {
     dispatch(clearMessages());
   }, [success, dispatch]);
 
+  useEffect(() => {
+    if (!success && !error) return;
+    const timer = setTimeout(() => {
+      dispatch(clearMessages());
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [success, error, dispatch]);
+
   return (
     <div
       className="modal fade"
@@ -81,7 +92,7 @@ const AddMaintenanceLogs = () => {
             <div className="content">
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
-                <h5 className="modal-title">Add Maintenance Log</h5>
+                <h5 className="modal-title">{t("add_new_vehicle_maintenance_log")}</h5>
                 <button
                   type="button"
                   className="close"
@@ -97,7 +108,7 @@ const AddMaintenanceLogs = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Maintenance log added successfully
+                    {t("created_successfully")}
                   </div>
                 )}
 
@@ -106,7 +117,7 @@ const AddMaintenanceLogs = () => {
 
                     {/* VEHICLE ID */}
                     <div className="col-lg-6">
-                      <label>Vehicle ID</label>
+                      <label>{t("vehicle_id")}</label>
                       <input
                         type="number"
                         name="vehicle_id"
@@ -119,7 +130,7 @@ const AddMaintenanceLogs = () => {
 
                     {/* VENDOR ID */}
                     <div className="col-lg-6">
-                      <label>Vendor ID</label>
+                      <label>{t("vendor_id")}</label>
                       <input
                         type="number"
                         name="vendor_id"
@@ -133,7 +144,7 @@ const AddMaintenanceLogs = () => {
 
                     {/* MAINTENANCE TYPE */}
                     <div className="col-lg-6 mt-2">
-                      <label>Maintenance Type</label>
+                      <label>{t("maintenance_type")}</label>
                       <select
                         name="maintenance_type"
                         value={formData.maintenance_type}
@@ -151,7 +162,7 @@ const AddMaintenanceLogs = () => {
 
                     {/* COST */}
                     <div className="col-lg-6 mt-2">
-                      <label>Cost</label>
+                      <label>{t("cost")}</label>
                       <input
                         type="number"
                         step="0.01"
@@ -164,7 +175,7 @@ const AddMaintenanceLogs = () => {
                     </div>
                     {/* MAINTENANCE DATE */}
                     <div className="col-lg-6 mt-2">
-                      <label>Maintenance Date</label>
+                      <label>{t("maintenance_date")}</label>
                       <input
                         type="date"
                         name="maintenance_date"
@@ -176,7 +187,7 @@ const AddMaintenanceLogs = () => {
                     </div>
                     {/* NEXT MAINTENANCE DATE */}
                     <div className="col-lg-6 mt-2">
-                      <label>Next Maintenance Date</label>
+                      <label>{t("next_maintenance_date")}</label>
                       <input
                         type="date"
                         name="next_maintenance_date"
@@ -190,7 +201,7 @@ const AddMaintenanceLogs = () => {
 
                     {/* DESCRIPTION */}
                     <div className="col-lg-12 mt-2">
-                      <label>Description</label>
+                      <label>{t("description")}</label>
                       <textarea
                         name="description"
                         value={formData.description}
@@ -207,14 +218,14 @@ const AddMaintenanceLogs = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
                     <button
                       type="submit"
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
                 </form>

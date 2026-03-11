@@ -5,6 +5,8 @@ import {
   clearMessages,
   updateVehicleGpsTracking,
 } from "../../redux/vehicleGpsTrackingSlice";
+import { useTranslation } from "react-i18next";
+
 
 /* ================= TIMESTAMP HELPERS ================= */
 
@@ -20,6 +22,7 @@ const toApiTimestamp = (value) => {
 
 const EditGpsTracking = ({ selectedGps }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleGpsTracking
@@ -42,21 +45,21 @@ const EditGpsTracking = ({ selectedGps }) => {
   /* ================= PREFILL ================= */
 
   useEffect(() => {
-    if (!selectedGps) return;
-
-    setFormData({
-      vehicle_id: selectedGps.vehicle_id ?? "",
-      assignment_id: selectedGps.assignment_id ?? "",
-      latitude: selectedGps.latitude ?? "",
-      longitude: selectedGps.longitude ?? "",
-      speed: selectedGps.speed ?? "",
-      direction: selectedGps.direction ?? "",
-      ignition_status: selectedGps.ignition_status ?? "ON",
-      fuel_level: selectedGps.fuel_level ?? "",
-      odometer_reading: selectedGps.odometer_reading ?? "",
-      accuracy: selectedGps.accuracy ?? "",
-      timestamp: toInputDateTime(selectedGps.timestamp),
-    });
+    if (selectedGps) {
+      setFormData({
+        vehicle_id: selectedGps.vehicle_id ?? "",
+        assignment_id: selectedGps.assignment_id ?? "",
+        latitude: selectedGps.latitude ?? "",
+        longitude: selectedGps.longitude ?? "",
+        speed: selectedGps.speed ?? "",
+        direction: selectedGps.direction ?? "",
+        ignition_status: selectedGps.ignition_status ?? "ON",
+        fuel_level: selectedGps.fuel_level ?? "",
+        odometer_reading: selectedGps.odometer_reading ?? "",
+        accuracy: selectedGps.accuracy ?? "",
+        timestamp: toInputDateTime(selectedGps.timestamp),
+      });
+    }
   }, [selectedGps]);
 
   /* ================= HANDLE CHANGE ================= */
@@ -129,77 +132,203 @@ const EditGpsTracking = ({ selectedGps }) => {
         <div className="modal-content">
           <div className="page-wrapper-new p-0">
             <div className="content">
-
               {/* HEADER */}
-
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit GPS Tracking</h4>
+                  <h4>{t("edit_gps_tracking")}</h4>
                 </div>
-
-                <button
-                  type="button"
-                  className="close"
-                  data-bs-dismiss="modal"
-                >
+                <button type="button" className="close" data-bs-dismiss="modal">
                   <span>×</span>
                 </button>
               </div>
 
               {/* BODY */}
-
               <div className="modal-body custom-modal-body">
-
-                {error && (
-                  <div className="alert alert-danger">{error}</div>
-                )}
-
+                {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    GPS tracking updated successfully
+                    {t("updated_successfully")}
                   </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
 
-                    {Object.keys(formData).map((key) => (
-                      <div className="col-lg-4" key={key}>
-                        <div className="input-blocks">
-
-                          <label>
-                            {key.replace(/_/g, " ").toUpperCase()}
-                          </label>
-
-                          <input
-                            type={
-                              key === "timestamp"
-                                ? "datetime-local"
-                                : "text"
-                            }
-                            name={key}
-                            value={formData[key]}
-                            onChange={handleChange}
-                            className="form-control"
-                            required
-                          />
-
-                        </div>
+                    {/* Vehicle ID */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("vehicle_id")}</label>
+                        <input
+                          type="text"
+                          name="vehicle_id"
+                          value={formData.vehicle_id}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
                       </div>
-                    ))}
+                    </div>
+
+                    {/* Assignment ID */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("assignment_id")}</label>
+                        <input
+                          type="text"
+                          name="assignment_id"
+                          value={formData.assignment_id}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Latitude */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("latitude")}</label>
+                        <input
+                          type="text"
+                          name="latitude"
+                          value={formData.latitude}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Longitude */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("longitude")}</label>
+                        <input
+                          type="text"
+                          name="longitude"
+                          value={formData.longitude}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Speed */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("speed")}</label>
+                        <input
+                          type="text"
+                          name="speed"
+                          value={formData.speed}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Direction */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("direction")}</label>
+                        <input
+                          type="text"
+                          name="direction"
+                          value={formData.direction}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Ignition Status */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("ignition_status")}</label>
+                        <input
+                          type="text"
+                          name="ignition_status"
+                          value={formData.ignition_status}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Fuel Level */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("fuel_level")}</label>
+                        <input
+                          type="text"
+                          name="fuel_level"
+                          value={formData.fuel_level}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Odometer Reading */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("odometer_reading")}</label>
+                        <input
+                          type="text"
+                          name="odometer_reading"
+                          value={formData.odometer_reading}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Accuracy */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("accuracy")}</label>
+                        <input
+                          type="text"
+                          name="accuracy"
+                          value={formData.accuracy}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Timestamp */}
+                    <div className="col-lg-4">
+                      <div className="input-blocks">
+                        <label>{t("timestamp")}</label>
+                        <input
+                          type="datetime-local"
+                          name="timestamp"
+                          value={formData.timestamp}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
 
                   </div>
 
                   {/* FOOTER */}
-
                   <div className="modal-footer-btn mt-3">
-
                     <button
                       type="button"
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
 
                     <button
@@ -207,14 +336,12 @@ const EditGpsTracking = ({ selectedGps }) => {
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
-
                   </div>
                 </form>
 
               </div>
-
             </div>
           </div>
         </div>

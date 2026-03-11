@@ -9,7 +9,9 @@ import {
 } from
   "../../utils/imagepath";
 import { logout } from "../../core/redux/signinSlice";
-import i18n from "i18next";
+import { useTranslation } from "react-i18next";
+
+
 
 const Header = () => {
   const route = all_routes;
@@ -18,7 +20,7 @@ const Header = () => {
   const [toggle, SetToggle] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [flagImage, _setFlagImage] = useState(usFlag);
-  // const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const isElementVisible = (element) => { return element.offsetWidth > 0 || element.offsetHeight > 0; }; useEffect(() => {
     const handleMouseover = (e) => {
@@ -166,7 +168,7 @@ const Header = () => {
                     data-bs-toggle="dropdown"
                     data-bs-auto-close="outside">
 
-                    <input type="text" placeholder="Search" />
+                    <input type="text" placeholder={t("search")} />
                     <div className="search-addon">
                       <span>
                         <i className="ti ti-search" />
@@ -229,7 +231,7 @@ const Header = () => {
                 title="Logout"
                 className="btn btn-primary"
               >
-                LOG-OUT
+                {t("logout")}
               </button>
             </li>
           </ul>

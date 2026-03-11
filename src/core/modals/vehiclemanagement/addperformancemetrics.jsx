@@ -5,9 +5,13 @@ import {
   addVehiclePerformanceMetric,
   clearMessages,
 } from "../../redux/vehiclePerformanceMetricSlice";
+import { useTranslation } from "react-i18next";
+
 
 const AddPerformanceMetrics = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
+
 
   const { success, error, loading } = useSelector(
     (state) => state.vehiclePerformanceMetrics
@@ -50,7 +54,7 @@ const AddPerformanceMetrics = () => {
     if (modalEl) {
       const modalInstance =
         Modal.getInstance(modalEl) || new Modal(modalEl);
-      modalInstance.hide();
+      modalInstance.hide(); 
     }
 
     const today = new Date().toISOString().split("T")[0];
@@ -82,7 +86,7 @@ const AddPerformanceMetrics = () => {
               {/* ===== HEADER ===== */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Add Performance Metric</h4>
+                  <h4>{t("add_new_vehicle_performance_metric")}</h4>
                 </div>
                 <button type="button" className="close" data-bs-dismiss="modal">
                   <span>×</span>
@@ -95,30 +99,88 @@ const AddPerformanceMetrics = () => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Performance metric added successfully
+                    {t("created_successfully")}
                   </div>
                 )}
 
                 <form onSubmit={handleSubmit}>
                   <div className="row">
-                    {Object.keys(formData).map((key) => (
-                      <div className="col-lg-6" key={key}>
-                        <div className="input-blocks">
-                          <label>
-                            {key.replace(/_/g, " ").toUpperCase()}
-                          </label>
 
-                          <input
-                            type={key === "metric_date" ? "date" : "text"}
-                            name={key}
-                            value={formData[key]}
-                            onChange={handleChange}
-                            className="form-control"
-                            required
-                          />
-                        </div>
+                    {/* Vehicle ID */}
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>{t("vehicle_id")}</label>
+                        <input
+                          type="text"
+                          name="vehicle_id"
+                          value={formData.vehicle_id}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
                       </div>
-                    ))}
+                    </div>
+
+                    {/* Route ID */}
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>{t("route_id")}</label>
+                        <input
+                          type="text"
+                          name="route_id"
+                          value={formData.route_id}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Metric Type */}
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>{t("metric_type")}</label>
+                        <input
+                          type="text"
+                          name="metric_type"
+                          value={formData.metric_type}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Metric Value */}
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>{t("metric_value")}</label>
+                        <input
+                          type="text"
+                          name="metric_value"
+                          value={formData.metric_value}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    {/* Metric Date */}
+                    <div className="col-lg-6">
+                      <div className="input-blocks">
+                        <label>{t("metric_date")}</label>
+                        <input
+                          type="date"
+                          name="metric_date"
+                          value={formData.metric_date}
+                          onChange={handleChange}
+                          className="form-control"
+                          required
+                        />
+                      </div>
+                    </div>
+
                   </div>
 
                   {/* ===== FOOTER ===== */}
@@ -128,18 +190,18 @@ const AddPerformanceMetrics = () => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
                     <button
                       type="submit"
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Adding..." : "Submit"}
+                      {loading ? t("adding") : t("submit")}
                     </button>
                   </div>
-                </form>
 
+                </form>
               </div>
             </div>
           </div>

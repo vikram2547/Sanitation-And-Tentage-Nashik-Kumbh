@@ -85,7 +85,14 @@ const initialState = {
 ================================ */
 const signupSlice = createSlice({
   name: "signup",
-  initialState,
+  initialState: {
+    registrationStatus: false,
+    token: null,
+    user: null,
+    registrationError: null,
+    success: null,
+    loading: false,
+  },
   reducers: {
     clearSignupState: () => initialState,
   },
@@ -94,10 +101,12 @@ const signupSlice = createSlice({
       .addCase(signupUser.pending, (state) => {
         state.loading = true;
         state.registrationError = null;
+        state.success = null;
         state.registrationStatus = false;
       })
       .addCase(signupUser.fulfilled, (state, action) => {
         state.loading = false;
+        state.success = "User Created successfully";
         state.registrationStatus = true;
         state.registrationError = null;
 
@@ -112,6 +121,7 @@ const signupSlice = createSlice({
       .addCase(signupUser.rejected, (state, action) => {
         state.loading = false;
         state.registrationError = action.payload;
+        state.success = null;
       });
   },
 });

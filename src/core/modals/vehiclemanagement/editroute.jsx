@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "bootstrap";
 import { clearMessages, updateVehicleRoute } from "../../redux/vehicleRouteSlice";
+import { useTranslation } from "react-i18next";
+
 
 const EditRoute = ({ selectedRoute }) => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { success, error, loading } = useSelector(
     (state) => state.vehicleRoutes
@@ -83,7 +86,7 @@ const EditRoute = ({ selectedRoute }) => {
               {/* HEADER */}
               <div className="modal-header border-0 custom-modal-header">
                 <div className="page-title">
-                  <h4>Edit Route</h4>
+                  <h4>{t("edit_route")}</h4>
                 </div>
                 <button
                   type="button"
@@ -100,7 +103,7 @@ const EditRoute = ({ selectedRoute }) => {
                 {error && <div className="alert alert-danger">{error}</div>}
                 {success && (
                   <div className="alert alert-success">
-                    Route updated successfully
+                    {t("updated_succesfully")}
                   </div>
                 )}
 
@@ -109,7 +112,7 @@ const EditRoute = ({ selectedRoute }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Route Code</label>
+                        <label>{t("route_code")}</label>
                         <input
                           type="text"
                           name="route_code"
@@ -123,7 +126,7 @@ const EditRoute = ({ selectedRoute }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Route Name</label>
+                        <label>{t("route_name")}</label>
                         <input
                           type="text"
                           name="route_name"
@@ -137,7 +140,7 @@ const EditRoute = ({ selectedRoute }) => {
 
                     <div className="col-lg-6">
                       <div className="input-blocks">
-                        <label>Status</label>
+                        <label>{t("status")}</label>
                         <select
                           className="form-control"
                           name="status"
@@ -158,14 +161,14 @@ const EditRoute = ({ selectedRoute }) => {
                       className="btn btn-cancel me-2"
                       data-bs-dismiss="modal"
                     >
-                      Cancel
+                      {t("cancel")}
                     </button>
                     <button
                       type="submit"
                       className="btn btn-submit"
                       disabled={loading}
                     >
-                      {loading ? "Updating..." : "Update"}
+                      {loading ? t("updating") : t("update")}
                     </button>
                   </div>
 

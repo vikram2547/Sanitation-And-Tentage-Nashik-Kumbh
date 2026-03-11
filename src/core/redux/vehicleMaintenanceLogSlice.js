@@ -61,7 +61,9 @@ export const addVehicleMaintenanceLog = createAsyncThunk(
       const res = await api.post("vehicle-maintenance-logs/new", data);
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to add maintenance log"
+      );
     }
   }
 );
@@ -69,15 +71,17 @@ export const addVehicleMaintenanceLog = createAsyncThunk(
 /* ================= UPDATE ================= */
 export const updateVehicleMaintenanceLog = createAsyncThunk(
   "vehicleMaintenanceLogs/updateVehicleMaintenanceLog",
-  async ({ maintenance_id, data }, { rejectWithValue }) => {
+  async ({ id, data }, { rejectWithValue }) => {
     try {
       const res = await api.post(
-        `vehicle-maintenance-logs/edit/${maintenance_id}`,
+        `vehicle-maintenance-logs/edit/${id}`,
         data
       );
       return res.data;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to update maintenance log"
+      );
     }
   }
 );
@@ -90,7 +94,9 @@ export const deleteVehicleMaintenanceLog = createAsyncThunk(
       await api.post(`vehicle-maintenance-logs/delete/${maintenance_id}`);
       return maintenance_id;
     } catch (e) {
-      return rejectWithValue(e.response?.data?.message);
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to delete maintenance log"
+      );
     }
   }
 );
@@ -116,6 +122,7 @@ const vehicleMaintenanceLogSlice = createSlice({
       /* ===== GET ===== */
       .addCase(getVehicleMaintenanceLogs.pending, (state) => {
         state.loading = true;
+        state.error = null;
       })
       .addCase(getVehicleMaintenanceLogs.fulfilled, (state, action) => {
         state.loading = false;
@@ -130,7 +137,11 @@ const vehicleMaintenanceLogSlice = createSlice({
       })
 
       /* ===== ADD ===== */
+      .addCase(addVehicleMaintenanceLog.pending, (state) => {
+        state.loading = true;
+      })
       .addCase(addVehicleMaintenanceLog.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle maintenance log created successfully";
         if (action.payload?.data) {
           state.maintenanceLogs.unshift(action.payload.data);
@@ -143,14 +154,23 @@ const vehicleMaintenanceLogSlice = createSlice({
       })
 
       /* ===== UPDATE ===== */
+      .addCase(updateVehicleMaintenanceLog.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
       .addCase(updateVehicleMaintenanceLog.fulfilled, (state, action) => {
-        state.success = "Vehicle maintenance log updated successfully";
-        const updated = action.payload?.data;
-        if (!updated) return;
+        state.loading = false;
+        state.success = action.payload?.message || "Vehicle maintenance log updated successfully";
 
-        state.maintenanceLogs = state.maintenanceLogs.map((m) =>
-          m.maintenance_id === updated.maintenance_id ? updated : m
-        );
+        const updated = action.payload?.data;
+        if (updated) {
+          const index = state.maintenanceLogs.findIndex(
+            (m) => Number(m.maintenance_id) === Number(updated.maintenance_id)
+          );
+          if (index !== -1) {
+            state.maintenanceLogs[index] = updated;
+          }
+        }
       })
       .addCase(updateVehicleMaintenanceLog.rejected, (state, action) => {
         state.loading = false;
@@ -158,7 +178,12 @@ const vehicleMaintenanceLogSlice = createSlice({
       })
 
       /* ===== DELETE ===== */
+      .addCase(deleteVehicleMaintenanceLog.pending, (state) => {
+              state.loading = true;
+              state.error = null;
+            })
       .addCase(deleteVehicleMaintenanceLog.fulfilled, (state, action) => {
+        state.loading = false;
         state.success = "Vehicle maintenance log deleted successfully";
         const deletedId = action.meta.arg;
 
