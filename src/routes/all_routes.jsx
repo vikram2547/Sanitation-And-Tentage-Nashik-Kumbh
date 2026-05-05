@@ -305,6 +305,10 @@ export const all_routes = {
   cities: "/cities",
   activities: "/activities",
   pricing: "/pricing",
-  contact: "/contacts"
+  contact: "/contacts",
+  gsdregistration: "/gsdregistration",
+  vendorregistartion: "/vendorregistartion",
+  sectorregistration: "/sectorregistration",
+  circleregistartion: "/circleregistartion"
 
 };

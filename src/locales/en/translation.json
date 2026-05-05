@@ -347,7 +347,22 @@
   "accuracy": "Accuracy",
   "edit_gps_tracking": "Edit GPS Tracking",
   "radius": "Radius",
-  "edit_geofence": "Edit Geofence"
-
+  "edit_geofence": "Edit Geofence",
+  "manage_your_registration_report": "Manage Your Registration Report",
+  "gsd_wise_sanitation_registration_report": "GSD Wise Sanitation Registration Report",
+  "vendor_wise_sanitation_registration_report": "Vendor Wise Sanitation Registration Report",
+  "sector_wise_sanitation_registration_report": "Sector Wise Sanitation Registration Report",
+  "circle_wise_sanitation_registration_report": "Circle Wise Sanitation Registration Report",
+  "gsd_id": "GSD ID",
+  "gsd_name": "GSD Name",
+  "registration_count": "Registration Count",
+  "gsd_wise_registration": "GSD Wise Registration",
+  "vendor_wise_registration": "Vendor Wise Registration",
+  "sector_wise_registration": "Sector Wise Registration",
+  "circle_wise_registration": "Circle Wise Registration",
+  "sanitation_report": "Sanitation Reports",
+  "reports": "Reports",
+  "download_excel": "Download Excel",
+  "download_pdf": "Download Pdf"
 
 }

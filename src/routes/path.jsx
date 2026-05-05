@@ -55,6 +55,10 @@ import Incidents from "../feature-module/incidentmanagement/incidents.jsx";
 import SanitationAssetAllocation from "../feature-module/assettypemanagement/sanitationAssetAllocation.jsx";
 import Inspections from "../feature-module/inspection/inspections.jsx";
 import SanitationAssetTagging from "../feature-module/assettypemanagement/sanitationAssetTagging.jsx";
+import GsdRegistration from "../feature-module/Reports/gsdregistration.jsx";
+import VendorRegistration from "../feature-module/Reports/vendorregistration.jsx";
+import SectorRegistration from "../feature-module/Reports/sectorregistration.jsx";
+import CircleRegistration from "../feature-module/Reports/circleregistration.jsx";
 
 
 
@@ -1325,6 +1329,34 @@ export const authRoutes = [
   path: routes.inspections,
   name: "inspections",
   element: <Inspections />,
+  route: Route
+},
+{
+  id: 275,
+  path: routes.gsdregistration,
+  name: "gsdregistration",
+  element: <GsdRegistration />,
+  route: Route
+},
+{
+  id: 276,
+  path: routes.vendorregistartion,
+  name: "vendorregistartion",
+  element: <VendorRegistration />,
+  route: Route
+},
+{
+  id: 277,
+  path: routes.sectorregistration,
+  name: "sectorregistration",
+  element: <SectorRegistration />,
+  route: Route
+},
+{
+  id: 278,
+  path: routes.circleregistartion,
+  name: "circleregistartion",
+  element: <CircleRegistration />,
   route: Route
 },
 {

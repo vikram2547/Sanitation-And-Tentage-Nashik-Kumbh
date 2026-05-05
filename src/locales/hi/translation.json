@@ -351,6 +351,21 @@
   "accuracy": "सटीकता",
   "edit_gps_tracking": "जीपीएस ट्रैकिंग संपादित करें",
   "radius": "त्रिज्या",
-  "edit_geofence": "जियोफेंस संपादित करें"
-
+  "edit_geofence": "जियोफेंस संपादित करें",
+  "manage_your_registration_report": "अपने पंजीकरण रिपोर्ट का प्रबंधन करें",
+  "gsd_wise_sanitation_registration_report": "जीएसडी अनुसार स्वच्छता पंजीकरण रिपोर्ट्स",
+  "vendor_wise_sanitation_registration_report": "विक्रेता अनुसार स्वच्छता पंजीकरण रिपोर्ट्स",
+  "sector_wise_sanitation_registration_report": "सेक्टर अनुसार स्वच्छता पंजीकरण रिपोर्ट्स",
+  "circle_wise_sanitation_registration_report": "सर्कल अनुसार स्वच्छता पंजीकरण रिपोर्ट्स",
+  "gsd_id": "जीएसडी आईडी",
+  "gsd_name": "जीएसडी नाम",
+  "registration_count": "पंजीकरण संख्या",
+  "gsd_wise_registration": "जीएसडी अनुसार पंजीकरण",
+  "vendor_wise_registration": "विक्रेता अनुसार पंजीकरण",
+  "sector_wise_registration": "सेक्टर अनुसार पंजीकरण",
+  "circle_wise_registration": "सर्कल अनुसार पंजीकरण",
+  "sanitation_report": "स्वच्छता रिपोर्ट्स",
+  "reports": "रिपोर्ट्स",
+  "download_excel": "एक्सेल डाउनलोड करें",
+  "download_pdf": "पीडीएफ डाउनलोड करें"
 }

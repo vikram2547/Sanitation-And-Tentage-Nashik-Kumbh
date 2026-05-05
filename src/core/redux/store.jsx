@@ -32,6 +32,12 @@ import vehicleRouteAssignmentReducer from "./vehicleRouteAssignmentSlice";
 import vehicleRoutePointsReducer from "./vehicleRoutePointsSlice";
 import rolespermissionReducer from "./rolespermissionSlice";
 import countsReducer from "./dashboardCountsSlice";
+import sanitationRegistrationGsdWiseReducer from "./sanitationRegistrationGsdWiseSlice";
+import sanitationRegistrationVendorWiseReducer from "./sanitationRegistrationVendorWiseSlice";
+import sanitationRegistrationSectorWiseReducer from "./sanitationRegistrationSectorWiseSlice";
+import sanitationRegistrationCircleWiseReducer from "./sanitationRegistrationCircleWiseSlice";
+
+
 
 const combinedReducer = combineReducers({
   sidebar: sidebarSlice,
@@ -66,6 +72,13 @@ const combinedReducer = combineReducers({
   vehiclePerformanceMetrics: vehiclePerformanceMetricReducer,
   vehicleRouteAssignments: vehicleRouteAssignmentReducer,
   vehicleRoutePoints: vehicleRoutePointsReducer,
+  sanitationRegistrationGsdWise: sanitationRegistrationGsdWiseReducer,
+  sanitationRegistrationVendorWise: sanitationRegistrationVendorWiseReducer,
+  sanitationRegistrationSectorWise: sanitationRegistrationSectorWiseReducer,
+  sanitationRegistrationCircleWise: sanitationRegistrationCircleWiseReducer,
+
+
+
 });
 
 const rootReducer = (state, action) => {

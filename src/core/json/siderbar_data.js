@@ -231,11 +231,23 @@ export const SidebarData = [
     ],
   },
   {
-    label: "Reports",
+    label: "reports",
     submenuOpen: true,
     showSubRoute: false,
     submenuHdr: "Reports",
     submenuItems: [
+      {
+        label: "sanitation_report",
+        icon: "chart-bar",
+        showSubRoute: false,
+        submenu: true,
+        submenuItems: [
+          { label: "gsd_wise_registration", link: "/gsdregistration" },
+          { label: "vendor_wise_registration", link: "/vendorregistartion" },
+          { label: "sector_wise_registration", link: "/sectorregistration" },
+          { label: "circle_wise_registration", link: "/circleregistartion" },
+        ],
+      },
       {
         label: "Sales Report",
         icon: "chart-bar",
