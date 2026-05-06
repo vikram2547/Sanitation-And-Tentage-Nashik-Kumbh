@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
 
 const ViewGpsTracking = ({ selectedGps }) => {
 const { t } = useTranslation();
@@ -66,7 +67,7 @@ const { t } = useTranslation();
 
               <div className="col-md-6 mb-3">
                 <strong>{t("timestamp")}:</strong>
-                <div>{selectedGps?.timestamp}</div>
+                <div>{formatDateTime(selectedGps?.timestamp)}</div>
               </div>
 
             </div>

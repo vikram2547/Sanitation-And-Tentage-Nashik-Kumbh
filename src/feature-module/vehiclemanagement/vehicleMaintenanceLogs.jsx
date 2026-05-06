@@ -11,6 +11,7 @@ import ViewMaintenanceLogs from "../../core/modals/vehiclemanagement/viewmainten
 import EditMaintenanceLogs from "../../core/modals/vehiclemanagement/editmaintenancelogs";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 const VehicleMaintenanceLogs = () => {
@@ -73,7 +74,7 @@ const VehicleMaintenanceLogs = () => {
       header: t("maintenance_date"),
       field: "maintenance_date",
       sortable: true,
-      body: (rowData) => rowData?.maintenance_date || "-",
+      body: (rowData) => formatDateTime(rowData.maintenance_date) || "-",
     },
     {
       header: t("maintenance_type"),

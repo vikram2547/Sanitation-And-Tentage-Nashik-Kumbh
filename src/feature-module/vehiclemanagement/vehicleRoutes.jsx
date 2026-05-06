@@ -11,6 +11,7 @@ import EditRoute from "../../core/modals/vehiclemanagement/editroute";
 import ViewRoute from "../../core/modals/vehiclemanagement/viewroute";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 const VehicleRoutes = () => {
@@ -105,7 +106,7 @@ const VehicleRoutes = () => {
       header: t("created_at"),
       field: "created_at",
       sortable: true,
-      body: (rowData) => rowData?.created_at || "-",
+      body: (rowData) => formatDateTime(rowData.created_at),
     },
     {
       header: t("actions"),

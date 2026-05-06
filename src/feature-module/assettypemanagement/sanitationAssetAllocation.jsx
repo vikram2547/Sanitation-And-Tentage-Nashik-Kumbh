@@ -11,6 +11,7 @@ import { clearMessages, deleteSanitationAssetAllocation, getSanitationAssetsAllo
 import AddSanitationAssetAllocation from "../../core/modals/assettypemanagement/addSanitationAssetAllocation";
 import EditSanitationAssetAllocation from "../../core/modals/assettypemanagement/editSanitationAssetAllocation";
 import ViewSanitationAssetAllocation from "../../core/modals/assettypemanagement/viewSanitationAssetAllocation";
+import { formatDateTime } from "../../utils/dateFormat";
 
 const SanitationAssetAllocation = () => {
   const dispatch = useDispatch();
@@ -98,7 +99,7 @@ const SanitationAssetAllocation = () => {
       header: t("allocated_date"),
       field: "allocation_date",
       sortable: true,
-      body: (rowData) => rowData?.allocation_date || "-",
+      body: (rowData) => formatDateTime(rowData.allocation_date) || "-",
     },
     {
       header: t("status"),

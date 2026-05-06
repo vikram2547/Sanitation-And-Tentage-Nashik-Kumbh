@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
 
 const ViewRoute = ({ selectedRoute }) => {
 const { t } = useTranslation();
@@ -52,7 +53,7 @@ const { t } = useTranslation();
 
               <div className="col-md-6 mb-3">
                 <strong>{t("created_at")}:</strong>
-                <div>{selectedRoute?.created_at}</div>
+                <div>{formatDateTime(selectedRoute?.created_at)}</div>
               </div>
 
             </div>

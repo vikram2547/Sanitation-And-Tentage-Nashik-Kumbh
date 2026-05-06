@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
 
 
 const ViewShift = ({ selectedShift }) => {
@@ -79,7 +80,7 @@ const ViewShift = ({ selectedShift }) => {
               {selectedShift?.created_at && (
                 <div className="col-md-6 mb-3">
                   <strong>{t("created_at")}:</strong>
-                  <div>{selectedShift?.created_at}</div>
+                  <div>{formatDateTime(selectedShift?.created_at)}</div>
                 </div>
               )}
 

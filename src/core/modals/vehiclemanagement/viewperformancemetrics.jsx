@@ -1,5 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
+
 
 const ViewPerformanceMetrics = ({ selectedMetric }) => {
 const { t } = useTranslation();
@@ -42,7 +44,7 @@ const { t } = useTranslation();
 
               <div className="col-md-6 mb-3">
                 <strong>{t("metric_date")}:</strong>
-                <div>{selectedMetric?.metric_date}</div>
+                <div>{formatDateTime(selectedMetric?.metric_date)}</div>
               </div>
 
               <div className="col-md-6 mb-3">

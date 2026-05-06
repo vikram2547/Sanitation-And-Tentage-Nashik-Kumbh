@@ -11,6 +11,7 @@ import ViewGeofences from "../../core/modals/vehiclemanagement/viewgeofences";
 import AddGeofences from "../../core/modals/vehiclemanagement/addgeofences";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 const VehicleGeofences = () => {
@@ -99,7 +100,7 @@ const VehicleGeofences = () => {
       header: t("created_at"),
       field: "created_at",
       sortable: true,
-      body: (rowData) => rowData?.created_at || "-",
+      body: (rowData) => formatDateTime(rowData.created_at),
     },
     {
       header: t("actions"),

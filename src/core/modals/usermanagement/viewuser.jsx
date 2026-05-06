@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
 
 
 const ViewUser = ({ selectedUser }) => {
@@ -65,12 +66,12 @@ const ViewUser = ({ selectedUser }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>{t("created_at")}:</strong>
-                <div>{selectedUser?.created_at}</div>
+                <div>{formatDateTime(selectedUser?.created_at)}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>{t("updated_at")}:</strong>
-                <div>{selectedUser?.updated_at}</div>
+                <div>{formatDateTime(selectedUser?.updated_at)}</div>
               </div>
 
             </div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
 
 
 const ViewSector = ({ selectedSector }) => {
@@ -36,12 +37,12 @@ const ViewSector = ({ selectedSector }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>{t("created_at")}:</strong>
-                <div>{selectedSector?.created_at}</div>
+                <div>{formatDateTime(selectedSector?.created_at)}</div>
               </div>
 
               <div className="col-md-6 mb-3">
                 <strong>{t("updated_at")}:</strong>
-                <div>{selectedSector?.updated_at}</div>
+                <div>{formatDateTime(selectedSector?.updated_at)}</div>
               </div>
 
             </div>

@@ -14,6 +14,7 @@ import PrimeDataTable from "../../components/data-table";
 import { clearMessages, deleteUser, getUsers } from "../../core/redux/usersSlice";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 const Users = () => {
@@ -72,7 +73,7 @@ const Users = () => {
       sortable: true,
     },
     {
-       header: t("phone"),
+      header: t("phone"),
       field: "phone",
       sortable: true,
     },
@@ -85,6 +86,7 @@ const Users = () => {
       header: t("created_at"),
       field: "created_at",
       sortable: true,
+      body: (rowData) => formatDateTime(rowData.created_at),
     },
     {
       header: t("status"),

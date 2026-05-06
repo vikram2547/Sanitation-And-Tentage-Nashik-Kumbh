@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
 
 const ViewGeofences = ({ selectedGeofence }) => {
 const { t } = useTranslation();
@@ -51,7 +52,7 @@ const { t } = useTranslation();
 
               <div className="col-md-6 mb-3">
                 <strong>{t("created_at")}:</strong>
-                <div>{selectedGeofence?.created_at}</div>
+                <div>{formatDateTime(selectedGeofence?.created_at)}</div>
               </div>
 
             </div>

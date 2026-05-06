@@ -10,6 +10,7 @@ import EditSector from "../../core/modals/sectormanagement/editsector";
 import ViewSector from "../../core/modals/sectormanagement/viewsector";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 const Sectors = () => {
@@ -71,10 +72,11 @@ const Sectors = () => {
             sortable: true,
         },
         {
-            header: t("created_at"),
-            field: "created_at",
-            sortable: true,
-        },
+              header: t("created_at"),
+              field: "created_at",
+              sortable: true,
+              body: (rowData) => formatDateTime(rowData.created_at),
+            },
         {
             header: t("actions"),
             field: "actions",

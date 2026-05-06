@@ -360,9 +360,11 @@
   "vendor_wise_registration": "Vendor Wise Registration",
   "sector_wise_registration": "Sector Wise Registration",
   "circle_wise_registration": "Circle Wise Registration",
-  "sanitation_report": "Sanitation Reports",
+  "sanitation_registration": "Sanitation Registration",
   "reports": "Reports",
   "download_excel": "Download Excel",
-  "download_pdf": "Download Pdf"
+  "download_pdf": "Download Pdf",
+  "sanitation_inspection": "Sanitation Inspection",
+  "inspection_summary": "Inspection Summary"
 
 }

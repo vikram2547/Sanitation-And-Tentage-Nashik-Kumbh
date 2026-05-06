@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
 
 
 const ViewRouteAssignment = ({ selectedAssignment }) => {
@@ -43,7 +44,7 @@ const ViewRouteAssignment = ({ selectedAssignment }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>{t("assignment_date")}:</strong>
-                <div>{selectedAssignment?.assignment_date}</div>
+                <div>{formatDateTime(selectedAssignment?.assignment_date)}</div>
               </div>
 
               <div className="col-md-6 mb-3">

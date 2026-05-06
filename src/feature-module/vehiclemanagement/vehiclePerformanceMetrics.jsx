@@ -11,6 +11,7 @@ import EditPerformanceMetrics from "../../core/modals/vehiclemanagement/editperf
 import ViewPerformanceMetrics from "../../core/modals/vehiclemanagement/viewperformancemetrics";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 
@@ -80,7 +81,7 @@ const VehiclePerformanceMetrics = () => {
       header: t("metric_date"),
       field: "metric_date",
       sortable: true,
-      body: (rowData) => rowData?.metric_date || "-",
+      body: (rowData) => formatDateTime(rowData?.metric_date) || "-",
     },
     {
       header: t("metric_type"),

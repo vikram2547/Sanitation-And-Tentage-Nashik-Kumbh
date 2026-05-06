@@ -1,5 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
+
 
 
 const ViewSanitationAssetAllocation = ({ selectedAsset }) => {
@@ -47,7 +49,7 @@ const ViewSanitationAssetAllocation = ({ selectedAsset }) => {
 
               <div className="col-md-6 mb-3">
                 <strong>{t("allocation_date")}:</strong>
-                <div>{selectedAsset?.allocation_date || "-"}</div>
+                <div>{formatDateTime(selectedAsset?.allocation_date) || "-"}</div>
               </div>
 
               <div className="col-md-6 mb-3">

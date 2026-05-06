@@ -11,6 +11,7 @@ import EditRouteAssignment from "../../core/modals/vehiclemanagement/editrouteas
 import ViewRouteAssignment from "../../core/modals/vehiclemanagement/viewrouteassignment";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 const VehicleRouteAssignment = () => {
@@ -79,7 +80,7 @@ const VehicleRouteAssignment = () => {
       header: t("assignment_date"),
       field: "assignment_date",
       sortable: true,
-      body: (rowData) => rowData?.assignment_date || "-",
+      body: (rowData) => formatDateTime(rowData.assignment_date) || "-",
     },
     {
       header: t("shift"),

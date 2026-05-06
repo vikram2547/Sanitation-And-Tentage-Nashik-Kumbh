@@ -237,7 +237,7 @@ export const SidebarData = [
     submenuHdr: "Reports",
     submenuItems: [
       {
-        label: "sanitation_report",
+        label: "sanitation_registration",
         icon: "chart-bar",
         showSubRoute: false,
         submenu: true,
@@ -247,6 +247,18 @@ export const SidebarData = [
           { label: "sector_wise_registration", link: "/sectorregistration" },
           { label: "circle_wise_registration", link: "/circleregistartion" },
         ],
+      },
+      {
+        label: "sanitation_inspection",
+        link: "/purchase-report",
+        icon: "chart-pie-2",
+        showSubRoute: false,
+      },
+      {
+        label: "inspection_summary",
+        link: "/purchase-report",
+        icon: "chart-pie-2",
+        showSubRoute: false,
       },
       {
         label: "Sales Report",

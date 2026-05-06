@@ -11,6 +11,7 @@ import EditGpsTracking from "../../core/modals/vehiclemanagement/editgpstracking
 import ViewGpsTracking from "../../core/modals/vehiclemanagement/viewgpstracking";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 const VehicleGpsTracking = () => {
@@ -100,7 +101,7 @@ const VehicleGpsTracking = () => {
       header: t("timestamp"),
       field: "timestamp",
       sortable: true,
-      body: (rowData) => rowData?.timestamp || "-",
+      body: (rowData) => formatDateTime(rowData.timestamp) || "-",
     },
     {
       header: t("actions"),

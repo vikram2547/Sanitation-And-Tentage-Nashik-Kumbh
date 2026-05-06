@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../../utils/dateFormat";
 
 const ViewMaintenanceLogs = ({ selectedLog }) => {
 const { t } = useTranslation();
@@ -36,7 +37,7 @@ const { t } = useTranslation();
 
               <div className="col-md-6 mb-3">
                 <strong>{t("maintenance_date")}:</strong>
-                <div>{selectedLog?.maintenance_date}</div>
+                <div>{formatDateTime(selectedLog?.maintenance_date)}</div>
               </div>
 
               <div className="col-md-6 mb-3">
@@ -56,7 +57,7 @@ const { t } = useTranslation();
 
               <div className="col-md-6 mb-3">
                 <strong>{t("next_maintenance_date")}:</strong>
-                <div>{selectedLog?.next_maintenance_date}</div>
+                <div>{formatDateTime(selectedLog?.next_maintenance_date)}</div>
               </div>
 
               <div className="col-md-6 mb-3">

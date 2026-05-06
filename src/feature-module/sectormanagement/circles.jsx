@@ -10,6 +10,7 @@ import EditCircle from "../../core/modals/circlemanagement/editcircle";
 import ViewCircle from "../../core/modals/circlemanagement/viewcircle";
 import { Modal } from "bootstrap";
 import { useTranslation } from "react-i18next";
+import { formatDateTime } from "../../utils/dateFormat";
 
 
 const Circles = () => {
@@ -74,12 +75,11 @@ const Circles = () => {
             body: (rowData) => rowData?.circle_code || "-"
         },
         {
-            header: t("created_at"),
-            field: "created_at",
-            sortable: true,
-            body: (rowData) => rowData?.created_at || "-"
-
-        },
+              header: t("created_at"),
+              field: "created_at",
+              sortable: true,
+              body: (rowData) => formatDateTime(rowData.created_at),
+            },
         {
             header: t("actions"),
             field: "actions",
