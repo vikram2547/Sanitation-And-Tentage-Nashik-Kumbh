@@ -1,1 +1,0 @@
-import{ai as e,b1 as i,j as s}from"./index-BLa0vRZ4.js";const h=a=>{const t=`${i}${a.src}`;return s.jsx("img",{className:a.className,src:t,height:a.height,alt:a.alt,width:a.width,id:a.id})},c=e.memo(h);export{c as I};
