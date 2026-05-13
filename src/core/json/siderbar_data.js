@@ -251,12 +251,18 @@ export const SidebarData = [
       {
         label: "sanitation_inspection",
         link: "/purchase-report",
-        icon: "chart-pie-2",
+        icon: "report-analytics",
         showSubRoute: false,
       },
       {
         label: "inspection_summary",
         link: "/purchase-report",
+        icon: "file-vector",
+        showSubRoute: false,
+      },
+      {
+        label: "setting",
+        link: "/general-settings",
         icon: "chart-pie-2",
         showSubRoute: false,
       },
