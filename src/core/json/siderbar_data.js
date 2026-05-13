@@ -17,9 +17,9 @@ export const SidebarData = [
 
         submenuItems: [
           { label: "super_admin_dashboard", link: "/dashboard" },
-          { label: "admin_dashboard_1", link: "/index" },
-          { label: "admin_dashboard_2", link: "/admin-dashboard" },
-          { label: "admin_dashboard_3", link: "/sales-dashboard" },
+          // { label: "admin_dashboard_1", link: "/index" },
+          // { label: "admin_dashboard_2", link: "/admin-dashboard" },
+          // { label: "admin_dashboard_3", link: "/sales-dashboard" },
         ],
       },
     ],
