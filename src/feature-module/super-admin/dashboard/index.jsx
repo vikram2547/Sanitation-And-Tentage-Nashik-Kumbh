@@ -7,6 +7,9 @@ import { all_routes } from "../../../routes/all_routes";
 import { useDispatch, useSelector } from "react-redux";
 import { getCounts } from "../../../core/redux/dashboardCountsSlice";
 import { useTranslation } from "react-i18next";
+import bg1 from "../../../assets/img/bg/welcome-bg-01.svg";
+import bg2 from "../../../assets/img/bg/welcome-bg-02.svg"
+import bg3 from "../../../assets/img/bg/welcome-bg-03.svg"
 
 const SuperAdminDashboard = () => {
   const { t } = useTranslation();
@@ -613,20 +616,22 @@ const SuperAdminDashboard = () => {
           </div>
           <div className="welcome-bg">
             <img
-              src="src/assets/img/bg/welcome-bg-02.svg"
+              src={bg2}
               alt="img"
-              className="welcome-bg-01" />
+              className="welcome-bg-01"
+            />
 
             <img
-              src="src/assets/img/bg/welcome-bg-03.svg"
+              src={bg3}
               alt="img"
-              className="welcome-bg-02" />
+              className="welcome-bg-02"
+            />
 
             <img
-              src="src/assets/img/bg/welcome-bg-01.svg"
+              src={bg1}
               alt="img"
-              className="welcome-bg-03" />
-
+              className="welcome-bg-03"
+            />
           </div>
         </div>
         <div className="row">

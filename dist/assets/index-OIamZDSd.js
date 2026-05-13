@@ -1,0 +1,1 @@
+import{aj as e,b2 as s,j as i}from"./index-BN2CMyNu.js";const h=a=>{const t=`${s}${a.src}`;return i.jsx("img",{className:a.className,src:t,height:a.height,alt:a.alt,width:a.width,id:a.id})},c=e.memo(h);export{c as I};
