@@ -760,8 +760,7 @@ const SuperAdminDashboard = () => {
             </div>
           ))}
         </div>
-        <div className="row">
-          {/* Companies */}
+        {/* <div className="row">
           <div className="col-xxl-3 col-lg-6 d-flex">
             <div className="card flex-fill">
               <div className="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap">
@@ -809,8 +808,7 @@ const SuperAdminDashboard = () => {
               </div>
             </div>
           </div>
-          {/* /Companies */}
-          {/* Revenue */}
+       
           <div className="col-lg-6 d-flex">
             <div className="card flex-fill">
               <div className="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap">
@@ -867,8 +865,7 @@ const SuperAdminDashboard = () => {
               </div>
             </div>
           </div>
-          {/* /Revenue */}
-          {/* Top Plans */}
+        
           <div className="col-xxl-3 col-xl-12 d-flex">
             <div className="card flex-fill">
               <div className="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap">
@@ -932,10 +929,9 @@ const SuperAdminDashboard = () => {
               </div>
             </div>
           </div>
-          {/* /Top Plans */}
+       
         </div>
         <div className="row">
-          {/* Recent Transactions */}
           <div className="col-xxl-4 col-xl-12 d-flex">
             <div className="card flex-fill">
               <div className="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap">
@@ -1091,8 +1087,7 @@ const SuperAdminDashboard = () => {
               </div>
             </div>
           </div>
-          {/* /Recent Transactions */}
-          {/* Recently Registered */}
+         
           <div className="col-xxl-4 col-xl-6 d-flex">
             <div className="card flex-fill">
               <div className="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap">
@@ -1223,8 +1218,7 @@ const SuperAdminDashboard = () => {
               </div>
             </div>
           </div>
-          {/* /Recent Registered */}
-          {/* Recent Plan Expired */}
+        
           <div className="col-xxl-4 col-xl-6 d-flex">
             <div className="card flex-fill">
               <div className="card-header pb-2 d-flex align-items-center justify-content-between flex-wrap">
@@ -1593,8 +1587,8 @@ const SuperAdminDashboard = () => {
               </div>
             </div>
           </div>
-          {/* /Recent Plan Expired */}
-        </div>
+        
+        </div> */}
       </div>
       <CommonFooter />
     </div>);

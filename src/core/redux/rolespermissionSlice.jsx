@@ -95,9 +95,9 @@ export const addRolePermission = createAsyncThunk(
 /* ================= UPDATE USER PERMISSION ================= */
 export const updateRolePermission = createAsyncThunk(
   "rolespermission/updateRolePermission",
-  async ({ id, data }, { rejectWithValue }) => {
+  async ({ permission_id, data }, { rejectWithValue }) => {
     try {
-      const response = await api.post(`user-permissions/edit/${id}`, data);
+      const response = await api.post(`user-permissions/edit/${permission_id}`, data);
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -110,10 +110,10 @@ export const updateRolePermission = createAsyncThunk(
 /* ================= DELETE USER PERMISSION ================= */
 export const deleteRolePermission = createAsyncThunk(
   "rolespermission/deleteRolePermission",
-  async (id, { rejectWithValue }) => {
+  async (permission_id, { rejectWithValue }) => {
     try {
-      await api.post(`user-permissions/delete/${id}`);
-      return id;
+      await api.post(`user-permissions/delete/${permission_id}`);
+      return permission_id;
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || "Failed to delete user permission"
@@ -193,7 +193,7 @@ const rolespermissionSlice = createSlice({
 
         if (updatedPermission) {
           state.permissions = state.permissions.map((item) =>
-            Number(item.id) === Number(updatedPermission.id)
+            Number(item.permission_id) === Number(updatedPermission.permission_id)
               ? updatedPermission
               : item
           );
@@ -216,7 +216,7 @@ const rolespermissionSlice = createSlice({
         const deletedId = action.meta.arg;
 
         state.permissions = state.permissions.filter(
-          (item) => Number(item.id) !== Number(deletedId)
+          (item) => Number(item.permission_id) !== Number(deletedId)
         );
 
         state.totalRecords -= 1;

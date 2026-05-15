@@ -1,13 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
 import SearchFromApi from "../../components/data-table/search";
 import PrimeDataTable from "../../components/data-table";
 
 import { all_routes } from "../../routes/all_routes";
-import { addRolePermission } from "../../core/redux/rolespermissionSlice";
-
+import {
+  addRolePermission,
+  updateRolePermission,
+} from "../../core/redux/rolespermissionSlice";
 /* ===========================
    FIXED MODULES
 =========================== */
@@ -43,6 +44,11 @@ const Permissions = () => {
   const [listData, setListData] = useState(buildInitialData());
   const [currentPage, setCurrentPage] = useState(1);
   const [rows, setRows] = useState(10);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const location = useLocation();
+  const editData = location.state?.editData;
+  const isEditMode = Boolean(editData);
 
   /* ===========================
      ✅ FIXED CHECKBOX HANDLER
@@ -59,22 +65,79 @@ const Permissions = () => {
   /* ===========================
      SUBMIT HANDLER
   =========================== */
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    setSuccessMessage("");
+    setErrorMessage("");
+
     if (!userTypeId) {
-      alert("Please enter User Type ID");
+      setErrorMessage("Please enter User Type ID");
       return;
     }
 
-    const payload = listData.map((row) => ({
-      user_type_id: Number(userTypeId),
-      permission: row.module.toUpperCase(),
-      can_create: row.create ? 1 : 0,
-      can_view: row.read ? 1 : 0,
-      can_edit: row.write ? 1 : 0,
-      can_delete: row.delete ? 1 : 0,
-    }));
+    try {
 
-    dispatch(addRolePermission(payload));
+      /* ================= EDIT ================= */
+      if (isEditMode) {
+
+        const selectedPermission = listData.find(
+          (item) => item.module === editData.permission
+        );
+
+        const payload = {
+          user_type_id: Number(userTypeId),
+          permission: selectedPermission.module,
+          can_create: selectedPermission.create ? 1 : 0,
+          can_view: selectedPermission.read ? 1 : 0,
+          can_edit: selectedPermission.write ? 1 : 0,
+          can_delete: selectedPermission.delete ? 1 : 0,
+        };
+
+        await dispatch(
+          updateRolePermission({
+            permission_id: editData.permission_id,
+            data: payload,
+          })
+        ).unwrap();
+
+        setSuccessMessage("Permission updated successfully");
+
+      }
+
+      /* ================= ADD ================= */
+      else {
+
+        for (const row of listData) {
+
+          const payload = {
+            user_type_id: Number(userTypeId),
+            permission: row.module,
+            can_create: row.create ? 1 : 0,
+            can_view: row.read ? 1 : 0,
+            can_edit: row.write ? 1 : 0,
+            can_delete: row.delete ? 1 : 0,
+          };
+
+          await dispatch(addRolePermission(payload)).unwrap();
+        }
+
+        setSuccessMessage("Permissions saved successfully");
+
+        setListData(buildInitialData());
+        setUserTypeId("");
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      setErrorMessage(
+        typeof error === "string"
+          ? error
+          : isEditMode
+            ? "Failed to update permission"
+            : "Failed to save permissions"
+      );
+    }
   };
 
   /* ===========================
@@ -141,13 +204,58 @@ const Permissions = () => {
     },
   ];
 
+  useEffect(() => {
+    if (editData) {
+      setUserTypeId(editData.user_type_id);
+
+      setListData(
+        MODULES.map((module) => {
+          if (module === editData.permission) {
+            return {
+              module,
+              read: Number(editData.can_view) === 1,
+              create: Number(editData.can_create) === 1,
+              write: Number(editData.can_edit) === 1,
+              delete: Number(editData.can_delete) === 1,
+            };
+          }
+
+          return {
+            module,
+            read: false,
+            create: false,
+            write: false,
+            delete: false,
+          };
+        })
+      );
+    }
+  }, [editData]);
+
+  useEffect(() => {
+    if (successMessage) {
+      const timer = setTimeout(() => {
+        setSuccessMessage("");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [successMessage]);
+
   return (
     <div className="page-wrapper">
       <div className="content">
         <div className="page-header">
           <div className="page-title">
-            <h4>Permission</h4>
-            <h6>Manage your permissions</h6>
+            <h4>
+              {isEditMode ? "Edit Permission" : "Permission"}
+            </h4>
+
+            <h6>
+              {isEditMode
+                ? "Update permission"
+                : "Manage your permissions"}
+            </h6>
           </div>
 
           <div className="page-btn">
@@ -159,8 +267,21 @@ const Permissions = () => {
 
         <div className="card">
           <div className="card-header">
+            {/* SUCCESS MESSAGE */}
+            {successMessage && (
+              <div className="alert alert-success mb-3">
+                {successMessage}
+              </div>
+            )}
+
+            {/* ERROR MESSAGE */}
+            {errorMessage && (
+              <div className="alert alert-danger mb-3">
+                {errorMessage}
+              </div>
+            )}
             <div className="d-flex justify-content-between align-items-center flex-wrap gap-2">
-              <SearchFromApi rows={rows} setRows={setRows} />
+              {/* <SearchFromApi rows={rows} setRows={setRows} /> */}
 
               <div className="d-flex align-items-center gap-2">
                 <label className="fw-medium mb-0">User Type ID:</label>
@@ -189,7 +310,7 @@ const Permissions = () => {
 
           <div className="card-footer text-end">
             <button className="btn btn-primary" onClick={handleSubmit}>
-              Save Permissions
+              {isEditMode ? "Update Permission" : "Save Permissions"}
             </button>
           </div>
         </div>

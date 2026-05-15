@@ -25,9 +25,10 @@ const PrimeDataTable = ({
   const totalPages = Math.ceil(totalRecords / rows);
 
   // Pagination
-  const startIndex = (currentPage - 1) * rows;
-  const endIndex = startIndex + rows;
-  const paginatedData = loading ? skeletonRows : data.slice(startIndex, endIndex);
+  // const startIndex = (currentPage - 1) * rows;
+  // const endIndex = startIndex + rows;
+  // const paginatedData = loading ? skeletonRows : data.slice(startIndex, endIndex);
+  const paginatedData = loading ? skeletonRows : data;
 
   const onPageChange = (newPage) => {
     setCurrentPage(newPage);
