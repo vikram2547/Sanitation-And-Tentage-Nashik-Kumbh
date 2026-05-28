@@ -113,7 +113,7 @@ const Signin = () => {
               <div className="login-userset">
                 {/* LOGO */}
                 <div className="login-logo logo-normal">
-                  <img src={logoPng} alt="logo" />
+                  {/* <img src={logoPng} alt="logo" /> */}
                 </div>
 
                 <Link to={route.dashboard} className="login-logo logo-white">

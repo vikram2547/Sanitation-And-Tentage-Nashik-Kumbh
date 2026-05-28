@@ -102,7 +102,7 @@ const Forgotpassword = () => {
               <div className="login-userset">
 
                 <div className="login-logo logo-normal">
-                  <img src={logoPng} alt="img" />
+                  {/* <img src={logoPng} alt="img" /> */}
                 </div>
 
                 <Link to={route.dashboard} className="login-logo logo-white">

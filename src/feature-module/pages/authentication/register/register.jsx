@@ -112,7 +112,7 @@ const Register = () => {
               <div className="login-userset">
 
                 <div className="login-logo logo-normal">
-                  <img src={logo} alt="img" />
+                  {/* <img src={logo} alt="img" /> */}
                 </div>
 
                 <Link to={route.dashboard} className="login-logo logo-white">

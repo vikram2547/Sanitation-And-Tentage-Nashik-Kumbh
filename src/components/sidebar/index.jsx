@@ -124,7 +124,7 @@ const Sidebar = () => {
       >
         <div className="sidebar-logo">
           <Link to={route.newdashboard} className="logo logo-normal">
-            <img src={logo} alt="logo" />
+            {/* <img src={logo} alt="logo" /> */}
           </Link>
 
           <Link to={route.newdashboard} className="logo logo-white">
