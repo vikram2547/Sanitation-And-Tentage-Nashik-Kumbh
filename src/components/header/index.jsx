@@ -199,8 +199,8 @@ const Header = () => {
                 onChange={(e) => i18n.changeLanguage(e.target.value)}
                 defaultValue={i18n.language}
               >
-                <option value="en" style={{ color: "black" }}>ENG</option>
-                <option value="hi" style={{ color: "black" }}>HIN</option>
+                <option value="en" style={{ color: "black" }}>{t("english")}</option>
+                <option value="hi" style={{ color: "black" }}>{t("hindi")}</option>
               </select>
             </li>
 

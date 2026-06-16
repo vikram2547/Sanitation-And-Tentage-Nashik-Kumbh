@@ -370,5 +370,7 @@
   "download_pdf": "पीडीएफ डाउनलोड करें",
   "sanitation_inspection": "स्वच्छता निरीक्षण",
   "inspection_summary": "निरीक्षण सारांश",
-  "setting": "सेटिंग"
+  "setting": "सेटिंग",
+  "hindi" : "हिंदी",
+  "english" : "अंग्रेज़ी"
 }
