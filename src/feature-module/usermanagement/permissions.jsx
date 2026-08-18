@@ -309,7 +309,7 @@ const Permissions = () => {
           </div>
 
           <div className="card-footer text-end">
-            <button className="btn btn-primary" onClick={handleSubmit}>
+            <button className="btn btn-success" onClick={handleSubmit}>
               {isEditMode ? "Update Permission" : "Save Permissions"}
             </button>
           </div>

@@ -638,9 +638,9 @@ const SuperAdminDashboard = () => {
 
           {/* Total Toilets */}
           <div className="col-xl-3 col-sm-6 col-12 d-flex">
-            <div className="card bg-primary sale-widget flex-fill">
+            <div className="card bg-secondary sale-widget flex-fill">
               <div className="card-body d-flex align-items-center">
-                <span className="sale-icon bg-white text-primary">
+                <span className="sale-icon bg-white text-secondary">
                   <i className="ti ti-building fs-24" />
                 </span>
                 <div className="ms-2">
@@ -658,9 +658,9 @@ const SuperAdminDashboard = () => {
 
           {/* Registered Toilets */}
           <div className="col-xl-3 col-sm-6 col-12 d-flex">
-            <div className="card bg-secondary sale-widget flex-fill">
+            <div className="card bg-orange sale-widget flex-fill">
               <div className="card-body d-flex align-items-center">
-                <span className="sale-icon bg-white text-secondary">
+                <span className="sale-icon bg-white text-orange">
                   <i className="ti ti-check fs-24" />
                 </span>
                 <div className="ms-2">
@@ -678,9 +678,9 @@ const SuperAdminDashboard = () => {
 
           {/* Under Monitoring */}
           <div className="col-xl-3 col-sm-6 col-12 d-flex">
-            <div className="card bg-teal sale-widget flex-fill">
+            <div className="card bg-success sale-widget flex-fill">
               <div className="card-body d-flex align-items-center">
-                <span className="sale-icon bg-white text-teal">
+                <span className="sale-icon bg-white text-success">
                   <i className="ti ti-activity fs-24" />
                 </span>
                 <div className="ms-2">
@@ -698,9 +698,9 @@ const SuperAdminDashboard = () => {
 
           {/* Off Monitoring */}
           <div className="col-xl-3 col-sm-6 col-12 d-flex">
-            <div className="card bg-info sale-widget flex-fill">
+            <div className="card bg-danger sale-widget flex-fill">
               <div className="card-body d-flex align-items-center">
-                <span className="sale-icon bg-white text-info">
+                <span className="sale-icon bg-white text-danger">
                   <i className="ti ti-power fs-24" />
                 </span>
                 <div className="ms-2">
@@ -733,15 +733,15 @@ const SuperAdminDashboard = () => {
 
                   {/* Registered */}
                   <div className="d-flex justify-content-between mb-1">
-                    <span className="fs-13 text-muted">{t("registered")}</span>
-                    <span className="fw-semibold">
+                    <span className="fs-13 text-orange">{t("registered")}</span>
+                    <span className="fw-semibold text-orange">
                       {item?.registered_toilets ?? 0}
                     </span>
                   </div>
 
                   {/* Under Monitoring */}
                   <div className="d-flex justify-content-between mb-1">
-                    <span className="fs-13 text-muted">{t("under_monitoring")}</span>
+                    <span className="fs-13 text-green">{t("under_monitoring")}</span>
                     <span className="fw-semibold text-success">
                       {item?.under_monitoring ?? 0}
                     </span>
@@ -749,7 +749,7 @@ const SuperAdminDashboard = () => {
 
                   {/* Off Monitoring */}
                   <div className="d-flex justify-content-between">
-                    <span className="fs-13 text-muted">{t("off_monitoring")}</span>
+                    <span className="fs-13 text-red">{t("off_monitoring")}</span>
                     <span className="fw-semibold text-danger">
                       {item?.off_monitoring ?? 0}
                     </span>

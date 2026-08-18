@@ -349,7 +349,7 @@ const AccountListModal = () => {
                   </button>
                   <button
                     type="submit"
-                    className="btn btn-primary fs-13 fw-medium p-2 px-3">
+                    className="btn btn-danger fs-13 fw-medium p-2 px-3">
                     
                     Yes Delete
                   </button>

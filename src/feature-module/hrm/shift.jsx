@@ -112,7 +112,7 @@ const Shift = () => {
               data-bs-target="#view-shift-modal"
               onClick={() => setViewShiftData(rowData)}
             >
-              <i className="feather feather-eye action-eye"></i>
+              <i className="feather feather-eye action-eye view-icon"></i>
             </Link>
 
             {/* EDIT */}
@@ -123,7 +123,7 @@ const Shift = () => {
               data-bs-target="#edit-shift"
               onClick={() => setEditShiftData(rowData)}
             >
-              <i className="feather-edit"></i>
+              <i className="feather-edit edit-icon"></i>
             </Link>
 
             {/* DELETE */}
@@ -134,7 +134,7 @@ const Shift = () => {
               data-bs-target="#delete-shift-modal"
               onClick={() => setDeleteId(Number(rowData.shift_id))}
             >
-              <i className="feather-trash-2"></i>
+              <i className="feather-trash-2 delete-icon"></i>
             </Link>
 
           </div>
@@ -232,7 +232,7 @@ const Shift = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-danger"
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >

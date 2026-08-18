@@ -234,7 +234,7 @@ const AddVendors = () => {
 
                     <button
                       type="submit"
-                      className="btn btn-submit"
+                      className="btn btn-success"
                       disabled={loading}
                     >
                       {loading ? t("adding") : t("submit")}

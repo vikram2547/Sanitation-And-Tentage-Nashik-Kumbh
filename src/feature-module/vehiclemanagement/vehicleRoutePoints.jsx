@@ -109,7 +109,7 @@ const VehicleRoutePoints = () => {
               data-bs-target="#view-route-point-modal"
               onClick={() => setViewRoutePointData(rowData)}
             >
-              <i className="feather feather-eye action-eye"></i>
+              <i className="feather feather-eye action-eye view-icon"></i>
             </Link>
 
             {/* EDIT */}
@@ -127,7 +127,7 @@ const VehicleRoutePoints = () => {
                 modal.show();
               }}
             >
-              <i className="feather-edit"></i>
+              <i className="feather-edit edit-icon"></i>
             </Link>
 
             {/* DELETE */}
@@ -138,7 +138,7 @@ const VehicleRoutePoints = () => {
               data-bs-target="#delete-route-point-modal"
               onClick={() => setDeleteId(rowData.route_point_id)}
             >
-              <i className="feather-trash-2"></i>
+              <i className="feather-trash-2 delete-icon"></i>
             </Link>
 
           </div>
@@ -244,7 +244,7 @@ const VehicleRoutePoints = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-danger"
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >

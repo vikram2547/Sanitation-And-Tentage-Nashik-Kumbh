@@ -94,7 +94,7 @@ const RolesPermissions = () => {
               state={{ editData: rowData }}
               className="me-2 d-flex align-items-center p-2 border rounded"
             >
-              <i className="ti ti-edit"></i>
+              <i className="ti ti-edit edit-icon"></i>
             </Link>
             <Link
               className="confirm-text p-2"
@@ -103,7 +103,7 @@ const RolesPermissions = () => {
               data-bs-target="#delete-modal"
               onClick={() => setDeleteId(rowData.permission_id)}
             >
-              <i className="feather-trash-2"></i>
+              <i className="feather-trash-2 delete-icon"></i>
             </Link>
 
           </div>
@@ -252,7 +252,7 @@ const RolesPermissions = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-danger"
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >

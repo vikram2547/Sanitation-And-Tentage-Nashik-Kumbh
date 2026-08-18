@@ -261,8 +261,8 @@ export const SidebarData = [
         showSubRoute: false,
       },
       {
-        label: "setting",
-        link: "/general-settings",
+        label: "",
+        link: "",
         icon: "chart-pie-2",
         showSubRoute: false,
       },

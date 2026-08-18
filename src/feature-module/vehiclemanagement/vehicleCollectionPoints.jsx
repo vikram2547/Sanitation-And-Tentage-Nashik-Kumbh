@@ -123,7 +123,7 @@ const VehicleCollectionPoints = () => {
               data-bs-target="#view-collection-point-modal"
               onClick={() => setViewPointData(rowData)}
             >
-              <i className="feather feather-eye action-eye"></i>
+              <i className="feather feather-eye action-eye view-icon"></i>
             </Link>
 
             {/* EDIT */}
@@ -134,7 +134,7 @@ const VehicleCollectionPoints = () => {
               data-bs-target="#edit-collection-point-modal"
               onClick={() => seteditPointData(rowData)}
             >
-              <i className="feather-edit"></i>
+              <i className="feather-edit edit-icon"></i>
             </Link>
 
             {/* DELETE */}
@@ -145,7 +145,7 @@ const VehicleCollectionPoints = () => {
               data-bs-target="#delete-collection-point-modal"
               onClick={() => setDeleteId(rowData.point_code)}
             >
-              <i className="feather-trash-2"></i>
+              <i className="feather-trash-2 delete-icon"></i>
             </Link>
 
           </div>
@@ -246,7 +246,7 @@ const VehicleCollectionPoints = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-danger"
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >

@@ -118,7 +118,7 @@ const VehicleDailyTripSummaries = () => {
               data-bs-target="#view-daily-trip-summary"
               onClick={() => setViewTripData(row)}
             >
-              <i className="feather feather-eye action-eye"></i>
+              <i className="feather feather-eye action-eye view-icon"></i>
             </Link>
 
             {/* EDIT */}
@@ -136,7 +136,7 @@ const VehicleDailyTripSummaries = () => {
                 modal.show();
               }}
             >
-              <i className="feather-edit"></i>
+              <i className="feather-edit edit-icon"></i>
             </Link>
 
 
@@ -148,7 +148,7 @@ const VehicleDailyTripSummaries = () => {
               data-bs-target="#delete-daily-trip-summary"
               onClick={() => setDeleteId(row.assignment_id)}
             >
-              <i className="feather-trash-2"></i>
+              <i className="feather-trash-2 delete-icon"></i>
             </Link>
 
           </div>

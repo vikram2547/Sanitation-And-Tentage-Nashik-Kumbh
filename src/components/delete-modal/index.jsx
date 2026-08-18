@@ -23,7 +23,7 @@ const DeleteModal = () => {
                   </button>
                   <Link
                     to="#"
-                    className="btn btn-primary fs-13 fw-medium p-2 px-3"
+                    className="btn btn-danger fs-13 fw-medium p-2 px-3"
                     data-bs-dismiss="modal">
                     
                     Yes Delete

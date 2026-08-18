@@ -238,7 +238,7 @@ const Header = () => {
               <button
                 type="button"
                 onClick={handleLogout}
-                className="btn btn-primary"
+                className="btn btn-danger"
               >
                 {t("logout")}
               </button>

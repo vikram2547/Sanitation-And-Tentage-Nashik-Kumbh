@@ -118,7 +118,7 @@ const VehicleGeofences = () => {
               data-bs-target="#view-geofence-modal"
               onClick={() => setViewGeofenceData(rowData)}
             >
-              <i className="feather feather-eye action-eye"></i>
+              <i className="feather feather-eye action-eye view-icon"></i>
             </Link>
 
             {/* EDIT */}
@@ -136,7 +136,7 @@ const VehicleGeofences = () => {
                 modal.show();
               }}
             >
-              <i className="feather-edit"></i>
+              <i className="feather-edit edit-icon"></i>
             </Link>
 
             {/* DELETE */}
@@ -147,7 +147,7 @@ const VehicleGeofences = () => {
               data-bs-target="#delete-geofence-modal"
               onClick={() => setDeleteId(rowData.geofence_id)}
             >
-              <i className="feather-trash-2"></i>
+              <i className="feather-trash-2 delete-icon"></i>
             </Link>
 
           </div>
@@ -253,7 +253,7 @@ const VehicleGeofences = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-danger"
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >

@@ -128,15 +128,15 @@ const Sidebar = () => {
           </Link>
 
           <Link to={route.newdashboard} className="logo logo-white">
-            <img src={logoWhite} alt="logo" />
+            {/* <img src={logoWhite} alt="logo" /> */}
           </Link>
 
           <Link to={route.newdashboard} className="logo-small">
-            <img src={logoSmall} alt="logo" />
+            {/* <img src={logoSmall} alt="logo" /> */}
           </Link>
 
           <Link to={route.newdashboard} className="logo-small-white">
-            <img src={logoSmallWhite} alt="logo" />
+            {/* <img src={logoSmallWhite} alt="logo" /> */}
           </Link>
 
           <Link id="toggle_btn" to="#" onClick={handlesidebar}>

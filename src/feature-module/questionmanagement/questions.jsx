@@ -122,7 +122,7 @@ const Questions = () => {
                             data-bs-target="#view-question-modal"
                             onClick={() => setViewQuestionData(rowData)}
                         >
-                            <i className="feather feather-eye action-eye"></i>
+                            <i className="feather feather-eye action-eye view-icon"></i>
                         </Link>
 
                         {/* EDIT */}
@@ -140,7 +140,7 @@ const Questions = () => {
                                 modal.show();
                             }}
                         >
-                            <i className="feather-edit"></i>
+                            <i className="feather-edit edit-icon"></i>
                         </Link>
 
                         {/* DELETE */}
@@ -151,7 +151,7 @@ const Questions = () => {
                             data-bs-target="#delete-question-modal"
                             onClick={() => setDeleteId(Number(rowData.question_id))}
                         >
-                            <i className="feather-trash-2"></i>
+                            <i className="feather-trash-2 delete-icon"></i>
                         </Link>
 
                     </div>
@@ -260,7 +260,7 @@ const Questions = () => {
                                     </button>
                                     <button
                                         type="button"
-                                        className="btn btn-primary"
+                                        className="btn btn-danger"
                                         data-bs-dismiss="modal"
                                         onClick={handleDelete}
                                     >

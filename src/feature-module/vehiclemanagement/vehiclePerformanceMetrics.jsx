@@ -111,7 +111,7 @@ const VehiclePerformanceMetrics = () => {
               data-bs-target="#view-metric-modal"
               onClick={() => setViewMetricData(rowData)}
             >
-              <i className="feather feather-eye action-eye"></i>
+              <i className="feather feather-eye action-eye view-icon"></i>
             </Link>
 
             {/* EDIT */}
@@ -129,7 +129,7 @@ const VehiclePerformanceMetrics = () => {
                 modal.show();
               }}
             >
-              <i className="feather-edit"></i>
+              <i className="feather-edit edit-icon"></i>
             </Link>
 
             {/* DELETE */}
@@ -140,7 +140,7 @@ const VehiclePerformanceMetrics = () => {
               data-bs-target="#delete-metric-modal"
               onClick={() => setDeleteId(rowData.metric_id)}
             >
-              <i className="feather-trash-2"></i>
+              <i className="feather-trash-2 delete-icon"></i>
             </Link>
 
           </div>
@@ -246,7 +246,7 @@ const VehiclePerformanceMetrics = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-primary"
+                    className="btn btn-danger"
                     data-bs-dismiss="modal"
                     onClick={handleDelete}
                   >

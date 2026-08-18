@@ -817,3 +817,30 @@
 .feather-zoom-out:before {
 	content: "\ea09";
 }
+/* View - Blue */
+.view-icon {
+  color: #0d6efd !important;
+}
+
+/* Edit - Orange */
+.edit-icon {
+  color: #f59e0b !important;
+}
+
+/* Delete - Red */
+.delete-icon {
+  color: #dc3545 !important;
+}
+
+/* Optional: hover effect */
+.view-icon:hover {
+  color: #0a58ca !important;
+}
+
+.edit-icon:hover {
+  color: #d97706 !important;
+}
+
+.delete-icon:hover {
+  color: #b02a37 !important;
+}
