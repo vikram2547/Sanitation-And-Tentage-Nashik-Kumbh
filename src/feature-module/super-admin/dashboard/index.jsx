@@ -5,7 +5,7 @@ import CommonFooter from "../../../components/footer/commonFooter";
 
 import { all_routes } from "../../../routes/all_routes";
 import { useDispatch, useSelector } from "react-redux";
-import { getCounts } from "../../../core/redux/dashboardCountsSlice";
+import { clearMessages, getCounts } from "../../../core/redux/dashboardCountsSlice";
 import { useTranslation } from "react-i18next";
 import bg1 from "../../../assets/img/bg/welcome-bg-01.svg";
 import bg2 from "../../../assets/img/bg/welcome-bg-02.svg"
